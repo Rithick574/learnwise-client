@@ -39,10 +39,10 @@ const IndexReview = () => {
           <div className="w-[90%] flex items-center ml-5">
             <img
               src="https://res.cloudinary.com/dev-empty/image/upload/v1661319899/jesalmrfyvyjhnc4bn8w.jpg"
-              className="rounded-full w-10 h-10"
+              className="rounded-full w-10 h-10 mt-5"
               alt="student-avatar"
             />
-            <h4 className="mb-0 ml-3">
+            <h4 className="mb-0 ml-3 mt-3">
               Jason Stathum, <span>Python Dev.</span>
             </h4>
           </div>

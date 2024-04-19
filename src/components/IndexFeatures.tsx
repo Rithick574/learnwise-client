@@ -2,7 +2,7 @@ import Card from "./Card";
 
 const IndexFeatures = () => {
   return (
-    <div className="footer-area w-full mt-[120px] mr-40">
+    <div className="w-full mt-[120px] mr-40">
       <div className="container">
         <div className="row">
           <div className="mt-5">

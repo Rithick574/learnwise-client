@@ -4,7 +4,6 @@ import { Link } from "react-router-dom"
 import IndexSection from "@/components/IndexSection";
 import IndexReview from "@/components/IndexReview";
 import ApplyasInstructor from "@/components/ApplyasInstructor";
-import Footer from "@/components/Footer";
 import IndexFeatures from "@/components/IndexFeatures";
 
 
@@ -77,7 +76,7 @@ const IndexPage: React.FC = () => {
       <IndexReview/>
       <IndexFeatures/>
       <ApplyasInstructor/>
-      <Footer/>
+ 
     </>
   );
 };

@@ -9,6 +9,7 @@ export default defineConfig({
       "@": path.resolve(process.cwd(), "./src"),
       "@redux": path.resolve(process.cwd(), "./src/redux"),
       "@lib": path.resolve(process.cwd(), "./src/lib"),
+      "@public": path.resolve(process.cwd(), "./public"),
     },
   },
 });

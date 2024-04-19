@@ -1,14 +1,18 @@
 import React from "react";
 import { BiSearch } from "react-icons/bi";
 import { Link } from "react-router-dom"
-
+import IndexSection from "@/components/IndexSection";
+import IndexReview from "@/components/IndexReview";
+import ApplyasInstructor from "@/components/ApplyasInstructor";
+import Footer from "@/components/Footer";
+import IndexFeatures from "@/components/IndexFeatures";
 
 
 const IndexPage: React.FC = () => {
   return (
     <>
       <div className="w-full 1000px:flex items-center">
-        <div className="grid grid-cols-2 rounded-lg ">
+        <div className="grid grid-cols-2 rounded-lg">
           <div className="flex items-center justify-end pt-[70px] z-10 relative">
             <img
               src="https://edmy-react.hibootstrap.com/images/banner/banner-img-1.png"
@@ -17,7 +21,7 @@ const IndexPage: React.FC = () => {
             />
             <div className="absolute bg-gradient-to-br from-blue-900 to-black rounded-full w-[600px] h-[600px] top-20 right-8"></div>
           </div>
-          <div className="flex flex-col ml-9 mt-[150px] ">
+          <div className="flex flex-col ml-9 mt-[150px]">
             <h2 className="text-[50px] font-Josefin px-3w-full font-[700]">
               Improve Your Online
               <br/>
@@ -69,6 +73,11 @@ const IndexPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <IndexSection/>
+      <IndexReview/>
+      <IndexFeatures/>
+      <ApplyasInstructor/>
+      <Footer/>
     </>
   );
 };

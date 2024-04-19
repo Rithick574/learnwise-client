@@ -20,7 +20,13 @@ const Header: React.FC = () => {
     <header className="shadow-md border-b-2">
       <div className="container mx-auto p-5 flex items-center justify-between">
         <div className="flex items-center">
-          <span className="text-3xl font-bold">LearnWise</span>
+          <h1 className="text-3xl font-bold">
+            Learn
+            <span className="text-[#46e256]">
+            W
+            </span>
+            ise
+            </h1>
         </div>
         <div className="flex items-center">
           <ul className="ml-8 p-2 flex space-x-14">

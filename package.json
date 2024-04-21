@@ -14,8 +14,11 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.3",
+    "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "formik": "^2.4.5",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.371.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -26,7 +29,8 @@
     "react-router-dom": "^6.22.3",
     "swiper": "^11.1.1",
     "tailwind-merge": "^2.2.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",

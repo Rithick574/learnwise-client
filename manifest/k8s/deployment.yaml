@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: learnwisefrontend-deployment
+  labels:
+    app: learnwisefrontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: learnwisefrontend
+  template:
+    metadata:
+      labels:
+        app: learnwisefrontend
+    spec:
+      containers:
+        - name: learnwisefrontend
+          image: rithickramanthali/learnwise-client:latest
+          ports:
+            - containerPort: 5173
+          envFrom:
+            - configMapRef:
+                name: learnwisefronend-config

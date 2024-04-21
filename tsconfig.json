@@ -6,6 +6,7 @@
       "@lib/*": ["src/lib/*"],
       "@/*": ["src/*"],
       "@public/*": ["public/*"],
+      "@redux/*": ["src/redux/*"],
     },
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],

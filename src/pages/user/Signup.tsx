@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Formik, Form, ErrorMessage } from "formik";
-// import { Link, useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import SignupBG from "../../assets/business-img.png";
-import Logo from "../../assets/auth-img.png";
+// import Logo from "../../assets/auth-img.png";
+import { GoogleLogin } from "@react-oauth/google";
 import InputWithIcon from "@/components/auth/InputWithIcon";
 import PasswordInputWithIcon from "@/components/auth/PasswordInputWithIcon";
 import {
@@ -12,17 +13,18 @@ import {
   AiOutlineMail,
   AiOutlinePhone,
 } from "react-icons/ai";
+import toast from "react-hot-toast";
 import { useTheme } from "@/components/ui/theme-provider";
 import OTPEntersection from "@/components/auth/OTPEntersection";
-import {SignUpFormData } from "@/interface/IUserLogin"
-
+import { SignUpFormData } from "@/interface/IUserLogin";
+import {googleLoginOrSignUp} from "@redux/actions/userActions"
 
 const Signup = () => {
   const { theme } = useTheme();
   const [load, setLoad] = useState(true);
   const [otpLoading, setOTPLoading] = useState(false);
   const [otpComponent, setOTPComponent] = useState(false);
-  const [data, setData] = useState<SignUpFormData >({});
+  const [data, setData] = useState<SignUpFormData>({});
   const [otpExpired, setOTPExpired] = useState(false);
 
   const initialValues = {
@@ -53,14 +55,14 @@ const Signup = () => {
       .moreThan(111111111, "Not valid phone number"),
   });
 
-
   const dispatchSignUp = () => {
     let formData = new FormData();
     if (data.firstName) formData.append("firstName", data.firstName);
     if (data.lastName) formData.append("lastName", data.lastName);
     if (data.email) formData.append("email", data.email);
     if (data.password) formData.append("password", data.password);
-    if (data.passwordconfirm) formData.append("passwordAgain", data.passwordconfirm);
+    if (data.passwordconfirm)
+      formData.append("passwordAgain", data.passwordconfirm);
     if (data.phoneNumber) formData.append("phoneNumber", data.phoneNumber);
     // dispatch(signUpUser(formData));
   };
@@ -69,8 +71,13 @@ const Signup = () => {
     console.log("cfvgbhjkjhugfdfghj");
     setOTPLoading(false);
     setData(value);
-    setLoad(false)
-    setOTPComponent(true)
+    setLoad(false);
+    setOTPComponent(true);
+  };
+
+  const loginWithGoogle = async (data : any) => {
+    // dispatch(googleLoginOrSignUp(data));
+    googleLoginOrSignUp(data)
   };
 
   return (
@@ -82,7 +89,7 @@ const Signup = () => {
       <div className="lg:w-1/2 p-5 mx-10 lg:mx-20 lg:p-10 border border-gray-00 rounded-3xl">
         <div className="flex items-center justify-center">
           {/* <img src={Logo} alt="logo" className="lg:w-1/12 w-1/12" /> */}
-          <h1 className="text-2xl my-5 font-bold">Sign Up</h1>
+          <h1 className="text-3xl my-5 font-bold">Join to Learnwise</h1>
         </div>
         {load && (
           <Formik
@@ -151,12 +158,38 @@ const Signup = () => {
         )}
         {otpComponent && (
           <OTPEntersection
-          email={data.email}
-          setOTPExpired={setOTPExpired}
-          setOTPSec={setOTPComponent}
-          dispatchSignUp={dispatchSignUp}
+            email={data.email}
+            setOTPExpired={setOTPExpired}
+            setOTPSec={setOTPComponent}
+            dispatchSignUp={dispatchSignUp}
           />
         )}
+ {otpExpired }
+{/* //  && <OTPExpired /> */}
+        <div className="text-center">
+          <p className="my-4">OR</p>
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+                loginWithGoogle(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+                toast.error("Something is wrong! Please try later");
+              }}
+            />
+          </div>
+          <p className="my-5">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-blue-600 font-semibold cursor-pointer hover:text-blue-500"
+            >
+              Login now
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

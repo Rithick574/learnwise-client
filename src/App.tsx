@@ -1,7 +1,7 @@
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+import Footer from "./components/home/Footer";
+import Header from "./components/home/Header";
 import Courses from "./pages/user/Courses";
-import IndexPage from "./pages/user/IndexPage";
+import IndexPage from "./pages/public/IndexPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivacyPolicy from "./pages/user/PrivacyPolicy";
 

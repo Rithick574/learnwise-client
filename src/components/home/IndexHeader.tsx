@@ -1,16 +1,9 @@
-import React from "react";
 import { BiSearch } from "react-icons/bi";
 import { Link } from "react-router-dom"
-import IndexSection from "@/components/IndexSection";
-import IndexReview from "@/components/IndexReview";
-import ApplyasInstructor from "@/components/ApplyasInstructor";
-import IndexFeatures from "@/components/IndexFeatures";
 
-
-const IndexPage: React.FC = () => {
+const IndexHeader = () => {
   return (
-    <>
-      <div className="w-full 1000px:flex items-center">
+    <div className="w-full 1000px:flex items-center">
         <div className="grid grid-cols-2 rounded-lg">
           <div className="flex items-center justify-end pt-[70px] z-10 relative">
             <img
@@ -72,13 +65,7 @@ const IndexPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <IndexSection/>
-      <IndexReview/>
-      <IndexFeatures/>
-      <ApplyasInstructor/>
- 
-    </>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexHeader

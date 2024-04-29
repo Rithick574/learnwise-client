@@ -35,7 +35,6 @@ function App() {
     }
   }, [dispatch,user]);
 
-  // const protectedRoute=
 
   return (
     <Router>
@@ -54,7 +53,6 @@ function App() {
               )
             ) : (
               <Navigate to="/login" />
-              // <IndexPage />
             )
           }
         />

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Field, ErrorMessage } from "formik";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { InputWithIconProps } from "@/interface/IUserLogin";
+import { InputWithIconProps } from "@/types/IUserLogin";
 
 const PasswordInputWithIcon: React.FC<InputWithIconProps> = ({
   title,

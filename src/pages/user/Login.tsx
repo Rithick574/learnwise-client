@@ -1,21 +1,29 @@
 import LoginBG from "../../assets/business-img.png";
 // import Logo from "../../assets/auth-img.png"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { GoogleLogin } from "@react-oauth/google";
+import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineLock, AiOutlineUser } from "react-icons/ai";
 import InputWithIcon from "@/components/auth/InputWithIcon";
 import PasswordInputWithIcon from "@/components/auth/PasswordInputWithIcon";
 import { useTheme } from "@/components/ui/theme-provider";
-import {googleLoginOrSignUp} from "@redux/actions/userActions"
+import {googleLoginOrSignUp} from "@/redux/actions/user/userActions"
+import {loginUser} from "@/redux/actions/user/userActions"
+import { AppDispatch, RootState } from "@/redux/store";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const { user, loading, error } = useSelector((state:RootState) => state.user);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate()
   const { theme } = useTheme();
-  let loading = false;
   const initialValues = {
-    email: "",
-    password: "",
+    email: "rithick.panoor57@gmail.com",
+    password: "Rithick@123",
   };
 
   const validationSchema = Yup.object().shape({
@@ -25,11 +33,24 @@ const Login = () => {
     password: Yup.string().required("Password is required"),
   });
 
-  const handleLoginSubmit = async () => {};
+  useEffect(() => {
+    if(user){
+      navigate("/")
+    }
+  }, [user,navigate]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error("Please check your email or password");
+    }
+  }, [error]);
+
+  const  handleLoginSubmit = async (value:any) => {
+   dispatch(loginUser(value));
+  };
 
   const loginWithGoogle = async (data:any) => {
-    googleLoginOrSignUp(data)
-    // dispatch(googleLoginOrSignUp(data));
+    dispatch(googleLoginOrSignUp(data));
   };
 
   return (
@@ -40,7 +61,7 @@ const Login = () => {
       <div className="lg:w-1/2 p-5 mx-10 lg:mx-20 lg:p-10 border border-gray-300 rounded-3xl">
         <div className="flex items-center justify-center">
           {/* <img src={Logo} alt="ex.iphones. logo" className="lg:w-1/12 w-1/12" /> */}
-          <h1 className="text-3xl my-5 font-bold">Join to Learnwise</h1>
+          <h1 className="text-4xl my-5 font-bold ">Join to Learnwise</h1>
         </div>
 
         <Formik
@@ -65,6 +86,7 @@ const Login = () => {
               as="password"
               theme={theme}
             />
+             {error && <p className="my-2 text-red-400">{error || "An unknown error occurred"}</p>}
              <button
               type="submit"
               className="bg-blue-500 rounded-md p-2 w-full my-3 "

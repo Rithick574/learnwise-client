@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
-import { InputWithIconProps } from "@/interface/IUserLogin";
+import { InputWithIconProps } from "@/types/IUserLogin";
 
 const InputWithIcon: React.FC<InputWithIconProps> = ({
   title,

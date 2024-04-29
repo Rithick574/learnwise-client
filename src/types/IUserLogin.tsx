@@ -14,11 +14,6 @@ export interface IUserLogin {
   google?: boolean;
 }
 
-//  export interface CustomJwtPayload {
-//     name: string;
-//     email: string;
-//   }
-
 //  export interface UserValues {
 //     email: string;
 //     password?:string;
@@ -35,12 +30,13 @@ export interface UserType {
   id: string;
   email: string;
   name: string;
+  role: string
 }
 
 export interface ErrorType {
   message: string;
   statusCode?: number;
-  code?: string;
+  status?: boolean;
   details?: any;
 }
 
@@ -48,7 +44,8 @@ export interface OTPEntersectionProps {
   email?: string;
   setOTPExpired?: (expired: boolean) => void;
   setOTPSec?: (open: boolean) => void;
-  dispatchSignUp: (otp: string[]) => void;
+  dispatchSignUp: (otp: string) => void | Promise<any>;
+  resendOtp?: ()=> void;
 }
 
 export interface SignUpFormData  {
@@ -58,4 +55,12 @@ export interface SignUpFormData  {
   password?: string;
   passwordconfirm?: string;
   phoneNumber?: string;
+  otp?:string
+}
+
+
+export interface IUserSelector {
+  user:UserState,
+  loading: boolean,
+  error: null | string
 }

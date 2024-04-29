@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Formik, Form } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import SignupBG from "../../assets/business-img.png";
-// import Logo from "../../assets/auth-img.png";
 import { GoogleLogin } from "@react-oauth/google";
 import InputWithIcon from "@/components/auth/InputWithIcon";
 import PasswordInputWithIcon from "@/components/auth/PasswordInputWithIcon";
@@ -16,24 +15,44 @@ import {
 import toast from "react-hot-toast";
 import { useTheme } from "@/components/ui/theme-provider";
 import OTPEntersection from "@/components/auth/OTPEntersection";
-import { SignUpFormData } from "@/interface/IUserLogin";
-import {googleLoginOrSignUp} from "@redux/actions/userActions"
+import { SignUpFormData } from "@/types/IUserLogin";
+import {
+  googleLoginOrSignUp,
+  signUpUser,
+} from "@/redux/actions/user/userActions";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch,RootState } from "@/redux/store";
+import OTPExpired from "@/components/auth/OTPExpired";
+import { updateError } from "../../redux/reducers/userSlice";
 
-const Signup = () => {
+const Signup: FC = () => {
+  const { user, error } = useSelector((state:RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
   const { theme } = useTheme();
   const [load, setLoad] = useState(true);
   const [otpLoading, setOTPLoading] = useState(false);
   const [otpComponent, setOTPComponent] = useState(false);
-  const [data, setData] = useState<SignUpFormData>({});
+  const [datas, setDatas] = useState<SignUpFormData>({});
   const [otpExpired, setOTPExpired] = useState(false);
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+    return () => {
+      dispatch(updateError(""));
+    };
+  }, [user]);
 
   const initialValues = {
     firstName: "Rithick",
-    lastName: "adc",
-    email: "rithick@gmail.com",
+    lastName: "p",
+    email: "rithick.panoor574@gmail.com",
     password: "Rithick@123",
     passwordconfirm: "Rithick@123",
-    phoneNumber: "9539691245",
+    phoneNumber: "9539590441",
   };
 
   const validationSchema = Yup.object().shape({
@@ -55,29 +74,83 @@ const Signup = () => {
       .moreThan(111111111, "Not valid phone number"),
   });
 
-  const dispatchSignUp = () => {
+  const dispatchSignUp = async (otp:string) => {
+    console.log(datas?.email, "here in datas in dispatchsignup");
     let formData = new FormData();
-    if (data.firstName) formData.append("firstName", data.firstName);
-    if (data.lastName) formData.append("lastName", data.lastName);
-    if (data.email) formData.append("email", data.email);
-    if (data.password) formData.append("password", data.password);
-    if (data.passwordconfirm)
-      formData.append("passwordAgain", data.passwordconfirm);
-    if (data.phoneNumber) formData.append("phoneNumber", data.phoneNumber);
-    // dispatch(signUpUser(formData));
+    formData.append("firstName", datas.firstName ?? "");
+    formData.append("lastName", datas.lastName ?? "");
+    formData.append("email", datas.email ?? "");
+    formData.append("password", datas.password ?? "");
+    formData.append("passwordconfirm", datas.passwordconfirm ?? "");
+    formData.append("phoneNumber", datas.phoneNumber ?? "");
+    if (otp) {
+      formData.append("otp",otp);
+    }
+    return await dispatch(signUpUser(formData));
   };
+
+  const resendOTP=()=>{
+    if (!datas.email) {
+      toast.error("Email not available");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("email", datas.email);
+  
+    dispatch(signUpUser(formData))
+    .then(() => {
+      toast.success("OTP has been resent");
+    })
+    .catch((error:any) => {
+      toast.error("Failed to resend OTP");
+      console.error("Error resending OTP:", error);
+    });  
+  }
 
   const handleSignup = async (value: any) => {
-    console.log("cfvgbhjkjhugfdfghj");
-    setOTPLoading(false);
-    setData(value);
-    setLoad(false);
-    setOTPComponent(true);
+    setOTPLoading(true);
+
+    const formData = new FormData();
+    formData.append("firstName", value.firstName);
+    formData.append("lastName", value.lastName);
+    formData.append("email", value.email);
+    formData.append("password", value.password);
+    formData.append("passwordconfirm", value.passwordconfirm);
+    formData.append("phoneNumber", value.phoneNumber);
+
+    try {
+      const result = await dispatch(signUpUser(formData));
+
+      if (result.meta.requestStatus === "fulfilled") {
+        console.log("Signup result:", result.payload?.success);
+        if (result.payload?.success) {
+          setLoad(false);
+          toast.success("OTP Sent successfully");
+          setDatas(value);
+          setOTPComponent(true);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          toast.error("Signup failed!");
+        }
+      } else if (result.meta.requestStatus === "rejected") {
+        const errorResponse = result.payload as any;
+        toast.error(errorResponse?.response?.data?.error || "Signup failed!");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast.error("Signup failed!");
+    } finally {
+      setOTPLoading(false);
+    }
   };
 
-  const loginWithGoogle = async (data : any) => {
-    // dispatch(googleLoginOrSignUp(data));
-    googleLoginOrSignUp(data)
+  const loginWithGoogle = async (data: any) => {
+    try {
+      dispatch(googleLoginOrSignUp(data));
+    } catch (error: any) {
+      console.log("Login Failed", error);
+      toast.error("Something is wrong! Please try later");
+    }
   };
 
   return (
@@ -89,7 +162,7 @@ const Signup = () => {
       <div className="lg:w-1/2 p-5 mx-10 lg:mx-20 lg:p-10 border border-gray-00 rounded-3xl">
         <div className="flex items-center justify-center">
           {/* <img src={Logo} alt="logo" className="lg:w-1/12 w-1/12" /> */}
-          <h1 className="text-3xl my-5 font-bold">Join to Learnwise</h1>
+          <h1 className="text-4xl my-5 font-bold">Join to Learnwise</h1>
         </div>
         {load && (
           <Formik
@@ -153,19 +226,20 @@ const Signup = () => {
               >
                 {otpLoading ? "Loading..." : "Sign Up"}
               </button>
+              {error && <p className="my-2 text-red-400">{error}</p>}
             </Form>
           </Formik>
         )}
         {otpComponent && (
           <OTPEntersection
-            email={data.email}
+            email={datas.email}
             setOTPExpired={setOTPExpired}
             setOTPSec={setOTPComponent}
             dispatchSignUp={dispatchSignUp}
+            resendOtp={resendOTP}
           />
         )}
- {otpExpired }
-{/* //  && <OTPExpired /> */}
+  {otpExpired && <OTPExpired />}
         <div className="text-center">
           <p className="my-4">OR</p>
           <div className="flex justify-center">

@@ -9,8 +9,6 @@ interface ApiResponseError extends Error {
   };
 }
 
-export const GOOGLE_ID = "763509306096-o56pcujee7m125or6q0iabofq139v5a0.apps.googleusercontent.com";
-export const GOOGLE_SECRET = "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"
 
 export const config = {
   headers: {

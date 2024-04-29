@@ -8,7 +8,7 @@ interface ApiResponseError extends Error {
     };
   };
 }
-
+export const GOOGLE_ID = import.meta.env.VITE_REACT_APP_GOOGLE_ID;
 
 export const config = {
   headers: {

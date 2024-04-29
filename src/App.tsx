@@ -24,6 +24,7 @@ import Header from "./components/home/Header";
 import Login from "./pages/user/Login";
 import Signup from "./pages/user/Signup";
 import { AppDispatch, RootState } from "./redux/store";
+import ForgetPassword from "./pages/user/ForgetPassword";
 
 function App() {
   const { user } = useSelector((state: RootState) => state.user);
@@ -62,6 +63,7 @@ function App() {
         {/* Auth Pages */}
         <Route path="login" element={user ? <Navigate to={'/'}/> : <Login />} />
         <Route path="signup" element={<Signup />} />
+        <Route path="forgot-password" element={<ForgetPassword />} />
       </Routes>
       <Footer />
     </Router>

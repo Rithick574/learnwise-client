@@ -162,7 +162,7 @@ const Signup: FC = () => {
       <div className="lg:w-1/2 p-5 mx-10 lg:mx-20 lg:p-10 border border-gray-00 rounded-3xl">
         <div className="flex items-center justify-center">
           {/* <img src={Logo} alt="logo" className="lg:w-1/12 w-1/12" /> */}
-          <h1 className="text-4xl my-5 font-bold">Join to Learnwise</h1>
+          <h1 className="text-4xl my-5 font-bold">Join to Learn<span className="text-green-500">W</span>ise</h1>
         </div>
         {load && (
           <Formik

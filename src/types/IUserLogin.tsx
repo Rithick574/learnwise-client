@@ -48,6 +48,11 @@ export interface OTPEntersectionProps {
   resendOtp?: ()=> void;
 }
 
+export interface PasswordEnterSectionProps {
+  email?: string;
+  setPasswordSec?: (expired: boolean) => void;
+}
+
 export interface SignUpFormData  {
   firstName?: string;
   lastName?: string;

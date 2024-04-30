@@ -82,11 +82,24 @@ export const loginUser = createAsyncThunk(
         userCredentials,
         config
       );
-console.log("here in login",data);
-
       return data;
     } catch (error:any) {
       return handleError(error, rejectWithValue);
     }
   }
 );
+
+//forgot password
+export const forgotPassword = createAsyncThunk(
+  "forgot/password",
+  async(email:string,{rejectWithValue})=>{
+    try {
+      const {data} = await axios.post(`${URL}/auth/forgotpassword`,{email},config)
+      console.log("🚀 ~ file: userActions.tsx:99 ~ async ~ data:", data)
+      return data;
+    } catch (error:any) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+)
+

@@ -1,8 +1,15 @@
 import {FC,useState} from 'react'
 import ForgotBG from "../../assets/business-img.png";
 import { AiOutlineMail } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { forgotPassword } from '@/redux/actions/user/userActions';
+import toast from "react-hot-toast";
+
 
 const ForgetPassword:FC = () => {
+
+  const dispatch = useDispatch<AppDispatch>();
 
     const [email, setEmail] = useState("");
     const [errors, setError] = useState("");
@@ -11,11 +18,22 @@ const ForgetPassword:FC = () => {
    
 const handleEmailSubmit=async(e:any)=>{
     e.preventDefault();
+    setLoading(true);
     if (email.trim() === "") {
       setError("Enter an email to continue");
       return;
     }
-    setLoading(true);
+    console.log("🚀 ~ file: ForgetPassword.tsx:15 ~ handleEmailSubmit ~ email:", email)
+    dispatch(forgotPassword(email))
+    .then((res)=>{
+      if(res.type.endsWith("fulfilled")){
+        toast.success("A link is shared to your email")
+        setLoading(false);
+      }
+      if (res.type.endsWith("rejected")) {
+       toast.error("Invalid email or password")
+      }
+    })
 }
 
   return (
@@ -28,9 +46,9 @@ const handleEmailSubmit=async(e:any)=>{
           <p className="text-3xl font-bold">Learn<span className='text-green-500'>W</span>ise</p>
         </div>
         <h1 className="text-2xl my-5 font-bold">Reset your Password</h1>
-        <p>
-        <label htmlFor="username">Email Address</label>
-      </p>
+         <p>
+         <label htmlFor="username">Email Address</label>
+       </p>
       <div className="flex items-center gap-3 border shadow-sm p-2 rounded-lg my-2">
         <AiOutlineMail className="text-xl" />
         <input

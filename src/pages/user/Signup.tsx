@@ -47,12 +47,12 @@ const Signup: FC = () => {
   }, [user]);
 
   const initialValues = {
-    firstName: "Rithick",
-    lastName: "p",
-    email: "rithick.panoor574@gmail.com",
-    password: "Rithick@123",
-    passwordconfirm: "Rithick@123",
-    phoneNumber: "9539590441",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    passwordconfirm: "",
+    phoneNumber: "",
   };
 
   const validationSchema = Yup.object().shape({

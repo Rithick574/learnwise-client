@@ -34,6 +34,7 @@ import { DashboardNav } from "./pages/user/DashboardNav";
 import ApplyasInstructor from "./components/home/ApplyasInstructor";
 import { ApplyToTeach } from "./pages/public/ApplyToTeach";
 import { Instructors } from "./pages/public/Instructors";
+import { About } from "./pages/public/About";
 
 type ProtectedRouteProps = {
   element: React.ReactElement;
@@ -80,6 +81,8 @@ function App() {
         <Route path="teach" element={<ApplyasInstructor/>}/>
         <Route path="apply-to-teach" element={<ApplyToTeach/>} />
         <Route path="instructors" element={<Instructors/>} />
+        <Route path="about" element={<About/>} />
+
 
         {/* Auth Pages */}
         <Route path="login" element={user ? <Navigate to={'/'}/> : <Login />} />
@@ -96,7 +99,7 @@ function App() {
       </Route>
 
       <Route path="*" element={<Error404 />} />
-      </Routes>
+      </Routes> 
       <Footer />
     </Router>
   );

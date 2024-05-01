@@ -22,7 +22,7 @@ const Login = () => {
   const navigate = useNavigate()
   const { theme } = useTheme();
   const initialValues = {
-    email: "rithick.panoor57@gmail.com",
+    email: "rithick.panoor574@gmail.com",
     password: "Rithick@123",
   };
 

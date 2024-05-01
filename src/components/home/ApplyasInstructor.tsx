@@ -1,8 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
+
 const ApplyasInstructor = () => {
+  const navigate=useNavigate()
   return (
     <>
       <div className="w-full flex items-center">
-        <div className="flex flex-col ml-16 mt-[220px]">
+        <div className="flex flex-col ml-24 mt-[200px]">
           <h2 className="text-[45px] font-Josefin px-3w-full font-[600]">
             Become An
             <span className="text-[#46e256]"> Instructor </span>
@@ -61,7 +65,10 @@ const ApplyasInstructor = () => {
           <br/>
           <br/>
           <div className="flex justify-center items-center">
-            <button className="bg-gradient-to-br font-Josefin from-blue-500 to-black font-bold text-white py-2 px-4 rounded w-[40%]">
+            <button
+             className="bg-gradient-to-br font-Josefin from-blue-500 to-black font-bold py-2 px-4 rounded w-[40%]"
+             onClick={() => navigate("/apply-to-teach")}
+             >
               Become An Instructor
             </button>
           </div>

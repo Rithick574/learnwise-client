@@ -9,6 +9,7 @@ import { RiDashboardLine } from "react-icons/ri";
 import { debounce } from "time-loom";
 import OutsideTouchCloseComponent from "./OutsideTouchCloseComponent";
 import { logout } from "@/redux/actions/user/userActions";
+import toast from "react-hot-toast";
 
 const Header: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -21,6 +22,7 @@ const Header: React.FC = () => {
   }, 100);
 
   const handleLogout = () => {
+    toast.error("logout successfull")
     toggleDropDown();
     dispatch(logout());
     navigate("/");
@@ -39,15 +41,15 @@ const Header: React.FC = () => {
           <ul className="ml-8 p-2 flex space-x-14">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/courses">Courses</Link></li>
+            <li><Link to="/teach">Teach</Link></li>
+            <li><Link to="/instructors">Instructors</Link></li>
             <li><Link to="/about">About</Link></li>
-            <li><Link to="/policy">Policy</Link></li>
-            <li><Link to="/faq">FAQ</Link></li>
           </ul>
           <div className="ml-9">
             <ModeToggle />
           </div>
           <div className="ml-8">
-          <User size={24} onClick={toggleDropDown} />
+            {user ? (<User size={24} onClick={toggleDropDown} />):""}
             {user ? (
               dropDown && (
                 <OutsideTouchCloseComponent
@@ -88,7 +90,7 @@ const Header: React.FC = () => {
             ) : (
              
               <Link to="/login">
-              
+              {!user ? (<User size={24} />):""}
               </Link>
             )}
           </div>

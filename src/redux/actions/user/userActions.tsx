@@ -3,6 +3,7 @@ import axios from "axios";
 import { URL } from "@/Common/api";
 import { config, handleError,appJson } from "@/Common/configurations";
 import { IUserLogin } from "@/types/IUserLogin";
+import { ApplyToTeachFormData } from "@/types/forms";
 
 //getuserData
 export const getUserDataFirst = createAsyncThunk(
@@ -103,3 +104,29 @@ export const forgotPassword = createAsyncThunk(
   }
 )
 
+//apply to teach
+export const applyToTeachAction = createAsyncThunk(
+  "user/applyToTeach",
+  async (data: ApplyToTeachFormData,{rejectWithValue}) => {
+try {
+  const response = await axios.post(`${URL}/user/instructor/apply`,data,config)
+  return response;
+} catch (error:any) {  
+  return handleError(error, rejectWithValue);
+}
+  }
+)
+
+//get instructors data
+export const getInstructorsAction = createAsyncThunk(
+  "user/getInstructors",
+  async ( _ , { rejectWithValue }) => {
+    try {
+      const {data} = await axios.get(`${URL}/user/instructor`,config)
+      console.log("🚀 ~ file: userActions.tsx:129 ~ data:", data)
+      return data;
+    } catch (error:any) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+)

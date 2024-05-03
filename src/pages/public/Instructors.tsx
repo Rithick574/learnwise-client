@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import notFoundLogo from "@/assets/3828537-removebg-preview.png"
 import notFoundLogoInDark from "@/assets/6358482-removebg-preview.png"
 import { useTheme } from "@/components/ui/theme-provider";
+import {getInstructorsAction} from "@/redux/actions/user/userActions"
+
 
 export const Instructors: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,11 +17,12 @@ export const Instructors: FC = () => {
   const [mentors, setMentors] = useState<any>(null);
 
   useEffect(()=>{
-  //   dispatch(getInstructorsAction({})).then((res) => {
-  //     if (res.payload?.success) setMentors(res.payload?.data);
-  // }).finally(() => {
-  //     setLoading(false);
-  // });
+    dispatch(getInstructorsAction()).then((res) => {
+      console.log("🚀 ~ file: Instructors.tsx:21 ~ dispatch ~ res:", res)
+      if (res.payload) setMentors(res.payload);
+  }).finally(() => {
+      setLoading(false);
+  });
   },[])
 
   return (
@@ -54,14 +57,14 @@ export const Instructors: FC = () => {
           (item: {
             _id: string;
             profile?: { avatar?: string };
-            username: string;
+            firstName: string;
             email: string;
           }) => (
             <div
               onClick={() => {
-              navigate(`/instructors/${item.username}`);
+              navigate(`/instructors/${item.firstName}`);
               }}
-              className="w-full bg-white rounded-lg p-12 flex flex-col justify-center items-center"
+              className={`w-full ${theme === "light" ? "bg-white" : "bg-gray-900"} rounded-lg p-12 flex flex-col justify-center items-center`}
             >
               <div className="mb-8">
                 <img
@@ -71,10 +74,10 @@ export const Instructors: FC = () => {
                 />
               </div>
               <div className="text-center">
-                <p className="text-xl text-gray-700 font-bold mb-2">
-                  {item.username}
+                <p className="text-xl font-bold mb-2">
+                  {item.firstName}
                 </p>
-                <p className="text-base text-gray-400 font-normal">
+                <p className="text-base  font-normal">
                   {item.email}
                 </p>
               </div>

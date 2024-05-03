@@ -5,8 +5,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ApplyToTeachSchema } from "@/lib/validations/ApplytoTeach";
 import { useTheme } from "@/components/ui/theme-provider";
 import applyasInstructorLogo from "@/assets/transform-img-2.png";
+import { ApplyToTeachFormData } from "@/types/forms";
+import { useNavigate } from "react-router-dom";
+import { applyToTeachAction } from "@/redux/actions/user/userActions";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import toast from "react-hot-toast";
 
 export const ApplyToTeach = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const { theme } = useTheme();
   const [error, setError] = useState("");
   const {
@@ -17,10 +25,28 @@ export const ApplyToTeach = () => {
     resolver: zodResolver(ApplyToTeachSchema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ApplyToTeachFormData) => {
     try {
-      console.log(data);
+      console.log(data, "@@@@@@@@");
+      const response = await dispatch(
+        applyToTeachAction(data as ApplyToTeachFormData)
+      );
+      console.log(
+        "🚀 ~ file: ApplyToTeach.tsx:31 ~ onSubmit ~ response:",
+        response
+      );
+      if(response.meta.requestStatus === "fulfilled"){
+        toast.success(
+          "check your mail for confirmation"
+        );
+        navigate("/");
+      }else{
+        toast.error(response.payload as string)
+      }
+     
     } catch (error: any) {
+      console.log("🚀 ~ file: ApplyToTeach.tsx:48 ~ onSubmit ~ error:", error)
+      toast.error(error?.response?.data?.message || "please try again later");
       console.error(error);
       setError(error?.message || "Something went wrong, Try again!");
     }
@@ -34,7 +60,7 @@ export const ApplyToTeach = () => {
           alt="transform"
           className="object-contain 1100px:max-w-[80%] w-[70%] 1500px:max-w-[75%] h-[auto] "
         />
-         <div className="absolute bg-gradient-to-br from-blue-900 to-black rounded-full -z-10  w-[540px] h-[540px] top-40 md:block"></div>
+        <div className="absolute bg-gradient-to-br from-blue-900 to-black rounded-full -z-10  w-[540px] h-[540px] top-40 md:block"></div>
       </div>
       <div className="w-full max-w-lg p-4  mb-20 shadow-lg rounded">
         <h2 className="text-3xl font-bold mb-6">
@@ -54,8 +80,10 @@ export const ApplyToTeach = () => {
               } rounded`}
             >
               <option value="">Choose profession</option>
-              <option value="Software developer">Software developer</option>
-              <option value="Teacher">Teacher</option>
+              <option value="Software developer">Full stack developer</option>
+              <option value="Teacher">Front-end developer</option>
+              <option value="Teacher">Back-end developer</option>
+              <option value="Teacher">python developer</option>
             </select>
             {errors.profession && (
               <p className="text-red-500">{errors.profession.message}</p>

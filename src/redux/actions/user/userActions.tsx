@@ -83,7 +83,7 @@ export const loginUser = createAsyncThunk(
         userCredentials,
         config
       );
-      return data;
+      return data.data;
     } catch (error:any) {
       return handleError(error, rejectWithValue);
     }

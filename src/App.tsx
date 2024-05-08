@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import React, { FC,useEffect } from "react";
+import React, { FC, useEffect } from "react";
 
 // Redux
 import { getUserDataFirst } from "./redux/actions/user/userActions";
@@ -16,6 +16,10 @@ import PrivacyPolicy from "./pages/public/PrivacyPolicy";
 //general
 import IndexPage from "./pages/public/IndexPage";
 import Error404 from "./pages/public/Error404";
+import ApplyasInstructor from "./components/home/ApplyasInstructor";
+import { ApplyToTeach } from "./pages/public/ApplyToTeach";
+import { Instructors } from "./pages/public/Instructors";
+import { About } from "./pages/public/About";
 
 //components
 import Footer from "./components/home/Footer";
@@ -31,13 +35,20 @@ import ResetPassword from "./pages/user/ResetPassword";
 //user
 import { ProfilePage } from "./pages/user/ProfilePage";
 import { DashboardNav } from "./pages/user/DashboardNav";
-import ApplyasInstructor from "./components/home/ApplyasInstructor";
-import { ApplyToTeach } from "./pages/public/ApplyToTeach";
-import { Instructors } from "./pages/public/Instructors";
-import { About } from "./pages/public/About";
-import { AdminLayout } from "./components/layout/AdminLayout";
 import { StudentLayout } from "./components/layout/StudentLayout";
+
+//admin
+import { AdminLayout } from "./components/layout/AdminLayout";
+
+//instructor
 import { InstructorLayout } from "./components/layout/InstructorLayout";
+import { AdminHome } from "./pages/admin/AdminHome";
+import { AdminSettings } from "./pages/admin/AdminSettings";
+import { AdminInstructorList } from "./pages/admin/AdminInstructorList";
+import { AdminRequests } from "./pages/admin/AdminRequests";
+import { Profile } from "./pages/instructor/Profile";
+import { InstructorSettings } from "./pages/instructor/InstructorSettings";
+import { InstructorDashboard } from "./pages/instructor/InstructorDashboard";
 
 type ProtectedRouteProps = {
   element: React.ReactElement;
@@ -45,7 +56,7 @@ type ProtectedRouteProps = {
 };
 
 type RoleRoutes = {
-  [key: string]: string; 
+  [key: string]: string;
 };
 
 interface RoleBasedRedirectProps {
@@ -62,15 +73,24 @@ function App() {
     }
   }, [dispatch, user]);
 
-  const ProtectedRoute:FC<ProtectedRouteProps> = ({ element }) => {
+  const ProtectedRoute: FC<ProtectedRouteProps> = ({
+    element,
+    allowedRoles,
+  }) => {
     const { user } = useSelector((state: RootState) => state.user);
-    return user ? element : <Navigate to="/learnwise" />;
+    if (!user) {
+      return <Navigate to="/learnwise" />;
+    }
+    if (allowedRoles.includes(user.role)) {
+      return element;
+    } else {
+      return <Navigate to="/not-authorized" />;
+    }
   };
-
 
   const RoleBasedRedirect: React.FC<RoleBasedRedirectProps> = ({ roles }) => {
     const { user } = useSelector((state: RootState) => state.user);
-    console.log("🚀 ~ file: App.tsx:72 ~ App ~ user:", user)
+    console.log("🚀 ~ file: App.tsx:72 ~ App ~ user:", user);
 
     if (user && roles[user.role]) {
       return <Navigate to={roles[user.role]} replace />;
@@ -81,7 +101,11 @@ function App() {
 
   return (
     <Router>
-      <Header />
+      {user ? (
+        user.role !== "admin" && user.role !== "instructor" && <Header />
+      ) : (
+        <Header />
+      )}
       <Routes>
         <Route
           path="/"
@@ -105,62 +129,90 @@ function App() {
         <Route path="about" element={<About />} />
 
         {/* Auth Pages */}
-        <Route 
-          path="login"
-          element={user ? <Navigate to={"/"} /> : <Login />}
-        />
+        <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="forgot-password" element={<ForgetPassword />} />
         <Route path="/auth/change-password" element={<ResetPassword />} />
 
         {/* admin Routes */}
-        <Route path="/admin/*" element={<ProtectedRoute allowedRoles={["admin"]} element={<AdminRoutes/>} />}>
-        </Route>
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute
+              allowedRoles={["admin"]}
+              element={<AdminRoutes />}
+            />
+          }
+        ></Route>
 
         {/* instructor Routes */}
-        <Route path="/instructor/*" element={<ProtectedRoute allowedRoles={["instructor"]} element={<InstructorRoutes/>} />}>
-        </Route>
+        <Route
+          path="/instructor/*"
+          element={
+            <ProtectedRoute
+              allowedRoles={["instructor"]}
+              element={<InstructorRoutes />}
+            />
+          }
+        ></Route>
 
         {/* student Layout */}
-        <Route path="/student/*" element={<ProtectedRoute allowedRoles={["student"]} element={<StudentRoutes />} />}>
-        </Route>
+        <Route
+          path="/student/*"
+          element={
+            <ProtectedRoute
+              allowedRoles={["student"]}
+              element={<StudentRoutes />}
+            />
+          }
+        ></Route>
 
         <Route path="*" element={<Error404 />} />
       </Routes>
-      <Footer />
+      {user ? (
+        user.role !== "admin" && user.role !== "instructor" && <Footer />
+      ) : (
+        <Footer />
+      )}
     </Router>
   );
 }
 
 export default App;
 
-const AdminRoutes:FC = () => {
+const AdminRoutes: FC = () => {
   return (
-  <Routes>
-    <Route path="/" element={<AdminLayout/>}>
-
-    </Route>
-  </Routes>
-  )
-}
-
-const InstructorRoutes:FC=()=>{  
- return(
-  <Routes>
-  <Route path="/" element={<InstructorLayout/>}>
-  </Route>
-</Routes>
- )
-}
-
-const StudentRoutes:FC=()=>{
-  return(
     <Routes>
-      <Route path="/" element={<StudentLayout/>}>
-      <Route path="dashboard" element={<DashboardNav />} />
-      <Route path="profile" element={<ProfilePage />} />
-
+      <Route path="/" element={<AdminLayout />}>
+        <Route index element={<AdminHome/>}/>
+        <Route path="/settings" element={<AdminSettings />} />
+        <Route path="/instructors" element={<AdminInstructorList />} />
+        <Route path="/requests" element={<AdminRequests />} />
       </Route>
     </Routes>
-  )
-}
+  );
+};
+
+const InstructorRoutes: FC = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<InstructorLayout />}>
+        <Route index element={<InstructorDashboard/>} />
+        <Route path="/profile" element={<Profile/>} />
+        <Route path="/settings" element={<InstructorSettings/>} />
+      </Route>
+    </Routes>
+  );
+};
+
+const StudentRoutes: FC = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<StudentLayout />}>
+        <Route path="dashboard" element={<DashboardNav />} />
+        <Route path="profile" element={<ProfilePage />} />
+        {/* <Route path="*" element={<Error404 />} /> */}
+      </Route>
+    </Routes>
+  );
+};

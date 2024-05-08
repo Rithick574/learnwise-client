@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
+import { handleError } from "./configurations";
 
 // Constants for API endpoints
 export const URL = "http://localhost:4000/api";
@@ -37,5 +38,33 @@ export const commonRequest = async (
   } catch (error) {
     console.error("Error in commonRequest:", error);
     return error; 
+  }
+};
+
+export const commonReduxRequest = async (
+  method: Method,
+  route: string,
+  rejectWithValue?: (error: AxiosError) => void, // Now optional
+  body?: any,
+  config: AxiosRequestConfig = {}
+): Promise<any> => {
+  let requestConfig: AxiosRequestConfig = {
+    method,
+    url: route,
+    data: body,
+    headers: config.headers || {},
+    withCredentials: true,
+  };
+
+  try {
+    const response = await apiInstance(requestConfig);
+    return response;
+  } catch (error:any) {
+    console.error("Request failed with error:", error);
+    if (rejectWithValue) {
+      return rejectWithValue(error);  
+    } else {
+      throw error;  
+    }
   }
 };

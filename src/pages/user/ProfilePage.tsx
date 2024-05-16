@@ -84,7 +84,7 @@ export const ProfilePage: FC = () => {
             <p>
               <AiOutlineMail className="inline mr-2" />
               <strong>Additional Email:</strong>{" "}
-              {displayContent(user?.contact.additionalEmail)}
+              {displayContent(user?.contact?.additionalEmail)}
             </p>
             <p>
               <AiOutlinePhone className="inline mr-2" />

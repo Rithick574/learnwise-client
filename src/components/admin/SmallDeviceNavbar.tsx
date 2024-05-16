@@ -1,8 +1,7 @@
 import {FC, useState} from 'react'
 import { GiHamburgerMenu } from "react-icons/gi";
 import emptyProfileSrc from "/ui/empty-profile.webp"; 
-import { SideNavbar } from './SideNavbar';
-import { SideNavbarInstructor } from '../instructor/SideNavbarInstructor';
+import { SideNavbarStudent } from '../student/SideNavbarStudent';
 
 export const SmallDeviceNavbar:FC = () => {
     const [showSideNavbar, setShowSideNavbar] = useState(false);
@@ -28,7 +27,7 @@ export const SmallDeviceNavbar:FC = () => {
       onClick={toggleSideNavbar}
     >
       <div className="h-screen w-fit bg-gray-100 px-5 py-3 flex-shrink-0 border-r border-r-gray-300 shadow-lg pt-5">
-        <SideNavbarInstructor />
+        <SideNavbarStudent />
       </div>
     </div>
   </div>

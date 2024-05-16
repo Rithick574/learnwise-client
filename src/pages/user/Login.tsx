@@ -60,7 +60,6 @@ const Login = () => {
       </div>
       <div className="lg:w-1/2 p-5 mx-10 lg:mx-20 lg:p-10 border border-gray-300 rounded-3xl">
         <div className="flex items-center justify-center">
-          {/* <img src={Logo} alt="ex.iphones. logo" className="lg:w-1/12 w-1/12" /> */}
           <h1 className="text-4xl my-5 font-bold ">Join to Learn<span className="text-green-500">W</span>ise</h1>
         </div>
 
@@ -124,6 +123,19 @@ const Login = () => {
               Sign Up now
             </Link>
           </p>
+          <div className="border border-gray-300 rounded-3xl">
+          <div className="my-5">
+            <p className="text-sm font-semibold mb-2">Demo Student Login Credentials:</p>
+            <p>Email: cerowog866@ahieh.com</p>
+            <p>Password: Rithick@123</p>
+          </div>
+          <div className="my-5">
+            <p className="text-sm font-semibold mb-2">Demo Instructor Login Credentials:</p>
+            <p>Email: wadote5334@agafx.com</p>
+            <p>Password: Rithick@123</p>
+          </div>
+          </div>
+         
         </div>
       </div>
     </div>

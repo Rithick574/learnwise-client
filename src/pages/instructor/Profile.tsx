@@ -5,6 +5,10 @@ import { RootState } from "@/redux/store";
 import { useTheme } from "@/components/ui/theme-provider";
 import { TiTick } from "react-icons/ti";
 import { Formik, Form, Field } from "formik";
+import { AiOutlineCalendar, AiOutlineCheckCircle, AiOutlineMail, AiOutlinePhone, AiOutlineUser } from "react-icons/ai";
+import { VscGithubAlt } from "react-icons/vsc";
+import { PiInstagramLogo } from "react-icons/pi";
+import { RiLinkedinLine } from "react-icons/ri";
 
 export const Profile: FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -42,7 +46,6 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // Here you would typically handle the submission to the backend
     console.log("Submitted Data:", formData);
     toggleModal();
   };
@@ -91,40 +94,41 @@ export const Profile: FC = () => {
         >
           <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-[15px] gap-6">
-            <p>
+            <p><AiOutlineMail className="inline mr-2" />
               <strong>Email:</strong> {displayContent(user.email)}
             </p>
-            <p>
+            <p><AiOutlineUser className="inline mr-2" />
               <strong>First Name:</strong> {displayContent(user.firstName)}
             </p>
-            <p>
+            <p><AiOutlineUser className="inline mr-2" />
               <strong>Last Name:</strong> {displayContent(user.lastName)}
             </p>
-            <p>
+            <p><AiOutlineUser className="inline mr-2" />
               <strong>Role:</strong> {displayContent(user.role)}
             </p>
-            <p>
+            <p><AiOutlineMail className="inline mr-2" />
               <strong>Additional Email:</strong>{" "}
               {displayContent(user.additionalEmail)}
             </p>
-            <p>
+            <p><AiOutlinePhone className="inline mr-2" />
               <strong>Phone Number:</strong> {displayContent(user.phoneNumber)}
             </p>
             <p className="flex items-center">
+            <AiOutlineCheckCircle className="inline mr-2" />
               <strong>Account Verified:</strong>{" "}
-              {user.isVerified ? (
+              {/* {user.isVerified ? ( */}
                 <TiTick className="text-green-600 text-2xl ml-2" />
-              ) : (
+              {/* ) : (
                 "Not Verified"
-              )}
+              )} */}
             </p>
-            <p>
+            <p><AiOutlineUser className="inline mr-2" />
               <strong>Gender:</strong> {displayContent(user.gender)}
             </p>
-            <p>
+            <p><AiOutlineCalendar className="inline mr-2" />
               <strong>Date of Birth:</strong> {displayContent(user.dob)}
             </p>
-            <p>
+            <p><VscGithubAlt  className="inline mr-2" />
               <strong>GitHub:</strong>{" "}
               {user.contact?.socialMedia?.github ? (
                 <a
@@ -137,7 +141,7 @@ export const Profile: FC = () => {
                 "Not Given"
               )}
             </p>
-            <p>
+            <p><RiLinkedinLine className="inline mr-2 mb-1" />
               <strong>LinkedIn:</strong>{" "}
               {user.contact?.socialMedia?.linkedIn ? (
                 <a
@@ -150,7 +154,7 @@ export const Profile: FC = () => {
                 "Not Given"
               )}
             </p>
-            <p>
+            <p><PiInstagramLogo className="inline mr-2" />
               <strong>Instagram:</strong>{" "}
               {user.contact?.socialMedia?.instagram ? (
                 <a

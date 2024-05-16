@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "@/Common/api";
-import { config, handleError,appJson } from "@/Common/configurations";
+import { config, configMultiPart, handleError } from "@/Common/configurations";
 import { IUserLogin } from "@/types/IUserLogin";
-import { ApplyToTeachFormData } from "@/types/forms";
+import { ApplyToTeachFormData, EditProfileFormData } from "@/types/forms";
 
 //getuserData
 export const getUserDataFirst = createAsyncThunk(
@@ -62,7 +62,7 @@ export const signUpUser = createAsyncThunk(
       const { data } = await axios.post(
         `${URL}/auth/signup`,
         userCredentials,
-        appJson
+        config
       );
       console.log(data,"here in data");
       
@@ -124,6 +124,22 @@ export const getInstructorsAction = createAsyncThunk(
     try {
       const {data} = await axios.get(`${URL}/user/instructor`,config)
       console.log("🚀 ~ file: userActions.tsx:129 ~ data:", data)
+      return data;
+    } catch (error:any) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+)
+
+export const editUserProfile=createAsyncThunk(
+  "user/editUserProfile",
+  async (formData:FormData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${URL}/user/edit-profile`,
+        formData,
+        config
+      );
       return data;
     } catch (error:any) {
       return handleError(error, rejectWithValue);

@@ -72,7 +72,7 @@ export const AdminInstructorList: FC = () => {
               <p className="font-semibold">Instructor List</p>
             </div>
           </div>
-          <div className="flex gap-3 p-1 cursor-pointer">
+          {/* <div className="flex gap-3 p-1 cursor-pointer">
             <button
               className="admin-button-fl rounded"
               onClick={() => navigate("create")}
@@ -80,7 +80,7 @@ export const AdminInstructorList: FC = () => {
               <AiOutlinePlus />
             </button>
             <h1 className="text-md text-bold"> Create New Instructor</h1>
-          </div>
+          </div> */}
         </div>
         <div className="lg:flex justify-between items-center font-semibold">
           <FilterArray

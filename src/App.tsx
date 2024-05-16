@@ -90,7 +90,6 @@ function App() {
 
   const RoleBasedRedirect: React.FC<RoleBasedRedirectProps> = ({ roles }) => {
     const { user } = useSelector((state: RootState) => state.user);
-    console.log("🚀 ~ file: App.tsx:72 ~ App ~ user:", user);
 
     if (user && roles[user.role]) {
       return <Navigate to={roles[user.role]} replace />;
@@ -209,8 +208,9 @@ const StudentRoutes: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<StudentLayout />}>
-        <Route path="dashboard" element={<DashboardNav />} />
-        <Route path="profile" element={<ProfilePage />} />
+        {/* <Route index element={<DashboardNav />} /> */}
+        <Route path="overview" element={<DashboardNav />} />
+        <Route path="settings" element={<ProfilePage />} />
         {/* <Route path="*" element={<Error404 />} /> */}
       </Route>
     </Routes>

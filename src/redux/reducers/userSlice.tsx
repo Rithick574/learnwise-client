@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { googleLoginOrSignUp,getUserDataFirst,signUpUser,loginUser,logout } from "../actions/user/userActions";
+import { googleLoginOrSignUp,getUserDataFirst,signUpUser,loginUser,logout, editUserProfile } from "../actions/user/userActions";
 
 
 
@@ -91,6 +91,21 @@ const userSlice = createSlice({
         state.user = payload.data;
       })
       .addCase(signUpUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.user = null;
+        state.error = payload;
+      })
+
+      //edit user profile
+      .addCase(editUserProfile.pending,(state)=>{
+        state.loading = true;
+      })
+      .addCase(editUserProfile.fulfilled,(state,{payload})=>{
+        state.loading = false;
+        state.error = null;
+        state.user = payload.data;
+      })
+      .addCase(editUserProfile.rejected,(state,{payload})=>{
         state.loading = false;
         state.user = null;
         state.error = payload;

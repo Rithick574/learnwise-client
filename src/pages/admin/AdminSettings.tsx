@@ -6,7 +6,7 @@ export const AdminSettings: FC = () => {
     const { theme } = useTheme();
 
     return (
-        <div className={`min-h-screen ${theme === "light" ? "bg-gray-100" : "bg-gray-900"} p-8`}>
+        <div className={`min-h-screen p-8`}>
             <div className="container mx-auto">
                 <div className={`${theme === "light" ? "bg-white" : "bg-gray-800"} shadow rounded-lg p-6`}>
                     <h1 className={`text-2xl font-semibold ${theme === "light" ? "text-gray-800" : "text-white"}`}>Admin Settings</h1>

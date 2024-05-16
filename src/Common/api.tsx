@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
-import { handleError } from "./configurations";
+// import { handleError } from "./configurations";
 
 // Constants for API endpoints
-export const URL = "http://localhost:4000/api";
+export const URL = import.meta.env.VITE_REACT_APP_BASE_URL;;
+// export const URL = "http://localhost:4000/api";
 // export const URL = "https://learnwise.today/api";
 
 const apiInstance = axios.create({
@@ -44,7 +45,7 @@ export const commonRequest = async (
 export const commonReduxRequest = async (
   method: Method,
   route: string,
-  rejectWithValue?: (error: AxiosError) => void, // Now optional
+  rejectWithValue?: (error: AxiosError) => void,
   body?: any,
   config: AxiosRequestConfig = {}
 ): Promise<any> => {

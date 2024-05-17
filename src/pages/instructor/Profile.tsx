@@ -10,11 +10,11 @@ import { PiInstagramLogo } from "react-icons/pi";
 import { RiLinkedinLine } from "react-icons/ri";
 import { Modal } from "@/components/admin/Modal";
 import { EditProfile } from "@/components/student/EditProfile";
+import ResetPasswordEditProfile from "@/components/auth/ResetPasswordEditProfile";
 
 export const Profile: FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
-  console.log("🚀 ~ file: ProfilePage.tsx:22 ~ user:", user);
-
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
   const { theme } = useTheme();
   const textStyle = "text-white-600";
   const notAvailableStyle = "text-red-500";
@@ -27,6 +27,8 @@ export const Profile: FC = () => {
     );
   };
   const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const toggleResetPasswordModal = () => setIsResetPasswordModalOpen(!isResetPasswordModalOpen);
+
 
   return (
     <div className="p-5 mt-3 w-full overflow-y-auto text-sm">
@@ -158,12 +160,15 @@ export const Profile: FC = () => {
           >
             Update Profile
           </button>
-          <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+          <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          onClick={toggleResetPasswordModal}
+          >
             Reset Password
           </button>
         </div>
       </div>
       {isModalOpen && <Modal tab={<EditProfile closeToggle={toggleModal} />} />}
+      {isResetPasswordModalOpen && <Modal tab={<ResetPasswordEditProfile closeToggle={toggleResetPasswordModal} />} />}
     </div>
   );
 };

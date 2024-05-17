@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "@/Common/api";
-import { config, configMultiPart, handleError } from "@/Common/configurations";
+import { appJson, config, configMultiPart, handleError } from "@/Common/configurations";
 import { IUserLogin } from "@/types/IUserLogin";
 import { ApplyToTeachFormData, EditProfileFormData } from "@/types/forms";
 
@@ -144,5 +144,20 @@ export const editUserProfile=createAsyncThunk(
     } catch (error:any) {
       return handleError(error, rejectWithValue);
     }
+  }
+)
+
+export const resetPasswordAction = createAsyncThunk(
+  "user/resetPassword",
+  async (formData:{currentPassword:string,newPassword:string},{rejectWithValue})=>{
+try {
+  const response = await axios.post(`${URL}/user/reset-password`,formData,config)
+  if (response.data.success) {
+    return response.data;
+}
+throw new Error(response.data?.message);
+} catch (error:any) {
+  return handleError(error, rejectWithValue);
+}
   }
 )

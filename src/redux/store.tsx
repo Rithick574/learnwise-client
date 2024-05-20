@@ -3,12 +3,14 @@ import userReducer from "./reducers/userSlice";
 import adminReducer from "./reducers/admin/adminSlice";
 import { applicationReducer } from "./reducers/admin/application";
 import { ThunkAction, Action } from '@reduxjs/toolkit';
+import {categoryReducer} from "./reducers/admin/categories";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     instructors: adminReducer,
     application: applicationReducer,
+    category:categoryReducer,
   },
 });
 

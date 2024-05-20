@@ -39,16 +39,20 @@ import { StudentLayout } from "./components/layout/StudentLayout";
 
 //admin
 import { AdminLayout } from "./components/layout/AdminLayout";
+import { AdminCategories } from "./pages/admin/AdminCategories";
+import { AdminRequests } from "./pages/admin/AdminRequests";
+import { AdminSettings } from "./pages/admin/AdminSettings";
+import { AdminInstructorList } from "./pages/admin/AdminInstructorList";
 
 //instructor
 import { InstructorLayout } from "./components/layout/InstructorLayout";
 import { AdminHome } from "./pages/admin/AdminHome";
-import { AdminSettings } from "./pages/admin/AdminSettings";
-import { AdminInstructorList } from "./pages/admin/AdminInstructorList";
-import { AdminRequests } from "./pages/admin/AdminRequests";
 import { Profile } from "./pages/instructor/Profile";
 import { InstructorSettings } from "./pages/instructor/InstructorSettings";
 import { InstructorDashboard } from "./pages/instructor/InstructorDashboard";
+import { AdminCourses } from "./pages/admin/AdminCourses";
+import { InstructorMyCourses } from "./pages/instructor/InstructorMyCourses";
+
 
 type ProtectedRouteProps = {
   element: React.ReactElement;
@@ -187,6 +191,8 @@ const AdminRoutes: FC = () => {
         <Route path="/settings" element={<AdminSettings />} />
         <Route path="/instructors" element={<AdminInstructorList />} />
         <Route path="/requests" element={<AdminRequests />} />
+        <Route path="/categories" element={<AdminCategories/>}/>
+        <Route path="courses" element={<AdminCourses/>} />
       </Route>
     </Routes>
   );
@@ -198,6 +204,7 @@ const InstructorRoutes: FC = () => {
       <Route path="/" element={<InstructorLayout />}>
         <Route index element={<InstructorDashboard/>} />
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/courses" element={<InstructorMyCourses/>} />
         <Route path="/settings" element={<InstructorSettings/>} />
       </Route>
     </Routes>

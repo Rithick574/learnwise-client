@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, SerializedError } from "@reduxjs/toolkit";
 import { getInstructors } from "@/redux/actions/admin/adminAction";
 
 interface InstructorData {
-  instructors: any[]; // Replace 'any' with specific type if known
+  instructors: any[]; 
   totalAvailableInstructors: number;
 }
 

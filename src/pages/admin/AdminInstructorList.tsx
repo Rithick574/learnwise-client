@@ -3,10 +3,8 @@ import { SearchBar } from "@/components/admin/SearchBar";
 import { TableRow } from "@/components/admin/TableRow";
 import { AppDispatch, RootState } from "@/redux/store";
 import { FC, useEffect, useState } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
 import { BsCaretRightFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useTheme } from "@/components/ui/theme-provider";
 import { getInstructors } from "@/redux/actions/admin/adminAction";
 import { Modal } from "@/components/admin/Modal";
@@ -24,7 +22,6 @@ interface Admin {
 
 export const AdminInstructorList: FC = () => {
   const { instructors } = useSelector((state: RootState) => state.instructors);
-  const navigate = useNavigate();
   const { theme } = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {

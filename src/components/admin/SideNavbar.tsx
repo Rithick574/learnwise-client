@@ -1,11 +1,10 @@
 import { logout } from '@/redux/actions/user/userActions';
-import { AppDispatch, RootState } from '@/redux/store';
+import { AppDispatch } from '@/redux/store';
 import {FC} from 'react'
 import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FiBox, FiSettings, FiLogOut } from "react-icons/fi";
-// import { PiStudent } from "react-icons/pi";
 import { RiDashboardLine } from "react-icons/ri";
 import { ImStack } from "react-icons/im";
 import { BsCreditCard } from "react-icons/bs";
@@ -15,7 +14,6 @@ import { PiNotificationBold } from "react-icons/pi";
 
 
 export const SideNavbar:FC = () => {
-    const { user } = useSelector((state: RootState) => state.user);
     const { theme } = useTheme();
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
@@ -58,10 +56,6 @@ export const SideNavbar:FC = () => {
                             <MdCastForEducation className="w-5 opacity-80" />
                             <span className="font-medium text-md">Instructors</span>
                         </NavLink>
-                        {/* <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/admin/students">
-                            <PiStudent className="w-5 opacity-80" />
-                            <span className="font-medium text-md">Students</span>
-                        </NavLink> */}
                         <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/admin/settings">
                             <FiSettings className="w-5 opacity-80" />
                             <span className="font-medium text-md">Settings</span>

@@ -8,7 +8,6 @@ export const getInstructors = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${URL}/user/instructor`);
-      console.log("🚀 ~ file: adminAction.tsx:12 ~ response:", response.data)
       return {
         instructors: response.data,
       };
@@ -27,10 +26,6 @@ export const getAllApplicationsAction = createAsyncThunk(
         config
       );
       if (response.data) {
-        console.log(
-          "🚀 ~ file: adminAction.tsx:29 ~ response.data:",
-          response.data
-        );
         return response.data;
       }
       throw new Error(response.data?.message);
@@ -61,7 +56,6 @@ export const blockOrUnBlock = createAsyncThunk(
   async ({ id, isBlocked }: { id: string, isBlocked: boolean }, { rejectWithValue }) => {
     try {      
       const response = await axios.patch(`${URL}/user/instructor/admin-block-unblock/${id}`, { isBlocked },appJson);
-      console.log("🚀 ~ file: adminAction.tsx:65 ~ response:", response)
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);

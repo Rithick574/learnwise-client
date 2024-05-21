@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { TbCategory2 } from "react-icons/tb";
-import { useTheme } from "../ui/theme-provider";
-import InputWithIcon from "../auth/InputWithIcon";
+import { useTheme } from "../../ui/theme-provider";
+import InputWithIcon from "../../auth/InputWithIcon";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { CustomSingleFileInput } from "../public/CustomSingleFileInput";
+import { CustomSingleFileInput } from "../../public/CustomSingleFileInput";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { createCategories } from "@/redux/actions/admin/categoriesAction";

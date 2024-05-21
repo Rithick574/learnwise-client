@@ -51,7 +51,9 @@ import { Profile } from "./pages/instructor/Profile";
 import { InstructorSettings } from "./pages/instructor/InstructorSettings";
 import { InstructorDashboard } from "./pages/instructor/InstructorDashboard";
 import { AdminCourses } from "./pages/admin/AdminCourses";
-import { InstructorMyCourses } from "./pages/instructor/InstructorMyCourses";
+import { InstructorMyCourses } from "./pages/instructor/course/InstructorMyCourses";
+import { InstructorAddCourse } from "./pages/instructor/course/InstructorAddCourse";
+import { InstructorAddTrailer } from "./pages/instructor/course/InstructorAddTrailer";
 
 
 type ProtectedRouteProps = {
@@ -204,7 +206,11 @@ const InstructorRoutes: FC = () => {
       <Route path="/" element={<InstructorLayout />}>
         <Route index element={<InstructorDashboard/>} />
         <Route path="/profile" element={<Profile/>} />
-        <Route path="/courses" element={<InstructorMyCourses/>} />
+        <Route path="/courses">
+          <Route index element={<InstructorMyCourses/>} />
+          <Route path="addcourse" element={<InstructorAddCourse/>} />
+          <Route path="uploadtrailer" element={<InstructorAddTrailer/>} />
+        </Route>
         <Route path="/settings" element={<InstructorSettings/>} />
       </Route>
     </Routes>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-const ImageUpdload = async (image:File) => {
+export const PdfUpload = async (image:File) => {
     const preset_key = import.meta.env.VITE_REACT_APP_PRESET_KEY;
     const cloud_name = import.meta.env.VITE_REACT_APP_CLD_USER_NAME;
     const formData = new FormData();
@@ -8,10 +8,9 @@ const ImageUpdload = async (image:File) => {
 
     try {
         const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData);
-        console.log('image uploaded successfully :',res);
         const { format, secure_url } = res.data;
         console.log(secure_url,',..............................');
-        if (['png', 'jpeg', 'jpg'].includes(format)) {
+        if (['pdf'].includes(format)) {
             return secure_url
         } else {
             return null;
@@ -22,5 +21,5 @@ const ImageUpdload = async (image:File) => {
     }
 };
 
-export default ImageUpdload;
+ 
 

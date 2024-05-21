@@ -1,5 +1,6 @@
-import { AddCategory } from '@/components/admin/AddCategory';
-import { CategoryTable } from '@/components/admin/CategoryTable';
+import { AddCategory } from '@/components/admin/category/AddCategory';
+import { CategoryTable } from '@/components/admin/category/CategoryTable';
+import { EditCategory } from '@/components/admin/category/EditCategory';
 import { FilterArray } from '@/components/admin/FilterArray';
 import { Modal } from '@/components/admin/Modal';
 import { SearchBar } from '@/components/admin/SearchBar'
@@ -17,9 +18,10 @@ export const AdminCategories:FC = () => {
   const {theme} = useTheme()
   const dispatch = useDispatch<AppDispatch>()
   const [showModal, setShowModal] = useState(false)
-  const [editCategory,setEditCategory]=useState({})
+  const [blockUnBlockModal, setBlockUnBlockModal] = useState(false);
   const [search, setSearch] = useState("");
   const [showTable,setShowTable] = useState(true)
+  const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const handleFilter = () => {};
   useEffect(() => {
     dispatch(getAllCategories())
@@ -27,17 +29,27 @@ export const AdminCategories:FC = () => {
             console.log(result, '......');
         });
 }, [dispatch,showTable]);
-const modal=async(data:any)=>{
-  setShowTable(false)
-  setShowModal(true)
-  setEditCategory(data)
-}
+
 const handleModalClose=async()=>{
   setShowModal(false)
-  
 }
+const toggleBlockUnBlockModal = (data: any) => {
+  setBlockUnBlockModal(!blockUnBlockModal);
+  setSelectedOrderToUpdate(data);
+};
+
   return (
    <>
+{blockUnBlockModal && (
+        <Modal
+          tab={
+            <EditCategory
+              toggleModal={toggleBlockUnBlockModal}
+              data={selectedOrderToUpdate as { id: string; status: boolean;title:string }}
+            />
+          }
+        />
+      )}
      <div className="p-5 w-full overflow-y-auto text-sm">
      <SearchBar
           handleClick={handleFilter}
@@ -102,7 +114,7 @@ const handleModalClose=async()=>{
                     isLast={isLast}
                     index={index+1}
                     category={category}
-                    modal={modal}
+                    toggleBlockUnBlockModal={toggleBlockUnBlockModal}
                   />
                 ); 
               })}

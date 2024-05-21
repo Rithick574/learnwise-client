@@ -39,13 +39,12 @@ export const googleLoginOrSignUp = createAsyncThunk(
   "user/googleLoginOrSignUp",
   async (userCredentials: IUserLogin, { rejectWithValue }) => {
     try {
-      console.log("reached in userLogin reducer");
       const { data } = await axios.post(
         `${URL}/auth/google`,
         userCredentials,
         config
       );
-      return data;
+      return data.data;
     } catch (error: any) {
       return handleError(error, rejectWithValue);
     }

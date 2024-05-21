@@ -1,8 +1,8 @@
 import {FC} from "react";
-import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import { StatusComponent } from "./StatusComponent";
 import { useTheme } from "@/components/ui/theme-provider";
+import { FcEditImage } from "react-icons/fc";
 
 interface Admin {
     firstName: string;
@@ -55,7 +55,7 @@ export const TableRow: FC<TableRowProps> = ({ isLast, admin, toggleBlockUnBlockM
                               fetchInstructors()
                           }}
                       >
-                          <AiOutlineEdit />
+                          <FcEditImage/>
                     </span>
                 </div>
             </td>

@@ -22,12 +22,11 @@ export const AdminCategories:FC = () => {
   const [search, setSearch] = useState("");
   const [showTable,setShowTable] = useState(true)
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
-  const handleFilter = () => {};
+  const handleFilter = () => {
+    
+  };
   useEffect(() => {
     dispatch(getAllCategories())
-        .then((result) => {
-            console.log(result, '......');
-        });
 }, [dispatch,showTable]);
 
 const handleModalClose=async()=>{
@@ -111,6 +110,7 @@ const toggleBlockUnBlockModal = (data: any) => {
                 const isLast = index === categories.length - 1;
                 return (
                   <CategoryTable
+                    key={category._id}
                     isLast={isLast}
                     index={index+1}
                     category={category}

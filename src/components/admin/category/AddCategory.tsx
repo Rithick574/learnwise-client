@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { TbCategory2 } from "react-icons/tb";
 import { useTheme } from "../../ui/theme-provider";
@@ -40,17 +40,14 @@ export const AddCategory: FC<AddCategoryProps> = ({ closeToggle }) => {
     const formData = new FormData();
     formData.append("title", values.categoryName);
     formData.append("thumbnail", values.profile.avatar);
-    const respose = await dispatch(createCategories(formData));
-    console.log(
-      "🚀 ~ file: AddCategory.tsx:41 ~ handleSubmit ~ respose:",
-      respose
-    );
-    if (respose.payload.success) {
-      toast.success("category added");
-      closeToggle();
-    } else if (!respose.payload.success) {
-      toast.error(respose.payload.message);
-    }
+   const response = await dispatch(createCategories(formData))
+        console.log("🚀 ~ file: AddCategory.tsx:44 ~ handleSubmit ~ response:", response)
+        if(response.meta.requestStatus === "rejected"){
+          toast.error(response.payload)
+          return;
+        }
+        toast.success("category added");
+        closeToggle();
   };
 
   return (

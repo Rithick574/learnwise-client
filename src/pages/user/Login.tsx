@@ -62,7 +62,6 @@ const Login = () => {
         <div className="flex items-center justify-center">
           <h1 className="text-4xl my-5 font-bold ">Join to Learn<span className="text-green-500">W</span>ise</h1>
         </div>
-
         <Formik
           initialValues={initialValues}
           onSubmit={handleLoginSubmit}

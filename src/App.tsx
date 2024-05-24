@@ -54,6 +54,7 @@ import { AdminCourses } from "./pages/admin/AdminCourses";
 import { InstructorMyCourses } from "./pages/instructor/course/InstructorMyCourses";
 import { InstructorAddCourse } from "./pages/instructor/course/InstructorAddCourse";
 import { InstructorAddTrailer } from "./pages/instructor/course/InstructorAddTrailer";
+import InstructorAddLesson from "./pages/instructor/course/InstructorAddLesson";
 
 
 type ProtectedRouteProps = {
@@ -210,6 +211,7 @@ const InstructorRoutes: FC = () => {
           <Route index element={<InstructorMyCourses/>} />
           <Route path="addcourse" element={<InstructorAddCourse/>} />
           <Route path="uploadtrailer" element={<InstructorAddTrailer/>} />
+          <Route path="addlesson" element={<InstructorAddLesson/>} />
         </Route>
         <Route path="/settings" element={<InstructorSettings/>} />
       </Route>

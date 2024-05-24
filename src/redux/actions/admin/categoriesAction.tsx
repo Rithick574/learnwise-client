@@ -1,5 +1,5 @@
 import { URL } from "@/Common/api";
-import { config } from "@/Common/configurations";
+import { config, handleError } from "@/Common/configurations";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -22,9 +22,11 @@ export const createCategories = createAsyncThunk(
   async (CategoryData: any, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${URL}/course`, CategoryData, config);
-      return response.data;
+      console.log("🚀 ~ file: categoriesAction.tsx:26 ~ response:", response)
+      return response.data.data;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      console.log("🚀 ~ file: categoriesAction.tsx:28 ~ error:", error)
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -35,10 +37,10 @@ export const editCategory = createAsyncThunk(
   async ({ categoryData }: { categoryData: any }, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${URL}/course`, categoryData, config);
+      console.log("🚀 ~ file: categoriesAction.tsx:39 ~ response:", response)
       return response.data.data;
-    } catch (error) {
-      console.log(error);
-      rejectWithValue(error);
+    } catch (error:any) {
+      return handleError(error, rejectWithValue);
     }
   }
 );

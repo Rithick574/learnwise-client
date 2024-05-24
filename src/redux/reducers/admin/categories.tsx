@@ -38,6 +38,7 @@ const categorySlice = createSlice({
                 state.error = null;
             })
             .addCase(createCategories.rejected, (state, action) => {
+                console.log(action,"-------------");
                 state.loading = false;
                 state.error = action.error.message || 'Something went wrong';
             })

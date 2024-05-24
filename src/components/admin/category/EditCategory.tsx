@@ -18,7 +18,7 @@ export const EditCategory:FC<EditCategoryprops> = ({ toggleModal, data }) => {
     const { id, status,title } = data;
     const [selectedStatus, setSelectedStatus] = useState(status ? "active" : "blocked");
     const [newTitle, setNewTitle] = useState(title);
-    const handleSave = () => {
+    const handleSave = async() => {
         if (selectedStatus === "") {
           return;
         }
@@ -27,10 +27,15 @@ export const EditCategory:FC<EditCategoryprops> = ({ toggleModal, data }) => {
           isBlocked: selectedStatus === "blocked",
           title:newTitle
         }
-        console.log("🚀 ~ file: EditCategory.tsx:30 ~ handleSave ~ FormData:---------", FormData)
-        dispatch(editCategory({ categoryData: FormData }));
-        toast.success("category updated")
+       
+        const response = await dispatch(editCategory({ categoryData: FormData }));
+        if(response.meta.requestStatus === "rejected"){
+          toast.error(response.payload)
+          return;
+        }
+        toast.success("category added");
         toggleModal(null);
+       
     }    
     
   return (

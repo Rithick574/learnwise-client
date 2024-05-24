@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "@/Common/api";
-import { appJson, config, configMultiPart, handleError } from "@/Common/configurations";
+import {config, handleError } from "@/Common/configurations";
 import { IUserLogin } from "@/types/IUserLogin";
-import { ApplyToTeachFormData, EditProfileFormData } from "@/types/forms";
+import { ApplyToTeachFormData } from "@/types/forms";
 
 //getuserData
 export const getUserDataFirst = createAsyncThunk(

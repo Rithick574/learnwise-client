@@ -21,7 +21,7 @@ export const CategoryTable: FC<CategoryTableProps> = ({
   toggleBlockUnBlockModal,
 }) => {
   return (
-    <tr className={isLast ? "last-row" : ""} key={index}>
+    <tr className={isLast ? "last-row" : ""}>
       <td className="text-center py-3">{index}</td>
       <td className="text-center py-3">
         <span>{category.title}</span>

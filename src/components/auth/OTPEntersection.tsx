@@ -18,7 +18,7 @@ const OTPEntersection: React.FC<OTPEntersectionProps> = ({
 
   const navigate = useNavigate()
 
-  const [errors, setError] = useState<string>("");
+  const [_errors, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const [minutes, setMinutes] = useState(4);

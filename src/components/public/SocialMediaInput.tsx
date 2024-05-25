@@ -7,6 +7,8 @@ interface SocialMediaInputProps {
   icon: React.ReactNode;
   placeholder: string;
   theme: string;
+  value?: string; 
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>, field: string) => void;
 }
 
 export const SocialMediaInput: FC<SocialMediaInputProps> = ({

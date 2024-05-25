@@ -34,7 +34,7 @@ export const SocialMediaLinks: FC<SocialMediaLinksProps> = ({
         icon={<VscGithubAlt />}
         placeholder="Enter your GitHub URL"
         value={github}
-        onChange={(e) => handleInputChange(e, 'github')}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>,) => handleInputChange(e, 'github')}
         theme={theme} 
       />
       <SocialMediaInput
@@ -43,7 +43,7 @@ export const SocialMediaLinks: FC<SocialMediaLinksProps> = ({
         icon={<RiLinkedinLine />}
         placeholder="Enter your LinkedIn URL"
         value={linkedin}
-        onChange={(e) => handleInputChange(e, 'linkedin')}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>,) => handleInputChange(e, 'linkedin')}
         theme={theme} 
       />
       <SocialMediaInput
@@ -52,7 +52,7 @@ export const SocialMediaLinks: FC<SocialMediaLinksProps> = ({
         icon={<PiInstagramLogo />}
         placeholder="Enter your Instagram URL"
         value={instagram}
-        onChange={(e) => handleInputChange(e, 'instagram')}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, 'instagram')}
         theme={theme} 
       />
     </div>

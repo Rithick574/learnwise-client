@@ -1,9 +1,9 @@
 import {FC} from 'react'
 import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTheme } from '../ui/theme-provider';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { AppDispatch, RootState } from '@/redux/store';
+import { AppDispatch } from '@/redux/store';
 import { logout } from '@/redux/actions/user/userActions';
 import { RiDashboardLine } from 'react-icons/ri';
 import { FiBox, FiLogOut, FiSettings } from 'react-icons/fi';
@@ -11,7 +11,6 @@ import { PiNotificationBold } from 'react-icons/pi';
 import { ImStack } from 'react-icons/im';
 
 export const SideNavbarStudent:FC = () => {
-//   const { user } = useSelector((state: RootState) => state.user);
   const { theme } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();

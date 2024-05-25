@@ -87,7 +87,7 @@ export const InstructorAddTrailer: FC = () => {
                   <FieldArray name="whatYouWillLearn">
                     {({ remove, push }) => (
                       <div>
-                        {values.whatYouWillLearn.map((point, index) => (
+                        {values.whatYouWillLearn.map((_point, index) => (
                           <div key={index} className="flex items-center mb-2">
                             <Field
                               name={`whatYouWillLearn.${index}`}

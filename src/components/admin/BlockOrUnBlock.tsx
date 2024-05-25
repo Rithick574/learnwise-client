@@ -5,6 +5,7 @@ import { blockOrUnBlock, getInstructors } from "@/redux/actions/admin/adminActio
 import { AppDispatch } from "@/redux/store";
 import { useTheme } from "../ui/theme-provider";
 import toast from "react-hot-toast";
+import { useSearchParams } from "react-router-dom";
 
 interface BlockOrUnBlockProps {
   toggleModal: (data: any) => void; 
@@ -16,11 +17,14 @@ const BlockOrUnBlock: FC<BlockOrUnBlockProps> = ({ toggleModal, data }) => {
   const { id, status } = data;
   const dispatch = useDispatch<AppDispatch>();
   const [selectedStatus, setSelectedStatus] = useState(status ? "active" : "blocked");
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSave = () => {
     if (selectedStatus === "") {
       return;
     }
+    const params = new URLSearchParams(window.location.search);
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
     const isBlocked = selectedStatus !== "active";
 
     dispatch(blockOrUnBlock({ id, isBlocked }))
@@ -28,7 +32,7 @@ const BlockOrUnBlock: FC<BlockOrUnBlockProps> = ({ toggleModal, data }) => {
       .then(() => {
         toast.success("status changed")
         toggleModal("id");
-        dispatch(getInstructors())
+        dispatch(getInstructors(searchParams))
       })
       .catch((error:any) => {
         console.error('Failed to update status:', error);

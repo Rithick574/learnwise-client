@@ -3,7 +3,7 @@ import { useTheme } from "@/components/ui/theme-provider";
 import { useState } from "react";
 
 const Courses = () => {
-  const [initialLoading, setIntialLoading] = useState<boolean>(true);
+  const [initialLoading, _setIntialLoading] = useState<boolean>(true);
   const { theme } = useTheme();
 
   return (

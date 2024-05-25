@@ -11,7 +11,7 @@ const CustomPagination: FC<PaginationProps> = ({ handleClick, page, number, tota
   const paginationNum = Math.ceil(totalNumber / number);
   const theme = useTheme(); 
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     handleClick('page', value);
   };
 

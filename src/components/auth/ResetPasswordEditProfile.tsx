@@ -7,7 +7,7 @@ import PasswordInputWithIcon from "./PasswordInputWithIcon";
 import { AiOutlineLock } from "react-icons/ai";
 import { useTheme } from "../ui/theme-provider";
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 
 const ResetPasswordEditProfile: FC<{ closeToggle: () => void }> = ({
   closeToggle,

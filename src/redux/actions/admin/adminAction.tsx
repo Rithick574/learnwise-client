@@ -1,24 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { appJson, config } from "@/Common/configurations";
+import { appJson, config, handleError } from "@/Common/configurations";
 import { URL } from "@/Common/api";
 
-export const getInstructors = createAsyncThunk(
-  "instructors/fetchInstructors",
-  async (_, { rejectWithValue }) => {
+type QueriesType = URLSearchParams;
+
+export const getInstructors = createAsyncThunk<any, QueriesType, { rejectValue: any }>(
+  "admin/fetchInstructors",
+  async ( queries:QueriesType , { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${URL}/user/instructor`);
-      return {
-        instructors: response.data,
-      };
-    } catch (err: any) {
-      return rejectWithValue(err.response.data);
+      const {data} = await axios.get(`${URL}/user/instructor?${queries}`);
+     return data;
+    } catch (error: any) {
+      return handleError(error, rejectWithValue);
     }
   }
 );
 
 export const getAllApplicationsAction = createAsyncThunk(
-  "application/getAllApplications",
+  "admin/getAllApplications",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
@@ -30,13 +30,13 @@ export const getAllApplicationsAction = createAsyncThunk(
       }
       throw new Error(response.data?.message);
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      return handleError(error, rejectWithValue);
     }
   }
 );
 
 export const acceptApplicationAction = createAsyncThunk(
-  "application/acceptApplication",
+  "admin/acceptApplication",
   async (data: { id: string; email: string }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
@@ -46,7 +46,7 @@ export const acceptApplicationAction = createAsyncThunk(
       );
       return response;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      return handleError(error, rejectWithValue);
     }
   }
 );

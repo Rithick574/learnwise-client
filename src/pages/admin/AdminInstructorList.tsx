@@ -9,6 +9,8 @@ import { useTheme } from "@/components/ui/theme-provider";
 import { getInstructors } from "@/redux/actions/admin/adminAction";
 import { Modal } from "@/components/admin/Modal";
 import BlockOrUnBlock from "@/components/admin/BlockOrUnBlock";
+import { useSearchParams } from "react-router-dom";
+import Pagination from "@/components/public/Pagination";
 
 interface Admin {
   _id: string;
@@ -21,15 +23,34 @@ interface Admin {
 }
 
 export const AdminInstructorList: FC = () => {
-  const { instructors } = useSelector((state: RootState) => state.instructors);
+  const { instructors,totalAvailableInstructors } = useSelector((state: RootState) => state.instructors);
   const { theme } = useTheme();
   const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(getInstructors());
-  }, [dispatch]);
-
   const [search, setSearch] = useState("");
-  const handleFilter = () => {};
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+
+  const handleFilter = (type: any, value: any) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      if (type === "page") {
+        setPage(1);
+      }
+      params.delete(type);
+    } else {
+      if (type === "page" && value === 1) {
+        params.delete(type);
+        setPage(1);
+      } else {
+        params.set(type, value);
+        if (type === "page") {
+          setPage(value);
+        }
+      }
+    }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const [blockUnBlockModal, setBlockUnBlockModal] = useState(false);
@@ -38,6 +59,13 @@ export const AdminInstructorList: FC = () => {
     setBlockUnBlockModal(!blockUnBlockModal);
     setSelectedOrderToUpdate(data);
   };
+
+  useEffect(() => {
+    dispatch(getInstructors(searchParams));
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber ?? "1", 10));
+  }, [dispatch,searchParams]);
 
   return (
     <>
@@ -120,12 +148,22 @@ export const AdminInstructorList: FC = () => {
                       admin={admin}
                       key={index}
                       toggleBlockUnBlockModal={toggleBlockUnBlockModal}
-                      fetchInstructors={()=>{dispatch(getInstructors())}}
+                      fetchInstructors={()=>{dispatch(getInstructors(searchParams))}}
                     />
                   );
                 })}
               </tbody>
             </table>
+          )}
+        </div>
+        <div className="py-5">
+          {totalAvailableInstructors > 10 && (
+            <Pagination
+              handleClick={handleFilter}
+              page={page}
+              number={10}
+              totalNumber={totalAvailableInstructors}
+            />
           )}
         </div>
       </div>

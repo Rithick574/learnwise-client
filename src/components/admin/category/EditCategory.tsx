@@ -12,7 +12,7 @@ interface EditCategoryprops {
     data: { id: string; status: boolean; title:string; };
   }
 
-export const EditCategory:FC<EditCategoryprops> = ({ toggleModal, data }) => {
+export const  EditCategory:FC<EditCategoryprops> = ({ toggleModal, data }) => {
     const { theme } = useTheme();
     const dispatch = useDispatch<AppDispatch>();
     const { id, status,title } = data;

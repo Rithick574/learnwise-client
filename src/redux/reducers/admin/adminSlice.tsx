@@ -33,7 +33,12 @@ const instructorSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.instructors = action.payload.instructors;
+        state.totalAvailableInstructors = action.payload.totalAvailableInstructors;
       })
+      .addCase(getInstructors.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      });
   }
 });
 

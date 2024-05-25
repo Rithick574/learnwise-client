@@ -1,25 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createCategories, getAllCategories,editCategory,getAllAvailableCatgories } from '../../actions/admin/categoriesAction';
+import { createCategories, getAllCategories, editCategory, getAllAvailableCatgories } from '../../actions/admin/categoriesAction';
 
 interface Category {
     _id: string;
     title: string;
-    thumbnail?:string;
+    thumbnail?: string;
     createdAt?: string;
 }
+interface GetAllCategoriesResponse {
+    categories: Category[];
+    totalAvailableCategories: number;
+}
+
 
 interface CategoryState {
     loading: boolean;
     categories: Category[];
     availableCategories: Category[];
     error: string | null;
+    totalAvailableCategories: number;
 }
 
 const initialState: CategoryState = {
     loading: false,
     categories: [],
     availableCategories: [],
-    error: null
+    error: null,
+    totalAvailableCategories: 0,
 };
 
 const categorySlice = createSlice({
@@ -34,11 +41,13 @@ const categorySlice = createSlice({
             })
             .addCase(createCategories.fulfilled, (state, action: PayloadAction<Category>) => {
                 state.loading = false;
-                state.categories.push(action.payload);
+                if(state.categories.length === 10){
+                    state.categories.pop()
+                }
+                state.categories.unshift(action.payload);
                 state.error = null;
             })
             .addCase(createCategories.rejected, (state, action) => {
-                console.log(action,"-------------");
                 state.loading = false;
                 state.error = action.error.message || 'Something went wrong';
             })
@@ -46,9 +55,10 @@ const categorySlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(getAllCategories.fulfilled, (state, action: PayloadAction<Category[]>) => {
+            .addCase(getAllCategories.fulfilled, (state, action: PayloadAction<GetAllCategoriesResponse>) => {
                 state.loading = false;
-                state.categories = action.payload;
+                state.categories = action.payload.categories;
+                state.totalAvailableCategories = action.payload.totalAvailableCategories;
                 state.error = null;
             })
             .addCase(getAllCategories.rejected, (state, action) => {

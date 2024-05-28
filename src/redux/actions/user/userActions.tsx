@@ -122,7 +122,6 @@ export const getInstructorsAction = createAsyncThunk(
   async ( _ , { rejectWithValue }) => {
     try {
       const {data} = await axios.get(`${URL}/user/instructor`,config)
-      console.log("🚀 ~ file: userActions.tsx:129 ~ data:", data)
       return data;
     } catch (error:any) {
       return handleError(error, rejectWithValue);

@@ -2,7 +2,7 @@ import { FC, useState, useRef, ChangeEvent } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { VideoUploadIcon } from "./VideoUploadIcon ";
 import toast from "react-hot-toast";
-import { getPlaybackId, getUploadUrl } from "@lib/utils/VideoUpload";
+import { getPlaybackId, getUploadUrl } from "@lib/utility/VideoUpload";
 import * as UpChunk from "@mux/upchunk";
 import MuxPlayer from '@mux/mux-player-react';
 

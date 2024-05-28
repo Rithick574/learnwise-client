@@ -6,7 +6,6 @@ import { URL } from "@/Common/api";
 export const getUploadUrl  = async () => {
       try {
         const response = await axios.post(`${URL}/course/create-upload-url`,appJson);
-        console.log("🚀 ~ file: addCourse.tsx:13 ~ response:", response)
         return response;
       } catch (error: any) {
         console.error('Error in getUploadUrl:', error);

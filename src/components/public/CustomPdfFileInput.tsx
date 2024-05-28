@@ -2,7 +2,7 @@ import { FC, useState, useRef, ChangeEvent } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { PdfUploadIcon } from "./PdfUploadIcon";
 import toast from "react-hot-toast";
-import { PdfUpload } from "@lib/utils/PdfUpload";
+import { PdfUpload } from "@lib/utility/PdfUpload";
 
 interface CustomPdfFileInputProps {
   onChange: (file: File | null | string) => void;

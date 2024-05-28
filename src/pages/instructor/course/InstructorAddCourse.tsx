@@ -13,34 +13,46 @@ import { CustomSingleFileInput } from "@/components/public/CustomSingleFileInput
 import { CustomPdfFileInput } from "@/components/public/CustomPdfFileInput";
 import TextareaWithIcon from "@/components/auth/TextareaWithIcon";
 import { useNavigate } from "react-router-dom";
+import { getStoredCourseData, setStoredCourseData } from "@lib/utility/localStorage";
+
+interface CourseValues {
+  courseTitle: string;
+  description: string;
+  category: string;
+  courseThumbnail: File | null;
+  certification: boolean;
+  pricingType: "free" | "paid";
+  resources: File | null;
+}
 
 export const InstructorAddCourse: FC = () => {
-  const { availableCategories } = useSelector(
-    (state: RootState) => state.category
-  );
+  const { availableCategories } = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch<AppDispatch>();
   const { theme } = useTheme();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getAllAvailableCatgories());
   }, [dispatch]);
 
-  const initialValues = {
+  const initialValues: CourseValues = {
     courseTitle: "",
     description: "",
     category: "",
     courseThumbnail: null,
-    certification: false,
     pricingType: "free",
+    resources: null,
+    ...getStoredCourseData(),
   };
 
-  const handleSubmit = async (values: any) => {
-    console.log(
-      "🚀 ~ file: InstructorAddCourse.tsx:12 ~ handleSubmit ~ values:",
-      values
-    );
-    navigate("/instructor/courses/uploadtrailer")
+  const handleSubmit = async (values: CourseValues) => {
+    try {
+      console.log("🚀 ~ handleSubmit ~ values:", values);
+      setStoredCourseData(values);
+      navigate("/instructor/courses/uploadtrailer");
+    } catch (error) {
+      console.error("Error submitting the form", error);
+    }
   };
 
   const validationSchema = Yup.object().shape({
@@ -71,13 +83,9 @@ export const InstructorAddCourse: FC = () => {
         {({ setFieldValue, values }) => (
           <Form className="w-full">
             <div className="p-5 shadow-md rounded-md">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label
-                    className={`block ${
-                      theme === "light" ? "text-gray-700" : "text-white"
-                    } `}
-                  >
+                  <label className={`block ${theme === "light" ? "text-gray-700" : "text-white"}`}>
                     Course Thumbnail
                   </label>
                   <CustomSingleFileInput
@@ -88,35 +96,18 @@ export const InstructorAddCourse: FC = () => {
                   />
                 </div>
                 <div>
-                  <label
-                    className={`block ${
-                      theme === "light" ? "text-gray-700" : "text-white"
-                    } `}
-                  >
-                   Resources
+                  <label className={`block ${theme === "light" ? "text-gray-700" : "text-white"}`}>
+                    Resources
                   </label>
-                    
                   <CustomPdfFileInput
                     onChange={(file) => {
                       setFieldValue("resources", file);
                     }}
                     theme={theme}
                   />
-
-
                   <div className="flex items-center mt-2">
-                    <Field
-                      type="checkbox"
-                      id="resource"
-                      name="resource"
-                      className="mr-2"
-                    />
-                    <label
-                      htmlFor="resource"
-                      className={`${
-                        theme === "light" ? "text-gray-500" : "text-white"
-                      }`}
-                    >
+                    <Field type="checkbox" id="resources" name="resources" className="mr-2" />
+                    <label htmlFor="resources" className={`${theme === "light" ? "text-gray-500" : "text-white"}`}>
                       Material available
                     </label>
                   </div>
@@ -139,10 +130,7 @@ export const InstructorAddCourse: FC = () => {
                 as="textarea"
               />
               <div className="relative mt-4 mb-4">
-                <label
-                  htmlFor="category"
-                  className="block text-sm font-medium mb-2"
-                >
+                <label htmlFor="category" className="block text-sm font-medium mb-2">
                   Category
                 </label>
                 <div className="relative flex items-center">
@@ -158,7 +146,7 @@ export const InstructorAddCourse: FC = () => {
                     } rounded-md border shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50`}
                   >
                     <option value="">Select a category</option>
-                    {availableCategories.map((category: any) => (
+                    {availableCategories?.map((category: any) => (
                       <option key={category._id} value={category._id}>
                         {category.title}
                       </option>
@@ -167,11 +155,7 @@ export const InstructorAddCourse: FC = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <label
-                  className={`block ${
-                    theme === "light" ? "text-gray-700" : "text-white"
-                  } `}
-                >
+                <label className={`block ${theme === "light" ? "text-gray-700" : "text-white"}`}>
                   Pricing
                 </label>
                 <div className="flex gap-4 mt-2">

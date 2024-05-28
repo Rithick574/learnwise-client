@@ -1,6 +1,6 @@
 import { CustomVideoFileInput } from "@/components/public/CustomVideoFileInput";
 import { useTheme } from "@/components/ui/theme-provider";
-import { Formik, Form, FieldArray, Field, useFormikContext } from "formik";
+import { Formik, Form, FieldArray, Field, useFormikContext, FormikHelpers } from "formik";
 import { FC } from "react";
 import * as Yup from "yup";
 import { BsCaretRightFill } from "react-icons/bs";
@@ -8,28 +8,46 @@ import { AiOutlineCheck } from "react-icons/ai";
 import InputWithIcon from "@/components/auth/InputWithIcon";
 import { IoPricetagsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { getStoredCourseData, setStoredCourseData } from "@lib/utility/localStorage";
+
+interface TrailerValues {
+  courseTrailer: File | null;
+  price: number | "";
+  whatYouWillLearn: string[];
+}
 
 export const InstructorAddTrailer: FC = () => {
   const { theme } = useTheme();
-  const initialValues = {
+  const navigate = useNavigate();
+  
+  const initialValues: TrailerValues = {
     courseTrailer: null,
     price: "",
     whatYouWillLearn: [""],
+    ...getStoredCourseData(),
   };
-  const navigate = useNavigate()
-  const handleSubmit = async (values: any) => {
-    console.log("🚀 ~ file: InstructorAddTrailer.tsx:15 ~ values:", values);
-    navigate("/instructor/courses/addlesson")
-  };
+
   const validationSchema = Yup.object().shape({
     price: Yup.number()
-    .required("Price is required")
+      .required("Price is required")
       .typeError("Price must be a number")
       .positive("Price must be a positive number"),
     whatYouWillLearn: Yup.array().of(
       Yup.string().required("This field is required")
     ),
   });
+
+  const handleSubmit = async (values: TrailerValues, { setSubmitting }: FormikHelpers<TrailerValues>) => {
+    try {
+      console.log("🚀 ~ handleSubmit ~ values:", values);
+      setStoredCourseData(values);
+      navigate("/instructor/courses/addlesson");
+    } catch (error) {
+      console.error("Error submitting the form", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="p-5 w-full overflow-y-auto text-sm">
@@ -38,13 +56,9 @@ export const InstructorAddTrailer: FC = () => {
           <h1 className="font-bold mt-4 text-2xl">Create Course</h1>
           <div className="flex items-center gap-2 mt-2 mb-4 text-gray-500">
             <p className="text-green-500 font-semibold">My Course</p>
-            <span>
-              <BsCaretRightFill />
-            </span>
+            <span><BsCaretRightFill /></span>
             <p className="font-semibold">Create Course</p>
-            <span>
-              <BsCaretRightFill />
-            </span>
+            <span><BsCaretRightFill /></span>
             <p className="font-semibold">Add Trailer</p>
           </div>
         </div>
@@ -54,22 +68,22 @@ export const InstructorAddTrailer: FC = () => {
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {({ errors, touched, values }) => (
+        {({ errors, touched, values, isSubmitting }) => (
           <Form>
-             <div className="mt-4 flex justify-end">
-              <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-md">
+            <div className="mt-4 flex justify-end">
+              <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-md" disabled={isSubmitting}>
                 Next
               </button>
             </div>
             <div className="flex gap-4">
-              <div className="w-[50%] ">
+              <div className="w-[50%]">
                 <div>
                   <label className="block text-sm mb-2" htmlFor="video">
                     Preview Video
                   </label>
                   <CustomVideoFileInputWrapper theme={theme} />
                 </div>
-                <div>
+                <div className="mt-10">
                   <InputWithIcon
                     name="price"
                     title="Price"
@@ -78,7 +92,9 @@ export const InstructorAddTrailer: FC = () => {
                     as="text"
                     theme={theme}
                   />
-                 
+                  {errors.price && touched.price && (
+                    <div className="text-red-500 text-xs mt-1">{errors.price}</div>
+                  )}
                 </div>
               </div>
               <div className="w-[50%]">
@@ -118,11 +134,17 @@ export const InstructorAddTrailer: FC = () => {
                       </div>
                     )}
                   </FieldArray>
-                  {errors.whatYouWillLearn && touched.whatYouWillLearn ? (
+                  {errors.whatYouWillLearn && touched.whatYouWillLearn && (
                     <div className="text-red-500 text-xs mt-1">
-                      {errors.whatYouWillLearn}
+                      {Array.isArray(errors.whatYouWillLearn) ? (
+                        errors.whatYouWillLearn.map((error, index) => (
+                          <div key={index}>{error}</div>
+                        ))
+                      ) : (
+                        typeof errors.whatYouWillLearn === 'string' && errors.whatYouWillLearn
+                      )}
                     </div>
-                  ) : null}
+                  )}
                 </div>
                 <div className="mt-10">
                   <h2 className="font-bold text-xl mb-4">
@@ -147,7 +169,7 @@ export const InstructorAddTrailer: FC = () => {
 };
 
 const CustomVideoFileInputWrapper: FC<{ theme: string }> = ({ theme }) => {
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue } = useFormikContext<TrailerValues>();
 
   return (
     <CustomVideoFileInput

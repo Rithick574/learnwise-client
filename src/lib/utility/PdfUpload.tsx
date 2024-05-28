@@ -9,7 +9,6 @@ export const PdfUpload = async (image:File) => {
     try {
         const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData);
         const { format, secure_url } = res.data;
-        console.log(secure_url,',..............................');
         if (['pdf'].includes(format)) {
             return secure_url
         } else {

@@ -8,7 +8,6 @@ const ImageUpdload = async (image:File) => {
 
     try {
         const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData);
-        console.log('image uploaded successfully :',res);
         const { format, secure_url } = res.data;
         console.log(secure_url,',..............................');
         if (['png', 'jpeg', 'jpg'].includes(format)) {

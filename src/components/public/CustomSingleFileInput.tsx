@@ -1,6 +1,6 @@
 import { FC, useState, useRef, ChangeEvent } from "react";
 import { ImageUploadIcon } from "./ImageUploadIcon";
-import ImageUpload from "@lib/utils/ImageUpload";
+import ImageUpload from "@lib/utility/ImageUpload";
 import toast from "react-hot-toast";
 import ClipLoader from "react-spinners/ClipLoader";
 

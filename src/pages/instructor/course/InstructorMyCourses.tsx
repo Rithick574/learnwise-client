@@ -39,6 +39,9 @@ export const InstructorMyCourses:FC = () => {
             <h1 className="text-md text-white">Add Course</h1>
           </div>
         </div>
+
+
+
       </div>
     </>
   )

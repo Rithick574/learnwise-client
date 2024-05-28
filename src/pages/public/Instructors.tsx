@@ -2,11 +2,11 @@ import MentorSectionCardLoading from "@/components/home/MentorSectionCardLoading
 import { AppDispatch } from "@/redux/store";
 import { useState, FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import notFoundLogo from "@/assets/3828537-removebg-preview.png"
 import notFoundLogoInDark from "@/assets/6358482-removebg-preview.png"
 import { useTheme } from "@/components/ui/theme-provider";
-import {getInstructorsAction} from "@/redux/actions/user/userActions"
+import { getInstructors } from "@/redux/actions/admin/adminAction";
 
 
 export const Instructors: FC = () => {
@@ -15,15 +15,20 @@ export const Instructors: FC = () => {
   const { theme } = useTheme();
   const [loading, setLoading] = useState<boolean>(true);
   const [mentors, setMentors] = useState<any>(null);
-
+  const [searchParams, setSearchParams] = useSearchParams();
   useEffect(()=>{
-    dispatch(getInstructorsAction()).then((res) => {
-      console.log("🚀 ~ file: Instructors.tsx:21 ~ dispatch ~ res:", res)
-      if (res.payload) setMentors(res.payload);
+    const params = new URLSearchParams(window.location.search);
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
+    dispatch(getInstructors(searchParams)).then((res) => {
+      if (res.payload.instructors) setMentors(res.payload.instructors);
   }).finally(() => {
       setLoading(false);
   });
-  },[])
+  },[dispatch])
+
+  const handleInstructorClick = (firstName: string) => {
+    navigate(`/instructors/${firstName}`);
+  };
 
   return (
     <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16">
@@ -61,10 +66,9 @@ export const Instructors: FC = () => {
             email: string;
           }) => (
             <div
-              onClick={() => {
-              navigate(`/instructors/${item.firstName}`);
-              }}
-              className={`w-full ${theme === "light" ? "bg-white" : "bg-gray-900"} rounded-lg p-12 flex flex-col justify-center items-center`}
+            key={item._id}
+            onClick={() => handleInstructorClick(item.firstName)}
+            className={`w-full ${theme === "light" ? "bg-white" : "bg-gray-900"} rounded-lg p-12 flex flex-col justify-center items-center`}
             >
               <div className="mb-8">
                 <img

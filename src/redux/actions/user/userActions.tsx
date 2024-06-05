@@ -11,8 +11,7 @@ export const getUserDataFirst = createAsyncThunk(
   async ( _ , { rejectWithValue }) => {
     try {
       const { data } = await axios.get(`${URL}/auth/`, config);
-      console.log(data,"here in data of getUserDataFirst");
-      return data;
+      return data.data;
     } catch (error:any) {
       return handleError(error, rejectWithValue);
     }

@@ -58,21 +58,21 @@ const Header: React.FC = () => {
                 >
                  <div className="flex flex-col gap-y-3">
                  <NavLink
-                    to="/dashboard/"
+                    to="/student/"
                     className="navbar-drop-ul"
                     onClick={toggleDropDown}
                   >
                     <RiDashboardLine className="text-xl inline" /> Dashboard
                   </NavLink>
                   <NavLink
-                    to="/dashboard/profile"
+                    to="/student/settings"
                     className="navbar-drop-ul"
                     onClick={toggleDropDown}
                   >
                     <AiOutlineUser className="text-xl inline" /> Profile
                   </NavLink>
                   <NavLink
-                    to="/dashboard/mycourses"
+                    to="/student/enrollments"
                     className="navbar-drop-ul"
                     onClick={toggleDropDown}
                   >

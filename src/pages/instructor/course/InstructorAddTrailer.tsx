@@ -1,4 +1,3 @@
-import { CustomVideoFileInput } from "@/components/public/CustomVideoFileInput";
 import { useTheme } from "@/components/ui/theme-provider";
 import { Formik, Form, FieldArray, Field, useFormikContext, FormikHelpers } from "formik";
 import { FC } from "react";
@@ -9,6 +8,7 @@ import InputWithIcon from "@/components/auth/InputWithIcon";
 import { IoPricetagsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { getStoredCourseData, setStoredCourseData } from "@lib/utility/localStorage";
+import { CourseTrailerUpload } from "@/components/public/CourseTrailerUpload";
 
 interface TrailerValues {
   courseTrailer: File | null;
@@ -172,11 +172,11 @@ const CustomVideoFileInputWrapper: FC<{ theme: string }> = ({ theme }) => {
   const { setFieldValue } = useFormikContext<TrailerValues>();
 
   return (
-    <CustomVideoFileInput
-      onChange={(file) => {
-        setFieldValue("courseTrailer", file);
-      }}
-      theme={theme}
-    />
+    <CourseTrailerUpload
+    onChange={(fileurl) => {
+      setFieldValue("courseTrailer", fileurl);
+    }}
+    theme={theme}
+  />
   );
 };

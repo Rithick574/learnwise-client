@@ -9,6 +9,8 @@ import { googleLoginOrSignUp,getUserDataFirst,signUpUser,loginUser,logout, editU
     error: null as any | null,
   };
 
+
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -45,7 +47,6 @@ const userSlice = createSlice({
         state.user = payload;
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
-        console.log("🚀 ~ file: userSlice.tsx:48 ~ .addCase ~ payload:", payload)
         state.loading = false;
         state.user = null;
         state.error = payload;

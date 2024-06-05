@@ -29,9 +29,8 @@ export const TableRow: FC<TableRowProps> = ({ isLast, admin, toggleBlockUnBlockM
 
     return (
         <tr className={`${classes} ${bgClasses} hover:bg-gray-200 active:bg-gray-300 cursor-pointer`}>
-            <td className="admin-table-row flex items-center text-center gap-2">
-                <div className="w-10 h-10 overflow-clip flex justify-center items-center">
-                </div>
+            <td className="admin-table-row text-center gap-2">
+                
                 {admin.firstName} {admin.lastName}
             </td>
             <td className="admin-table-row text-center py-3">{admin.email}</td>

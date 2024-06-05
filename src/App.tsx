@@ -55,6 +55,10 @@ import { InstructorMyCourses } from "./pages/instructor/course/InstructorMyCours
 import { InstructorAddCourse } from "./pages/instructor/course/InstructorAddCourse";
 import { InstructorAddTrailer } from "./pages/instructor/course/InstructorAddTrailer";
 import InstructorAddLesson from "./pages/instructor/course/InstructorAddLesson";
+import { CourseDetail } from "./pages/admin/CourseDetail";
+import { DetailedCourse } from "./pages/public/DetailedCourse";
+import UserPaymentSuccess from "./pages/user/UserPaymentSuccess";
+import UserPaymentFailed from "./pages/user/UserPaymentFailed";
 
 
 type ProtectedRouteProps = {
@@ -128,6 +132,9 @@ function App() {
         {/* general pages */}
         <Route path="/learnwise" element={<IndexPage />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/courses/:courseId" element={<DetailedCourse/>}/>
+        <Route path="course/paymentsuccess" element={<UserPaymentSuccess />} />
+        <Route path="course/paymentfailed" element={<UserPaymentFailed />} />
         <Route path="/policy" element={<PrivacyPolicy />} />
         <Route path="teach" element={<ApplyasInstructor />} />
         <Route path="apply-to-teach" element={<ApplyToTeach />} />
@@ -195,7 +202,8 @@ const AdminRoutes: FC = () => {
         <Route path="/instructors" element={<AdminInstructorList />} />
         <Route path="/requests" element={<AdminRequests />} />
         <Route path="/categories" element={<AdminCategories/>}/>
-        <Route path="courses" element={<AdminCourses/>} />
+        <Route path="/courses" element={<AdminCourses/>} />
+        <Route path="courses/course-detail/:courseId" element={<CourseDetail />}/>
       </Route>
     </Routes>
   );
@@ -226,7 +234,7 @@ const StudentRoutes: FC = () => {
         {/* <Route index element={<DashboardNav />} /> */}
         <Route path="overview" element={<DashboardNav />} />
         <Route path="settings" element={<ProfilePage />} />
-        {/* <Route path="*" element={<Error404 />} /> */}
+       
       </Route>
     </Routes>
   );

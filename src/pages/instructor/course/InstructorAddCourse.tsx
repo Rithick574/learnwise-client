@@ -14,6 +14,7 @@ import { CustomPdfFileInput } from "@/components/public/CustomPdfFileInput";
 import TextareaWithIcon from "@/components/auth/TextareaWithIcon";
 import { useNavigate } from "react-router-dom";
 import { getStoredCourseData, setStoredCourseData } from "@lib/utility/localStorage";
+import toast from "react-hot-toast";
 
 interface CourseValues {
   courseTitle: string;
@@ -46,6 +47,10 @@ export const InstructorAddCourse: FC = () => {
   };
 
   const handleSubmit = async (values: CourseValues) => {
+    if (!values.courseThumbnail) {
+      toast.error("Course thumbnail is required");
+      return;
+    }
     try {
       console.log("🚀 ~ handleSubmit ~ values:", values);
       setStoredCourseData(values);

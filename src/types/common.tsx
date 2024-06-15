@@ -42,3 +42,31 @@ export interface Course {
   createdAt: string;
   updatedAt: string;
 }
+
+
+export interface IUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role?:"student" | "instructor" | "admin";
+  profile: {
+    avatar?: string;
+    dob?: string;
+    gender?: "male" | "female" | "other";
+  };
+  contact: {
+    additionalEmail?: string;
+    socialMedia?: {
+      instagram?: string;
+      linkedIn?: string;
+      github?: string;
+    };
+  };
+  phoneNumber?: string;
+  isBlocked: boolean;
+  isVerified: boolean;
+  profession?: string;
+  otp?: string;
+  profit: number;
+}

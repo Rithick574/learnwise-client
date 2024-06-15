@@ -24,9 +24,7 @@ const UserPaymentSuccess: FC = () => {
         const method = "card";
         const status = "completed";
         const wholeData = { method, status, ...rest };
-        const response = await commonRequest("post", '/payment/savePayment', wholeData, config);
-        console.log("🚀 ~ file: UserPaymentSuccess.tsx:13 ~ fetchData ~ response:", response);
-
+         await commonRequest("post", '/payment/savePayment', wholeData, config);
         localStorage.removeItem('paymentData');
       } catch (error) {
         console.error("Error saving payment:", error);

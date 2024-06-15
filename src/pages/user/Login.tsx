@@ -125,12 +125,12 @@ const Login = () => {
           <div className="border border-gray-300 rounded-3xl">
           <div className="my-5">
             <p className="text-sm font-semibold mb-2">Demo Student Login Credentials:</p>
-            <p>Email: cerowog866@ahieh.com</p>
+            <p>Email: bohihex885@morxin.com</p>
             <p>Password: Rithick@123</p>
           </div>
           <div className="my-5">
             <p className="text-sm font-semibold mb-2">Demo Instructor Login Credentials:</p>
-            <p>Email: wadote5334@agafx.com</p>
+            <p>Email: faviko4711@morxin.com</p>
             <p>Password: Rithick@123</p>
           </div>
           </div>

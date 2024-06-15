@@ -26,13 +26,13 @@ const Courses = () => {
     fetchPublishedCourses();
   }, [dispatch]);
 
-  const showCourseDetailsPage=(courseId: string,cost:number,thumbnail:string,courseName:string)=>{
-    navigate(`/courses/${courseId}`,{state:{courseId,cost,thumbnail,courseName}})
+  const showCourseDetailsPage=(courseId: string,cost:number,thumbnail:string,courseName:string,instructorRef:string)=>{
+    navigate(`/courses/${courseId}`,{state:{courseId,cost,thumbnail,courseName,instructorRef}})
   }
 
   return (
     <>
-      <div className="w-full mt-[10px] mr-40">
+      <div className="w-full mt-[10px] mr-40 h-screen">
         <div className="container">
           <div className="row">
             <div className="mt-5">
@@ -85,7 +85,7 @@ const Courses = () => {
                       className={`w-full mt-4 flex items-center justify-center ${
                         theme === "light" ? "bg-gray-100" : "bg-gray-800"
                       } rounded-md overflow-hidden px-2 py-3`}
-                      onClick={()=>showCourseDetailsPage(course._id,course.pricing.amount,course.thumbnail,course.title)}
+                      onClick={()=>showCourseDetailsPage(course._id,course.pricing.amount,course.thumbnail,course.title,course.instructorRef._id)}
                     >
                       <div
                         className={`w-5/12 ${

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 
 
 const ApplyasInstructor = () => {
@@ -82,6 +83,7 @@ const ApplyasInstructor = () => {
           <div className="absolute bg-gradient-to-br from-blue-900 to-black rounded-full w-[580px] h-[580px]  right-20"></div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

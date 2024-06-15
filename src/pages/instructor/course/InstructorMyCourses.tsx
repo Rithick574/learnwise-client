@@ -8,7 +8,7 @@ import { FilterArray } from "@/components/admin/FilterArray";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "@/components/public/Pagination";
 import { MdLanguage } from "react-icons/md";
-import { FaChalkboardTeacher, FaRegEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import { Modal } from "@/components/admin/Modal";
 import { SearchBar } from "@/components/admin/SearchBar";
 import { AiOutlinePlusCircle } from "react-icons/ai";
@@ -144,10 +144,10 @@ export const InstructorMyCourses: FC = () => {
                     <span className="text-blue-600">
                       {course.categoryRef?.title}
                     </span>
-                    <span className="flex justify-center items-center gap-2">
+                    {/* <span className="flex justify-center items-center gap-2">
                       <FaChalkboardTeacher />
                       {course.instructorRef?.firstName}
-                    </span>
+                    </span> */}
                     <span className="flex justify-center items-center gap-2">
                       <MdLanguage />
                       {course.language}

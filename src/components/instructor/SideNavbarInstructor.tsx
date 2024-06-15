@@ -9,7 +9,7 @@ import { RiDashboardLine } from "react-icons/ri";
 import { TiMessages } from "react-icons/ti";
 import { useTheme } from "@/components/ui/theme-provider";
 import { CgProfile } from "react-icons/cg";
-import { MdOutlineAssessment,MdOutlineAnnouncement } from "react-icons/md";
+import { MdOutlineAssessment } from "react-icons/md";
 import { PiStudent } from "react-icons/pi";
 
 
@@ -40,19 +40,19 @@ export const SideNavbarInstructor:FC = () => {
                             <FiBox className="w-5 opacity-80" />
                             <span className="font-medium text-md">My Courses</span>
                         </NavLink>
-                        <NavLink className={`pl-6 py-3 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/payments">
+                        <NavLink className={`pl-6 py-3 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/assessments">
                             <MdOutlineAssessment className="w-5 opacity-80" />
                             <span className="font-medium text-md">Assessments</span>
                         </NavLink>
-                        <NavLink className={`pl-6 py-3 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/instructors">
+                        {/* <NavLink className={`pl-6 py-3 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/instructors">
                             <MdOutlineAnnouncement className="w-5 opacity-80" />
                             <span className="font-medium text-md">Announcements</span>
-                        </NavLink>
-                        <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/instructors">
+                        </NavLink> */}
+                        <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/mystudents">
                             <PiStudent className="w-5 opacity-80" />
                             <span className="font-medium text-md">My Students</span>
                         </NavLink>
-                        <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/students">
+                        <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/messages">
                             <TiMessages className="w-5 opacity-80" />
                             <span className="font-medium text-md">Messages</span>
                         </NavLink>

@@ -23,6 +23,7 @@ import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { config } from "@/Common/configurations";
 import LessonList from "../user/LessonList";
+import { Reviews } from "@/components/student/Reviews";
 
 export const DetailedCourse = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -38,7 +39,7 @@ export const DetailedCourse = () => {
       try {
         const response = await axios.get(`${URL}/course/course/${courseId}`);
         setCourse(response.data.data);
-        if (user?._id && courseId) {
+        if (user && courseId) {
           await checkEnrollment(courseId, user._id);
         }
       } catch (error) {
@@ -79,14 +80,17 @@ export const DetailedCourse = () => {
       userId: user._id,
       thumbnail: state.thumbnail,
       courseName: state.courseName,
+      instructorRef: state.instructorRef,
     };
-    localStorage.setItem("paymentData", JSON.stringify(body));
+    const apiBody = { ...body };
+    delete apiBody.instructorRef;
     const response = await commonRequest(
       "post",
       "/payment/create-checkout-session",
-      body,
+      apiBody,
       config
     );
+    localStorage.setItem("paymentData", JSON.stringify(body));
     if (stripe && response?.id) {
       stripe.redirectToCheckout({
         sessionId: response.id,
@@ -109,17 +113,22 @@ export const DetailedCourse = () => {
               <div className="w-full md:w-8/12">
                 <div className="p-1">
                   {video ? (
-                    <div className="video-container border" style={{ width: '100%', height: '384px' }}>
-                    <ReactPlayer  url={video}
-                      config={{
-                        file: { attributes: { controlsList: "nodownload" } },
-                      }}
-                      onContextMenu={(e: any) => e.preventDefault()}
-                      controls
-                      playing
-                      width="100%"
-                      height="100%" />
-                  </div>
+                    <div
+                      className="video-container border"
+                      style={{ width: "100%", height: "384px" }}
+                    >
+                      <ReactPlayer
+                        url={video}
+                        config={{
+                          file: { attributes: { controlsList: "nodownload" } },
+                        }}
+                        onContextMenu={(e: any) => e.preventDefault()}
+                        controls
+                        playing
+                        width="100%"
+                        height="100%"
+                      />
+                    </div>
                   ) : (
                     <img
                       src={course.thumbnail}
@@ -159,6 +168,7 @@ export const DetailedCourse = () => {
               <div className="w-full md:w-4/12 mb-52 border rounded-lg">
                 {isPurchased ? (
                   <div className="hidden lg:block">
+                    <h1 className="text-center font-bold text-2xl">contents</h1>
                     {course.lessons ? (
                       <LessonList
                         lessons={course.lessons}
@@ -200,7 +210,7 @@ export const DetailedCourse = () => {
                       </div>
                       <div className="text-center mt-2">
                         <span className="block text-green-500">
-                          Full Lifetime Access
+                          Lifetime Access
                         </span>
                       </div>
                     </div>
@@ -284,6 +294,13 @@ export const DetailedCourse = () => {
                   />
                 </div>
               </div>
+              {user && (
+                <Reviews
+                  courseId={courseId}
+                  userId={user._id}
+                  enrolled={isPurchased}
+                />
+              )}
             </div>
           </>
         )

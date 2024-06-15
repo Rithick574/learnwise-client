@@ -22,8 +22,8 @@ import { Instructors } from "./pages/public/Instructors";
 import { About } from "./pages/public/About";
 
 //components
-import Footer from "./components/home/Footer";
-import Header from "./components/home/Header";
+// import Footer from "./components/home/Footer";
+// import Header from "./components/home/Header";
 
 //auth
 import Login from "./pages/user/Login";
@@ -59,7 +59,13 @@ import { CourseDetail } from "./pages/admin/CourseDetail";
 import { DetailedCourse } from "./pages/public/DetailedCourse";
 import UserPaymentSuccess from "./pages/user/UserPaymentSuccess";
 import UserPaymentFailed from "./pages/user/UserPaymentFailed";
-
+import InstructorChat from "./pages/instructor/chat/InstructorChat";
+import InstructorMyStuddents from "./pages/instructor/InstructorMyStudents";
+import InstructorAssessments from "./pages/instructor/InstructorAssessments";
+import AdminPayments from "./pages/admin/AdminPayments";
+import { Enrollments } from "./pages/user/Enrollments";
+import { Exams } from "./pages/user/Exams";
+import { StudentChat } from "./pages/user/chat/StudentChat";
 
 type ProtectedRouteProps = {
   element: React.ReactElement;
@@ -111,11 +117,11 @@ function App() {
 
   return (
     <Router>
-      {user ? (
+      {/* {user ? (
         user.role !== "admin" && user.role !== "instructor" && <Header />
       ) : (
         <Header />
-      )}
+      )} */}
       <Routes>
         <Route
           path="/"
@@ -132,7 +138,7 @@ function App() {
         {/* general pages */}
         <Route path="/learnwise" element={<IndexPage />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/courses/:courseId" element={<DetailedCourse/>}/>
+        <Route path="/courses/:courseId" element={<DetailedCourse />} />
         <Route path="course/paymentsuccess" element={<UserPaymentSuccess />} />
         <Route path="course/paymentfailed" element={<UserPaymentFailed />} />
         <Route path="/policy" element={<PrivacyPolicy />} />
@@ -182,11 +188,11 @@ function App() {
 
         <Route path="*" element={<Error404 />} />
       </Routes>
-      {user ? (
+      {/* {user ? (
         user.role !== "admin" && user.role !== "instructor" && <Footer />
       ) : (
         <Footer />
-      )}
+      )} */}
     </Router>
   );
 }
@@ -197,13 +203,17 @@ const AdminRoutes: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<AdminLayout />}>
-        <Route index element={<AdminHome/>}/>
+        <Route index element={<AdminHome />} />
+        <Route path="payments" element={<AdminPayments />} />
         <Route path="/settings" element={<AdminSettings />} />
         <Route path="/instructors" element={<AdminInstructorList />} />
         <Route path="/requests" element={<AdminRequests />} />
-        <Route path="/categories" element={<AdminCategories/>}/>
-        <Route path="/courses" element={<AdminCourses/>} />
-        <Route path="courses/course-detail/:courseId" element={<CourseDetail />}/>
+        <Route path="/categories" element={<AdminCategories />} />
+        <Route path="/courses" element={<AdminCourses />} />
+        <Route
+          path="courses/course-detail/:courseId"
+          element={<CourseDetail />}
+        />
       </Route>
     </Routes>
   );
@@ -213,15 +223,18 @@ const InstructorRoutes: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<InstructorLayout />}>
-        <Route index element={<InstructorDashboard/>} />
-        <Route path="/profile" element={<Profile/>} />
+        <Route index element={<InstructorDashboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/courses">
-          <Route index element={<InstructorMyCourses/>} />
-          <Route path="addcourse" element={<InstructorAddCourse/>} />
-          <Route path="uploadtrailer" element={<InstructorAddTrailer/>} />
-          <Route path="addlesson" element={<InstructorAddLesson/>} />
+          <Route index element={<InstructorMyCourses />} />
+          <Route path="addcourse" element={<InstructorAddCourse />} />
+          <Route path="uploadtrailer" element={<InstructorAddTrailer />} />
+          <Route path="addlesson" element={<InstructorAddLesson />} />
         </Route>
-        <Route path="/settings" element={<InstructorSettings/>} />
+        <Route path="assessments" element={<InstructorAssessments />} />
+        <Route path="messages" element={<InstructorChat />} />
+        <Route path="mystudents" element={<InstructorMyStuddents />} />
+        <Route path="/settings" element={<InstructorSettings />} />
       </Route>
     </Routes>
   );
@@ -233,8 +246,10 @@ const StudentRoutes: FC = () => {
       <Route path="/" element={<StudentLayout />}>
         {/* <Route index element={<DashboardNav />} /> */}
         <Route path="overview" element={<DashboardNav />} />
+        <Route path="enrollments" element={<Enrollments />} />
+        <Route path="exams" element={<Exams />} />
+        <Route path="messages" element={<StudentChat />} />
         <Route path="settings" element={<ProfilePage />} />
-       
       </Route>
     </Routes>
   );

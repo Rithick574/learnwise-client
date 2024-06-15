@@ -32,6 +32,14 @@ export const SideNavbarStudent:FC = () => {
                     <RiDashboardLine className="w-5 opacity-80" />
                     <span className="font-medium text-md">Overview</span>
                 </NavLink>
+                <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/courses/">
+                    <RiDashboardLine className="w-5 opacity-80" />
+                    <span className="font-medium text-md">Courses</span>
+                </NavLink>
+                <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/teach/">
+                    <RiDashboardLine className="w-5 opacity-80" />
+                    <span className="font-medium text-md">Teach</span>
+                </NavLink>
                 <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/enrollments">
                     <FiBox className="w-5 opacity-80" />
                     <span className="font-medium text-md">Enrollments</span>

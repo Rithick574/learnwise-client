@@ -1,5 +1,10 @@
+import Footer from "@/components/home/Footer";
+import Header from "@/components/home/Header";
+
 export const About = () => {
   return (
+    <>
+    <Header />
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold text-center mb-4">About LearnWise</h1>
       <p className="text-lg text-center mb-6">
@@ -38,5 +43,7 @@ export const About = () => {
         </ul>
       </section>
     </div>
+     <Footer />
+    </>
   );
 };

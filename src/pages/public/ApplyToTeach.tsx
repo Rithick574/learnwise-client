@@ -27,13 +27,8 @@ export const ApplyToTeach = () => {
 
   const onSubmit = async (data: ApplyToTeachFormData) => {
     try {
-      console.log(data, "@@@@@@@@");
       const response = await dispatch(
         applyToTeachAction(data as ApplyToTeachFormData)
-      );
-      console.log(
-        "🚀 ~ file: ApplyToTeach.tsx:31 ~ onSubmit ~ response:",
-        response
       );
       if(response.meta.requestStatus === "fulfilled"){
         toast.success(
@@ -45,7 +40,6 @@ export const ApplyToTeach = () => {
       }
      
     } catch (error: any) {
-      console.log("🚀 ~ file: ApplyToTeach.tsx:48 ~ onSubmit ~ error:", error)
       toast.error(error?.response?.data?.message || "please try again later");
       console.error(error);
       setError(error?.message || "Something went wrong, Try again!");

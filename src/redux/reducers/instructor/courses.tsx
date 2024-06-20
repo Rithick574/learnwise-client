@@ -1,10 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createCourse, editCourse, getAllCourse, publishCourse, publishedCourses } from "@/redux/actions/instructor/courseAction";
+import { Course } from "@/types/common";
+
+interface PublishedCoursesPayload {
+    courses: Course[]; 
+    totalAvailableCourses: number;
+  }
 
 interface CourseState {
     loading: boolean;
     courses: any[]; 
     error: any | null;
+    totalAvailableCourses:number
 }
 
 // Initial state
@@ -12,6 +19,7 @@ const initialState: CourseState = {
     loading: false,
     courses: [],
     error: null,
+    totalAvailableCourses:0
 };
 
 const courseSlice = createSlice({
@@ -24,7 +32,7 @@ const courseSlice = createSlice({
             .addCase(createCourse.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(createCourse.fulfilled, (state, action: PayloadAction<any[]>) => { // Use the correct type for the payload
+            .addCase(createCourse.fulfilled, (state, action: PayloadAction<any[]>) => {
                 state.loading = false;
                 state.error = null;
                 state.courses = action.payload;
@@ -50,10 +58,11 @@ const courseSlice = createSlice({
             .addCase(publishedCourses.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(publishedCourses.fulfilled, (state, action: PayloadAction<any[]>) => {
+            .addCase(publishedCourses.fulfilled, (state, action: PayloadAction<PublishedCoursesPayload>) => {
                 state.loading = false;
                 state.error = null;
-                state.courses = action.payload;
+                state.courses = action.payload.courses;
+                state.totalAvailableCourses=action.payload.totalAvailableCourses;
             })
             .addCase(publishedCourses.rejected, (state, action) => {
                 state.loading = false;

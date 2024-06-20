@@ -1,46 +1,75 @@
 import { useTheme } from "@/components/ui/theme-provider";
 import { Formik, Form, FieldArray, Field, useFormikContext, FormikHelpers } from "formik";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { BsCaretRightFill } from "react-icons/bs";
 import { AiOutlineCheck } from "react-icons/ai";
 import InputWithIcon from "@/components/auth/InputWithIcon";
 import { IoPricetagsOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import { getStoredCourseData, setStoredCourseData } from "@lib/utility/localStorage";
+import { useNavigate, useParams } from "react-router-dom";
 import { CourseTrailerUpload } from "@/components/public/CourseTrailerUpload";
+import axios from "axios";
+import { URL } from "@/Common/api";
 
 interface TrailerValues {
-  courseTrailer: File | null;
+  courseTrailer: string | null; 
   price: number | "";
   whatYouWillLearn: string[];
 }
 
-export const InstructorAddTrailer: FC = () => {
+ export const getStoredUpdatedCourseData = () => {
+  const data = localStorage.getItem('updateCourse');
+  return data ? JSON.parse(data) : {};
+};
+
+export const setStoredupdatedCourseData = (newData:any) => {
+  const currentData = getStoredUpdatedCourseData();
+  const mergedData = { ...currentData, ...newData };
+  localStorage.setItem('updateCourse', JSON.stringify(mergedData));
+};
+
+const EditCourseTrailer: FC = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  
-  const initialValues: TrailerValues = {
+  const { courseId } = useParams<{ courseId: string }>();
+  const [initialValues, setInitialValues] = useState<TrailerValues>({
     courseTrailer: null,
     price: "",
     whatYouWillLearn: [""],
-    ...getStoredCourseData(),
-  };
+    ...getStoredUpdatedCourseData(),
+  });
+
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        const { data } = await axios.get(`${URL}/course/course/${courseId}`);
+        const courseData = data.data;
+        setInitialValues((prevValues) => ({
+          ...prevValues,
+          courseTrailer: courseData.trailer ? courseData.trailer.thumbnail : null,
+          price: courseData.pricing.amount,
+          whatYouWillLearn: courseData.trial.description || [""],
+        }));
+      } catch (error) {
+        console.error("Error fetching course data", error);
+      }
+    };
+
+    fetchCourseData();
+  }, [courseId]);
 
   const validationSchema = Yup.object().shape({
     price: Yup.number()
       .required("Price is required")
       .typeError("Price must be a number")
       .positive("Price must be a positive number"),
-    whatYouWillLearn: Yup.array().of(
-      Yup.string().required("This field is required")
-    ),
+    whatYouWillLearn: Yup.array().of(Yup.string().required("This field is required")),
   });
 
   const handleSubmit = async (values: TrailerValues, { setSubmitting }: FormikHelpers<TrailerValues>) => {
     try {
-      setStoredCourseData(values);
-      navigate("/instructor/courses/addlesson");
+      setStoredupdatedCourseData(values);
+      navigate(`/instructor/courses/editcontent/${courseId}`);
     } catch (error) {
       console.error("Error submitting the form", error);
     } finally {
@@ -52,13 +81,17 @@ export const InstructorAddTrailer: FC = () => {
     <div className="p-5 w-full overflow-y-auto text-sm">
       <div className="flex justify-between items-center font-semibold">
         <div>
-          <h1 className="font-bold mt-4 text-2xl">Create Course</h1>
+          <h1 className="font-bold mt-4 text-2xl">Edit Course</h1>
           <div className="flex items-center gap-2 mt-2 mb-4 text-gray-500">
             <p className="text-green-500 font-semibold">My Course</p>
-            <span><BsCaretRightFill /></span>
-            <p className="font-semibold">Create Course</p>
-            <span><BsCaretRightFill /></span>
-            <p className="font-semibold">Add Trailer</p>
+            <span>
+              <BsCaretRightFill />
+            </span>
+            <p className="font-semibold">Edit Course</p>
+            <span>
+              <BsCaretRightFill />
+            </span>
+            <p className="font-semibold">Edit Trailer</p>
           </div>
         </div>
       </div>
@@ -66,11 +99,16 @@ export const InstructorAddTrailer: FC = () => {
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
+        enableReinitialize
       >
         {({ errors, touched, values, isSubmitting }) => (
           <Form>
             <div className="mt-4 flex justify-end">
-              <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-md" disabled={isSubmitting}>
+              <button
+                type="submit"
+                className="bg-blue-600 text-white py-2 px-6 rounded-md"
+                disabled={isSubmitting}
+              >
                 Next
               </button>
             </div>
@@ -172,10 +210,12 @@ const CustomVideoFileInputWrapper: FC<{ theme: string }> = ({ theme }) => {
 
   return (
     <CourseTrailerUpload
-    onChange={(fileurl) => {
-      setFieldValue("courseTrailer", fileurl);
-    }}
-    theme={theme}
-  />
+      onChange={(fileurl) => {
+        setFieldValue("courseTrailer", fileurl);
+      }}
+      theme={theme}
+    />
   );
 };
+
+export default EditCourseTrailer;

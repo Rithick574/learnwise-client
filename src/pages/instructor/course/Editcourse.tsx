@@ -1,7 +1,7 @@
 import InputWithIcon from "@/components/auth/InputWithIcon";
 import { useTheme } from "@/components/ui/theme-provider";
 import { Formik, Form, Field } from "formik";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
 import * as Yup from "yup";
 import { MdOutlineSubtitles, MdOutlineDescription } from "react-icons/md";
@@ -12,9 +12,10 @@ import { getAllAvailableCatgories } from "@/redux/actions/admin/categoriesAction
 import { CustomSingleFileInput } from "@/components/public/CustomSingleFileInput";
 import { CustomPdfFileInput } from "@/components/public/CustomPdfFileInput";
 import TextareaWithIcon from "@/components/auth/TextareaWithIcon";
-import { useNavigate } from "react-router-dom";
-import { getStoredCourseData, setStoredCourseData } from "@lib/utility/localStorage";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { URL } from "@/Common/api";
 
 interface CourseValues {
   courseTitle: string;
@@ -26,25 +27,45 @@ interface CourseValues {
   resources: File | null;
 }
 
-export const InstructorAddCourse: FC = () => {
+export const EditCourse: FC = () => {
+  const { courseId } = useParams<{ courseId: string }>();
   const { availableCategories } = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch<AppDispatch>();
   const { theme } = useTheme();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    dispatch(getAllAvailableCatgories());
-  }, [dispatch]);
-
-  const initialValues: CourseValues = {
+  const [initialValues, setInitialValues] = useState<CourseValues>({
     courseTitle: "",
     description: "",
     category: "",
     courseThumbnail: null,
+    certification: false,
     pricingType: "free",
     resources: null,
-    ...getStoredCourseData(),
-  };
+  });
+
+  useEffect(() => {
+    dispatch(getAllAvailableCatgories());
+
+    const fetchCourseData = async () => {
+      try {
+        const {data} = await axios.get(`${URL}/course/course/${courseId}`)
+        const courseData=data.data;
+        setInitialValues({
+          courseTitle: courseData.title,
+          description: courseData.description,
+          category: courseData.categoryRef._id,
+          courseThumbnail: courseData.thumbnail,
+          certification: !!courseData.attachments,
+          pricingType: courseData.pricing.type,
+          resources: courseData.attachments,
+        });
+      } catch (error) {
+        console.error("Error fetching course data", error);
+      }
+    };
+
+    fetchCourseData();
+  }, [dispatch, courseId]);
 
   const handleSubmit = async (values: CourseValues) => {
     if (!values.courseThumbnail) {
@@ -52,10 +73,15 @@ export const InstructorAddCourse: FC = () => {
       return;
     }
     try {
-      setStoredCourseData(values);
-      navigate("/instructor/courses/uploadtrailer");
+      const data = localStorage.getItem('updateCourse');
+      const currentData = data ? JSON.parse(data) : {};
+      const mergedData = { ...currentData, ...values };
+      localStorage.setItem('updateCourse', JSON.stringify(mergedData));
+      
+      navigate(`/instructor/courses/editcourse/${courseId}`);
     } catch (error) {
       console.error("Error submitting the form", error);
+      toast.error("Error updating the course");
     }
   };
 
@@ -69,13 +95,13 @@ export const InstructorAddCourse: FC = () => {
     <div className="p-5 w-full overflow-y-auto text-sm">
       <div className="flex justify-between items-center font-semibold">
         <div>
-          <h1 className="font-bold mt-4 text-2xl">Create Course</h1>
+          <h1 className="font-bold mt-4 text-2xl">Edit Course</h1>
           <div className="flex items-center gap-2 mt-2 mb-4 text-gray-500">
             <p className="text-green-500 font-semibold">My Course</p>
             <span>
               <BsCaretRightFill />
             </span>
-            <p className="font-semibold">Create Course</p>
+            <p className="font-semibold">Edit Course</p>
           </div>
         </div>
       </div>
@@ -83,6 +109,7 @@ export const InstructorAddCourse: FC = () => {
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
+        enableReinitialize
       >
         {({ setFieldValue, values }) => (
           <Form className="w-full">
@@ -133,7 +160,7 @@ export const InstructorAddCourse: FC = () => {
                 theme={theme}
                 as="textarea"
               />
-              <div className="relative mt-4 mb-4">
+             <div className="relative mt-4 mb-4">
                 <label htmlFor="category" className="block text-sm font-medium mb-2">
                   Category
                 </label>
@@ -186,7 +213,7 @@ export const InstructorAddCourse: FC = () => {
             </div>
             <div className="mt-6 flex justify-end">
               <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-md">
-                Next
+                Save Changes
               </button>
             </div>
           </Form>
@@ -195,3 +222,6 @@ export const InstructorAddCourse: FC = () => {
     </div>
   );
 };
+
+
+export default EditCourse;

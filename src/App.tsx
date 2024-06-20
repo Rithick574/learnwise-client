@@ -66,6 +66,10 @@ import AdminPayments from "./pages/admin/AdminPayments";
 import { Enrollments } from "./pages/user/Enrollments";
 import { Exams } from "./pages/user/Exams";
 import { StudentChat } from "./pages/user/chat/StudentChat";
+import Editcourse from "./pages/instructor/course/Editcourse";
+import EditCourseTrailer from "./pages/instructor/course/EditCourseTrailer";
+import EditCourseContent from "./pages/instructor/course/EditCourseContent";
+import CreateExam from "./pages/instructor/exam/createExam";
 
 type ProtectedRouteProps = {
   element: React.ReactElement;
@@ -230,8 +234,12 @@ const InstructorRoutes: FC = () => {
           <Route path="addcourse" element={<InstructorAddCourse />} />
           <Route path="uploadtrailer" element={<InstructorAddTrailer />} />
           <Route path="addlesson" element={<InstructorAddLesson />} />
+          <Route path="edit/:courseId" element={<Editcourse/>} />
+          <Route path="editcourse/:courseId" element={<EditCourseTrailer/>} />
+          <Route path="editcontent/:courseId" element={<EditCourseContent/>} /> 
         </Route>
         <Route path="assessments" element={<InstructorAssessments />} />
+        <Route path="assessments/:courseId" element={<CreateExam />}/>
         <Route path="messages" element={<InstructorChat />} />
         <Route path="mystudents" element={<InstructorMyStuddents />} />
         <Route path="/settings" element={<InstructorSettings />} />

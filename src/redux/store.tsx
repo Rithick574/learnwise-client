@@ -5,6 +5,7 @@ import { applicationReducer } from "./reducers/admin/application";
 import { ThunkAction, Action } from '@reduxjs/toolkit';
 import {categoryReducer} from "./reducers/admin/categories";
 import courseReducer from "./reducers/instructor/courses"
+import { paymentsReducer } from "./reducers/admin/paymentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     application: applicationReducer,
     category:categoryReducer,
     courses:courseReducer,
+    payments: paymentsReducer,
   },
 });
 

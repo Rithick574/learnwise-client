@@ -55,9 +55,9 @@ export const getAllCourse = createAsyncThunk<any, QueriesType, { rejectValue: an
 
 export const publishedCourses=createAsyncThunk(
   "course/publishedCourses",
-  async(_,{rejectWithValue})=>{
+  async(searchParams: URLSearchParams,{rejectWithValue})=>{
     try {
-      const {data} = await axios.get(`${URL}/course/publishedcourses`,appJson);
+      const {data} = await axios.get(`${URL}/course/publishedcourses?${searchParams}`,appJson);
       return data.data;
     } catch (error:any) {
       return handleError(error, rejectWithValue);

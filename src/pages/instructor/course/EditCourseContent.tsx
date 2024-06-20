@@ -1,43 +1,64 @@
-import { useState, FC, ChangeEvent } from "react";
+import { FC, useState, useEffect, ChangeEvent } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
-import {
-  AiOutlineDelete,
-  AiOutlineMenu,
-  AiOutlinePlus,
-} from "react-icons/ai";
-import toast from "react-hot-toast";
+import { AiOutlineDelete, AiOutlineMenu, AiOutlinePlus } from "react-icons/ai";
 import { MdOutlinePlayLesson, MdOutlineDescription } from "react-icons/md";
 import { useTheme } from "@/components/ui/theme-provider";
-import { useNavigate } from "react-router-dom";
-import {
-  clearStoredCourseData,
-  setStoredCourseData,
-  getStoredCourseData,
-} from "@lib/utility/localStorage";
+import { useNavigate, useParams } from "react-router-dom";
 import { CourseUploader } from "@/components/public/CourseUploader";
-import { createCourse } from "@/redux/actions/instructor/courseAction";
-import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import {transformCourseData} from "@lib/validations/TransformCourseData"
+import { RootState, AppDispatch } from "@/redux/store";
+import { transformCourseData } from "@lib/validations/TransformCourseData";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { getStoredUpdatedCourseData, setStoredupdatedCourseData } from "./EditCourseTrailer";
+import { URL } from "@/Common/api";
+import { appJson } from "@/Common/configurations";
 
+const clearStoredCourseData = () => {
+  localStorage.removeItem('updateCourse');
+};
 
-type SubLesson = {
+interface SubLesson {
   title: string;
   videoUrl: string | null;
   description: string;
-};
+}
 
-type Section = {
+interface Section {
   title: string;
   subLessons: SubLesson[];
-};
+}
 
-const InstructorAddLesson: FC = () => {
+const EditCourseContent: FC = () => {
+  const { theme } = useTheme();
+  const navigate = useNavigate();
+  const { courseId } = useParams<{ courseId: string }>();
+  console.log("🚀 ~ file: EditCourseContent.tsx:36 ~ courseId:", courseId)
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { theme } = useTheme();
+
   const [sections, setSections] = useState<Section[]>([{ title: "", subLessons: [] }]);
+
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        if (courseId) {
+          const { data } = await axios.get(`${URL}/course/course/${courseId}`);
+          const courseData = data.data;
+          setSections(courseData.lessons || [{ title: "", subLessons: [] }]);
+        }
+        
+        const storedData =await getStoredUpdatedCourseData();
+        if (storedData && Array.isArray(storedData)) {
+          setSections(storedData);
+        }
+      } catch (error) {
+        console.error("Error fetching course data", error);
+      }
+    };
+
+    fetchCourseData();
+  }, [courseId,dispatch]);
 
   const handleAddSection = () => {
     const newSection: Section = { title: "", subLessons: [] };
@@ -71,7 +92,6 @@ const InstructorAddLesson: FC = () => {
     const updatedSections = [...sections];
     if (updatedSections[sectionIndex].subLessons.length > 0) {
       updatedSections[sectionIndex].subLessons.pop();
-      setSections(updatedSections);
     } else {
       updatedSections.splice(sectionIndex, 1);
     }
@@ -86,55 +106,34 @@ const InstructorAddLesson: FC = () => {
 
   const handleVideoChange = (fileUrl: string | null, sectionIndex: number, subLessonIndex: number) => {
     if (fileUrl) {
-        const updatedSections = [...sections];
-        updatedSections[sectionIndex].subLessons[subLessonIndex].videoUrl = fileUrl;
-        setSections(updatedSections);
+      const updatedSections = [...sections];
+      updatedSections[sectionIndex].subLessons[subLessonIndex].videoUrl = fileUrl;
+      setSections(updatedSections);
     }
-};
+  };
 
-
-  const handleCourseUpload = async () => {
-    setStoredCourseData(sections);
-    let isValid = true;
-    sections.forEach((section) => {
-      if (!section.title) {
-        toast.error("Section name is required");
-        isValid = false;
-      }
-      section.subLessons.forEach((subLesson) => {
-        if (!subLesson.title) {
-          toast.error("Lecture title is required");
-          isValid = false;
-        }
-        if (!subLesson.videoUrl) {
-          toast.error("Video is required for each lecture");
-          isValid = false;
-        }
-      });
-    });
-
-    if (isValid) {
-      const storedData = getStoredCourseData();
+  const handleSubmit = async () => {
+    try {
+      setStoredupdatedCourseData(sections);
+      const storedData = getStoredUpdatedCourseData();
       const fullCourseData = { ...storedData, sections };
-      const structuredCourseData = transformCourseData(fullCourseData,user._id);
-      if(structuredCourseData){
-        try {
-          const response =await dispatch(createCourse(structuredCourseData));
-          if (response.meta.requestStatus === "fulfilled") {
-            console.log("Uploaded sections:", sections);
-            toast.success("Course uploaded");
-            clearStoredCourseData();
-            navigate("/instructor/courses");
-          } else {
-            toast.error("Failed to upload the course");
-          }
-        } catch (error) {
-          console.error("Error uploading the course:", error);
-          toast.error("An error occurred while uploading the course");
+      const structuredCourseData = transformCourseData(fullCourseData, user._id);
+      if (structuredCourseData) {
+        const response = await axios.put(`${URL}/course/course/update/${courseId}`,structuredCourseData,appJson)
+        if (response) {
+          console.log("Updated sections:", sections);
+          toast.success("Course updated");
+          clearStoredCourseData();
+          navigate("/instructor/courses");
+        } else {
+          toast.error("Failed to update the course");
         }
-      }else{
-        toast.error("error while creating the course")
+      } else {
+        toast.error("Error while updating the course");
       }
+    } catch (error) {
+      console.error("Error updating the course:", error);
+      toast.error("An error occurred while updating the course");
     }
   };
 
@@ -142,33 +141,28 @@ const InstructorAddLesson: FC = () => {
     <div className="p-5 w-full overflow-y-auto text-sm">
       <div className="flex justify-between items-center font-semibold">
         <div>
-          <h1 className="font-bold mt-4 text-2xl">Create Course</h1>
+          <h1 className="font-bold mt-4 text-2xl">Edit Course</h1>
           <div className="flex items-center gap-2 mt-2 mb-4 text-gray-500">
             <p className="text-green-500 font-semibold">My Course</p>
             <span><BsCaretRightFill /></span>
-            <p className="font-semibold">Create Course</p>
+            <p className="font-semibold">Edit Course</p>
             <span><BsCaretRightFill /></span>
-            <p className="font-semibold">Add Trailer</p>
-            <span><BsCaretRightFill /></span>
-            <p className="font-semibold">Add Lessons</p>
+            <p className="font-semibold">Edit Lessons</p>
           </div>
         </div>
       </div>
-
       <div className="flex items-end justify-end -mt-10">
         <button
           type="button"
           className="p-2 bg-blue-600 mt-6 rounded-md"
-          onClick={handleCourseUpload}
+          onClick={handleSubmit}
         >
-          Create Course
+          Update Course
         </button>
       </div>
-      {sections.map((section, sectionIndex) => (
-        <div
-          key={sectionIndex}
-          className="flex flex-col border rounded-lg mt-10"
-        >
+
+      {Array.isArray(sections) && sections.map((section, sectionIndex) => (
+        <div key={sectionIndex} className="flex flex-col border rounded-lg mt-10">
           <div className="flex justify-between">
             <div className="pt-6 flex space-x-4">
               <span className="ps-10 flex items-center">
@@ -182,7 +176,7 @@ const InstructorAddLesson: FC = () => {
                 required
                 className={`border rounded-md p-2 mb-2 ${
                   theme === "light" ? "bg-white" : "bg-gray-900"
-                } `}
+                }`}
               />
             </div>
             <div className="flex pt-6 px-10 space-x-5">
@@ -198,10 +192,7 @@ const InstructorAddLesson: FC = () => {
           </div>
           <div className="border p-5">
             {section.subLessons.map((lecture, lectureIndex) => (
-              <div
-                key={lectureIndex}
-                className="ps-10 p-4 flex flex-col space-y-4"
-              >
+              <div key={lectureIndex} className="ps-10 p-4 flex flex-col space-y-4">
                 <div className="flex space-x-8">
                   <div className="flex flex-col gap-6 w-[70%]">
                     <div className="w-full flex justify-center items-center gap-3">
@@ -214,7 +205,7 @@ const InstructorAddLesson: FC = () => {
                         required
                         className={`border rounded-md p-2 flex-1 w-full ${
                           theme === "light" ? "bg-white" : "bg-gray-900"
-                        } `}
+                        }`}
                       />
                     </div>
                     <div className="w-full flex gap-3">
@@ -225,7 +216,7 @@ const InstructorAddLesson: FC = () => {
                         placeholder="Enter description"
                         className={`border rounded-md p-2 flex-1 w-full h-64 ${
                           theme === "light" ? "bg-white" : "bg-gray-900"
-                        } `}
+                        }`}
                       />
                     </div>
                   </div>
@@ -239,6 +230,7 @@ const InstructorAddLesson: FC = () => {
           </div>
         </div>
       ))}
+
       <div className="flex justify-center">
         <button
           type="button"
@@ -250,8 +242,10 @@ const InstructorAddLesson: FC = () => {
           Add Lesson
         </button>
       </div>
+
+     
     </div>
   );
 };
 
-export default InstructorAddLesson;
+export default EditCourseContent;

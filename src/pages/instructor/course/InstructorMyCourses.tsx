@@ -16,6 +16,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { URL } from "@/Common/api";
 import { PublishCourse } from "@/components/admin/course/PublishCourse";
+import { MdPublishedWithChanges } from "react-icons/md";
 
 export const InstructorMyCourses: FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
@@ -26,7 +27,10 @@ export const InstructorMyCourses: FC = () => {
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [blockUnBlockModal, setBlockUnBlockModal] = useState(false);
-  const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({ id: "", status: "" });
+  const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({
+    id: "",
+    status: "",
+  });
   const [courses, setCourses] = useState<Course[]>([]);
 
   const handleFilter = (type: string, value: any) => {
@@ -75,6 +79,10 @@ export const InstructorMyCourses: FC = () => {
   const showCourseDetailPage = (courseId: string) => {
     navigate(`/instructor/courses/course-detail/${courseId}`);
   };
+  
+  const handleEdit=(courseId:string)=>{
+    navigate(`/instructor/courses/edit/${courseId}`)
+  }
 
   return (
     <>
@@ -144,25 +152,32 @@ export const InstructorMyCourses: FC = () => {
                     <span className="text-blue-600">
                       {course.categoryRef?.title}
                     </span>
-                    {/* <span className="flex justify-center items-center gap-2">
-                      <FaChalkboardTeacher />
-                      {course.instructorRef?.firstName}
-                    </span> */}
+
                     <span className="flex justify-center items-center gap-2">
                       <MdLanguage />
                       {course.language}
                     </span>
                     <span>{course.lessons.length} Lessons</span>
-                    <span
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleBlockUnBlockModal({
-                          id: course._id,
-                          status: course.isBlocked ? "blocked" : "active",
-                        });
-                      }}
-                    >
-                      <FaRegEdit />
+                    <span className="flex gap-2">
+                      <MdPublishedWithChanges
+                        className="text-lg"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleBlockUnBlockModal({
+                            id: course._id,
+                            status: course.isBlocked ? "blocked" : "active",
+                          });
+                        }}
+                      />
+                      <FaRegEdit
+                        className="text-lg"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                           {
+                            handleEdit(course._id);
+                          }
+                        }}
+                      />
                     </span>
                   </div>
                 </div>

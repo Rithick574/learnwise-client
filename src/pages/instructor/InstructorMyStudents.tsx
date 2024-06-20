@@ -74,7 +74,6 @@ const InstructorMyStudents: FC = () => {
         );
         setStudents(response.data);
         setLoading(false);
-      console.log("🚀 ~ file: InstructorMyStudents.tsx:41 ~ fetchStudents ~ response:", response);
       } catch (error) {
         console.error("Error fetching students data:", error);
         toast.error("Error fetching students data");

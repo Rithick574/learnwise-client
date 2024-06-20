@@ -55,10 +55,6 @@ export const getAllAvailableCatgories = createAsyncThunk(
         `${URL}/course/category/available`,
         config
       );
-      console.log(
-        "🚀 ~ file: categoriesAction.tsx:54 ~ async ~ response:",
-        response
-      );
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);

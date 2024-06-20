@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
-import { motion } from "framer-motion";
+import { motion } from "framer-motion";   
 import { URL, commonRequest } from "@/Common/api";
 import { config } from "@/Common/configurations";
 import CategoryEnrollmentChart from "@/components/admin/dashboard/CategoryEnrollmentChart";
@@ -194,15 +194,6 @@ export const AdminHome: FC = () => {
           </div>
         )}
         <div className="flex justify-between gap-6 mt-4">
-          {/* <motion.div
-            className="border border-gray-300 border-x-2 p-4 rounded shadow w-1/3 text-center"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-xl font-bold">Total Revenue</h2>
-            <p className="text-2xl">{totalRevenue}</p>
-          </motion.div> */}
           <motion.div
             className="border border-gray-300 border-x-2 p-4 rounded shadow w-1/3 text-center"
             initial={{ opacity: 0, y: -50 }}

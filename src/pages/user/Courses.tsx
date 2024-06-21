@@ -216,7 +216,7 @@ const Courses = () => {
                   <div
                     key={course._id}
                     className={`w-full mt-4 flex items-center justify-center ${
-                      theme === "light" ? "bg-gray-100" : "bg-gray-800"
+                      theme === "light" ? "bg-gray-100" : "bg-gray-900"
                     } rounded-md overflow-hidden px-2 py-3`}
                     onClick={() =>
                       showCourseDetailsPage(

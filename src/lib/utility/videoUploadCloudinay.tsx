@@ -23,7 +23,6 @@ const videoUpload = async (video: File, onUploadProgress: (progress: number) => 
 
         const validFormats = ['mp4', 'avi', 'mov'];
         if (validFormats.includes(format)) {
-            console.log("🚀 ~ file: videoUploadCloudinay.tsx:23 ~ videoUpload ~ secure_url:", secure_url)
             return secure_url;
         } else {
             return null;

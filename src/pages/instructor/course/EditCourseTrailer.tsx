@@ -7,9 +7,9 @@ import { AiOutlineCheck } from "react-icons/ai";
 import InputWithIcon from "@/components/auth/InputWithIcon";
 import { IoPricetagsOutline } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
-import { CourseTrailerUpload } from "@/components/public/CourseTrailerUpload";
 import axios from "axios";
 import { URL } from "@/Common/api";
+import { CourseUpdateTrailerUpload } from "@/components/public/CourseUpdateTrailerUpload";
 
 interface TrailerValues {
   courseTrailer: string | null; 
@@ -46,7 +46,7 @@ const EditCourseTrailer: FC = () => {
         const courseData = data.data;
         setInitialValues((prevValues) => ({
           ...prevValues,
-          courseTrailer: courseData.trailer ? courseData.trailer.thumbnail : null,
+          courseTrailer: courseData?.trial ? courseData?.trial?.video : null,
           price: courseData.pricing.amount,
           whatYouWillLearn: courseData.trial.description || [""],
         }));
@@ -58,6 +58,7 @@ const EditCourseTrailer: FC = () => {
     fetchCourseData();
   }, [courseId]);
 
+  
   const validationSchema = Yup.object().shape({
     price: Yup.number()
       .required("Price is required")
@@ -206,14 +207,15 @@ const EditCourseTrailer: FC = () => {
 };
 
 const CustomVideoFileInputWrapper: FC<{ theme: string }> = ({ theme }) => {
-  const { setFieldValue } = useFormikContext<TrailerValues>();
+  const { setFieldValue,values } = useFormikContext<TrailerValues>();
 
   return (
-    <CourseTrailerUpload
-      onChange={(fileurl) => {
-        setFieldValue("courseTrailer", fileurl);
-      }}
-      theme={theme}
+    <CourseUpdateTrailerUpload
+    value={values.courseTrailer} 
+    onChange={(fileUrl) => {
+      setFieldValue("courseTrailer", fileUrl);
+    }}
+    theme={theme}
     />
   );
 };

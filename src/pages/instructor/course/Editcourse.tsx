@@ -9,13 +9,13 @@ import { TbCategory } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { getAllAvailableCatgories } from "@/redux/actions/admin/categoriesAction";
-import { CustomSingleFileInput } from "@/components/public/CustomSingleFileInput";
-import { CustomPdfFileInput } from "@/components/public/CustomPdfFileInput";
 import TextareaWithIcon from "@/components/auth/TextareaWithIcon";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { URL } from "@/Common/api";
+import { CustomSingleUpdateFileInput } from "@/components/public/CustomSingleUpdateFileInput";
+import { CustomPdfUpdateFileInput } from "@/components/public/CustomPdfUpdateFileInput";
 
 interface CourseValues {
   courseTitle: string;
@@ -29,7 +29,9 @@ interface CourseValues {
 
 export const EditCourse: FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
-  const { availableCategories } = useSelector((state: RootState) => state.category);
+  const { availableCategories } = useSelector(
+    (state: RootState) => state.category
+  );
   const dispatch = useDispatch<AppDispatch>();
   const { theme } = useTheme();
   const navigate = useNavigate();
@@ -48,8 +50,8 @@ export const EditCourse: FC = () => {
 
     const fetchCourseData = async () => {
       try {
-        const {data} = await axios.get(`${URL}/course/course/${courseId}`)
-        const courseData=data.data;
+        const { data } = await axios.get(`${URL}/course/course/${courseId}`);
+        const courseData = data.data;
         setInitialValues({
           courseTitle: courseData.title,
           description: courseData.description,
@@ -73,11 +75,11 @@ export const EditCourse: FC = () => {
       return;
     }
     try {
-      const data = localStorage.getItem('updateCourse');
+      const data = localStorage.getItem("updateCourse");
       const currentData = data ? JSON.parse(data) : {};
       const mergedData = { ...currentData, ...values };
-      localStorage.setItem('updateCourse', JSON.stringify(mergedData));
-      
+      localStorage.setItem("updateCourse", JSON.stringify(mergedData));
+
       navigate(`/instructor/courses/editcourse/${courseId}`);
     } catch (error) {
       console.error("Error submitting the form", error);
@@ -116,29 +118,45 @@ export const EditCourse: FC = () => {
             <div className="p-5 shadow-md rounded-md">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className={`block ${theme === "light" ? "text-gray-700" : "text-white"}`}>
+                  <label
+                    className={`block ${
+                      theme === "light" ? "text-gray-700" : "text-white"
+                    }`}
+                  >
                     Course Thumbnail
                   </label>
-                  <CustomSingleFileInput
-                    onChange={(file) => {
-                      setFieldValue("courseThumbnail", file);
-                    }}
+                  <CustomSingleUpdateFileInput
+                    onChange={(file) => setFieldValue("courseThumbnail", file)}
+                    value={values.courseThumbnail}
                     theme={theme}
                   />
                 </div>
                 <div>
-                  <label className={`block ${theme === "light" ? "text-gray-700" : "text-white"}`}>
+                  <label
+                    className={`block ${
+                      theme === "light" ? "text-gray-700" : "text-white"
+                    }`}
+                  >
                     Resources
                   </label>
-                  <CustomPdfFileInput
-                    onChange={(file) => {
-                      setFieldValue("resources", file);
-                    }}
+                  <CustomPdfUpdateFileInput
+                    onChange={(file) => setFieldValue("resources", file)}
+                    value={values.resources}
                     theme={theme}
                   />
                   <div className="flex items-center mt-2">
-                    <Field type="checkbox" id="resources" name="resources" className="mr-2" />
-                    <label htmlFor="resources" className={`${theme === "light" ? "text-gray-500" : "text-white"}`}>
+                    <Field
+                      type="checkbox"
+                      id="resources"
+                      name="resources"
+                      className="mr-2"
+                    />
+                    <label
+                      htmlFor="resources"
+                      className={`${
+                        theme === "light" ? "text-gray-500" : "text-white"
+                      }`}
+                    >
                       Material available
                     </label>
                   </div>
@@ -160,8 +178,11 @@ export const EditCourse: FC = () => {
                 theme={theme}
                 as="textarea"
               />
-             <div className="relative mt-4 mb-4">
-                <label htmlFor="category" className="block text-sm font-medium mb-2">
+              <div className="relative mt-4 mb-4">
+                <label
+                  htmlFor="category"
+                  className="block text-sm font-medium mb-2"
+                >
                   Category
                 </label>
                 <div className="relative flex items-center">
@@ -186,14 +207,20 @@ export const EditCourse: FC = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <label className={`block ${theme === "light" ? "text-gray-700" : "text-white"}`}>
+                <label
+                  className={`block ${
+                    theme === "light" ? "text-gray-700" : "text-white"
+                  }`}
+                >
                   Pricing
                 </label>
                 <div className="flex gap-4 mt-2">
                   <button
                     type="button"
                     className={`border rounded-md py-2 px-4 ${
-                      values.pricingType === "free" ? "bg-blue-600 text-white" : ""
+                      values.pricingType === "free"
+                        ? "bg-blue-600 text-white"
+                        : ""
                     }`}
                     onClick={() => setFieldValue("pricingType", "free")}
                   >
@@ -202,7 +229,9 @@ export const EditCourse: FC = () => {
                   <button
                     type="button"
                     className={`border rounded-md py-2 px-4 ${
-                      values.pricingType === "paid" ? "bg-blue-600 text-white" : ""
+                      values.pricingType === "paid"
+                        ? "bg-blue-600 text-white"
+                        : ""
                     }`}
                     onClick={() => setFieldValue("pricingType", "paid")}
                   >
@@ -212,7 +241,10 @@ export const EditCourse: FC = () => {
               </div>
             </div>
             <div className="mt-6 flex justify-end">
-              <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-md">
+              <button
+                type="submit"
+                className="bg-blue-600 text-white py-2 px-6 rounded-md"
+              >
                 Save Changes
               </button>
             </div>
@@ -222,6 +254,5 @@ export const EditCourse: FC = () => {
     </div>
   );
 };
-
 
 export default EditCourse;

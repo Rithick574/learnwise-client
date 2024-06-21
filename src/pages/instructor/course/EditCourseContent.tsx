@@ -4,23 +4,20 @@ import { AiOutlineDelete, AiOutlineMenu, AiOutlinePlus } from "react-icons/ai";
 import { MdOutlinePlayLesson, MdOutlineDescription } from "react-icons/md";
 import { useTheme } from "@/components/ui/theme-provider";
 import { useNavigate, useParams } from "react-router-dom";
-import { CourseUploader } from "@/components/public/CourseUploader";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
-import { transformCourseData } from "@lib/validations/TransformCourseData";
+import { transformUpdatedCourseData } from "@lib/validations/TransformCourseData";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getStoredUpdatedCourseData, setStoredupdatedCourseData } from "./EditCourseTrailer";
 import { URL } from "@/Common/api";
 import { appJson } from "@/Common/configurations";
+import CourseUpdateUploader from "@/components/public/CourseUpdateUploader";
 
-const clearStoredCourseData = () => {
-  localStorage.removeItem('updateCourse');
-};
 
 interface SubLesson {
   title: string;
-  videoUrl: string | null;
+  video: string | null;
   description: string;
 }
 
@@ -33,7 +30,6 @@ const EditCourseContent: FC = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: string }>();
-  console.log("🚀 ~ file: EditCourseContent.tsx:36 ~ courseId:", courseId)
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -69,7 +65,7 @@ const EditCourseContent: FC = () => {
     const updatedSections = [...sections];
     const newSubLesson: SubLesson = {
       title: `Lecture ${updatedSections[sectionIndex].subLessons.length + 1}`,
-      videoUrl: null,
+      video: null,
       description: "",
     };
     updatedSections[sectionIndex].subLessons.push(newSubLesson);
@@ -107,7 +103,7 @@ const EditCourseContent: FC = () => {
   const handleVideoChange = (fileUrl: string | null, sectionIndex: number, subLessonIndex: number) => {
     if (fileUrl) {
       const updatedSections = [...sections];
-      updatedSections[sectionIndex].subLessons[subLessonIndex].videoUrl = fileUrl;
+      updatedSections[sectionIndex].subLessons[subLessonIndex].video = fileUrl;
       setSections(updatedSections);
     }
   };
@@ -117,13 +113,15 @@ const EditCourseContent: FC = () => {
       setStoredupdatedCourseData(sections);
       const storedData = getStoredUpdatedCourseData();
       const fullCourseData = { ...storedData, sections };
-      const structuredCourseData = transformCourseData(fullCourseData, user._id);
+      console.log("🚀 ~ file: EditCourseContent.tsx:117 ~ handleSubmit ~ fullCourseData:", fullCourseData)
+      const structuredCourseData = transformUpdatedCourseData(fullCourseData, user._id);
+      console.log("🚀 ~ file: EditCourseContent.tsx:118 ~ handleSubmit ~ structuredCourseData:", structuredCourseData)
       if (structuredCourseData) {
         const response = await axios.put(`${URL}/course/course/update/${courseId}`,structuredCourseData,appJson)
         if (response) {
+          localStorage.removeItem('updateCourse');
           console.log("Updated sections:", sections);
           toast.success("Course updated");
-          clearStoredCourseData();
           navigate("/instructor/courses");
         } else {
           toast.error("Failed to update the course");
@@ -220,8 +218,9 @@ const EditCourseContent: FC = () => {
                       />
                     </div>
                   </div>
-                  <CourseUploader
+                  <CourseUpdateUploader
                     onChange={(fileurl) => handleVideoChange(fileurl, sectionIndex, lectureIndex)}
+                    value={lecture.video}
                     theme={theme}
                   />
                 </div>

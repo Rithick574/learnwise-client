@@ -54,7 +54,7 @@ interface Course {
   course: Course;
 }
 
-interface DashboardData {
+export interface DashboardData {
   enrollments: Enrollment[];
   totalCourses: number;
   totalStudents: number;

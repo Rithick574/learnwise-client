@@ -160,7 +160,7 @@ export const AdminHome: FC = () => {
   const handleApplyDateRange = () => {
     setShowReport(true);
   };
-
+  
   return (
     <>
       <div className="p-5 w-full overflow-auto text-sm">
@@ -266,6 +266,7 @@ export const AdminHome: FC = () => {
         dateRange={dateRange}
         setDateRange={setDateRange}
         onApply={handleApplyDateRange}
+        maxDate={new Date()}
       />
     </>
   );

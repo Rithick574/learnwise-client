@@ -8,8 +8,7 @@ import { store } from "./redux/store.tsx";
 import { Toaster } from "react-hot-toast";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import {GOOGLE_ID} from "@/Common/configurations.tsx"
-
-
+import { SocketProvider } from '@/contexts/SocketContext.tsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -18,7 +17,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
     <GoogleOAuthProvider clientId={`${GOOGLE_ID}`}>
     <Toaster position="top-center" />
+    <SocketProvider>
       <App />
+      </SocketProvider>
       </GoogleOAuthProvider>
     </Provider>
     </ThemeProvider>

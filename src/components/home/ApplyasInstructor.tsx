@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import Footer from "./Footer";
+
 
 
 const ApplyasInstructor = () => {
   const navigate=useNavigate()
   return (
     <>
-      <div className="w-full flex items-center">
+      <div className="w-full flex items-center h-screen">
         <div className="flex flex-col ml-24 mt-[200px]">
           <h2 className="text-[45px] font-Josefin px-3w-full font-[600]">
             Become An
@@ -83,7 +83,6 @@ const ApplyasInstructor = () => {
           <div className="absolute bg-gradient-to-br from-blue-900 to-black rounded-full w-[580px] h-[580px]  right-20"></div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

@@ -99,7 +99,7 @@ export const DetailedCourse = () => {
   };
 
   return (
-    <div className="container mx-auto my-10">
+    <div className="container mx-auto my-10 overflow-y-scroll">
       {loading ? (
         <div className="flex flex-col items-center">
           <Skeleton width={"60%"} height={"30px"} />

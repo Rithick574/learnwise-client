@@ -15,6 +15,7 @@ import Pagination from "@/components/public/Pagination";
 import FilterUserDashboard from "./course/FilterUserDashboard";
 
 const Courses = () => {
+  const { user } = useSelector((state: RootState) => state.user);
   const { courses, loading, totalAvailableCourses } = useSelector(
     (state: RootState) => state.courses
   );
@@ -141,14 +142,20 @@ const Courses = () => {
     courseName: string,
     instructorRef: string
   ) => {
-    navigate(`/courses/${courseId}`, {
-      state: { courseId, cost, thumbnail, courseName, instructorRef },
-    });
+    if (user.role === "student") {
+      navigate(`/student/courses/${courseId}`, {
+        state: { courseId, cost, thumbnail, courseName, instructorRef },
+      });
+    } else {
+      navigate(`/courses/${courseId}`, {
+        state: { courseId, cost, thumbnail, courseName, instructorRef },
+      });
+    }
   };
 
   return (
     <>
-      <div className="w-full flex pt-20 px-5 lg:p-20 text-gray-500  gap-4">
+      <div className="w-full flex pt-20 px-5 lg:p-20 text-gray-500  gap-4 overflow-x-auto">
         {/* Category */}
         <FilterUserDashboard
           clearFilters={clearFilters}

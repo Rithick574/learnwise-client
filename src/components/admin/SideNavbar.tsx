@@ -1,7 +1,6 @@
 import { logout } from '@/redux/actions/user/userActions';
 import { AppDispatch } from '@/redux/store';
 import {FC} from 'react'
-import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FiBox, FiSettings, FiLogOut } from "react-icons/fi";
@@ -19,7 +18,6 @@ export const SideNavbar:FC = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const handleLogout = () => {
-        toast.error("Logout successful");
         dispatch(logout());
         navigate("/");
     };

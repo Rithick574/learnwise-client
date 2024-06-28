@@ -116,7 +116,7 @@ const Footer = () => {
           </div>
         </div>
         <br/>
-        <div className="flex justify-center items-center mt-5 mb-7 ml-20">
+        <div className="flex justify-center items-center mt-5 pb-5 ml-20">
           <p>Copyright @ 2024 LearnWise | All Rights Reserved</p>
         </div>
       </div>

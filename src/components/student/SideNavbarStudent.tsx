@@ -1,5 +1,4 @@
 import {FC} from 'react'
-import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '../ui/theme-provider';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -16,7 +15,6 @@ export const SideNavbarStudent:FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleLogout = () => {
-      toast.success("Logout successful");
       dispatch(logout());
       navigate("/");
   };
@@ -32,7 +30,7 @@ export const SideNavbarStudent:FC = () => {
                     <RiDashboardLine className="w-5 opacity-80" />
                     <span className="font-medium text-md">Overview</span>
                 </NavLink>
-                <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/courses/">
+                <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/courses/">
                     <RiDashboardLine className="w-5 opacity-80" />
                     <span className="font-medium text-md">Courses</span>
                 </NavLink>
@@ -51,6 +49,10 @@ export const SideNavbarStudent:FC = () => {
                 <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/messages">
                     <PiNotificationBold className="w-5 opacity-80" />
                     <span className="font-medium text-sm">Messages</span>
+                </NavLink>
+                <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/instructors">
+                    <FiBox className="w-5 opacity-80" />
+                    <span className="font-medium text-sm">Explore</span>
                 </NavLink>
                 <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/settings">
                     <FiSettings className="w-5 opacity-80" />

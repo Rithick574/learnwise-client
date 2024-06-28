@@ -10,6 +10,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation
 } from "react-router-dom";
 import PrivacyPolicy from "./pages/public/PrivacyPolicy";
 
@@ -20,10 +21,11 @@ import ApplyasInstructor from "./components/home/ApplyasInstructor";
 import { ApplyToTeach } from "./pages/public/ApplyToTeach";
 import { Instructors } from "./pages/public/Instructors";
 import { About } from "./pages/public/About";
+import {InstructorDetails} from "./pages/public/InstructorDetails"
 
 //components
-// import Footer from "./components/home/Footer";
-// import Header from "./components/home/Header";
+import Footer from "./components/home/Footer";
+import Header from "./components/home/Header";
 
 //auth
 import Login from "./pages/user/Login";
@@ -70,6 +72,8 @@ import Editcourse from "./pages/instructor/course/Editcourse";
 import EditCourseTrailer from "./pages/instructor/course/EditCourseTrailer";
 import EditCourseContent from "./pages/instructor/course/EditCourseContent";
 import CreateExam from "./pages/instructor/exam/createExam";
+import { PaymentSuccess } from "./pages/user/subscription/PaymentSuccess";
+import PaymentFailed from "./pages/user/subscription/PaymentFailed";
 
 type ProtectedRouteProps = {
   element: React.ReactElement;
@@ -99,8 +103,9 @@ function App() {
     allowedRoles,
   }) => {
     const { user } = useSelector((state: RootState) => state.user);
+    const location = useLocation();
     if (!user) {
-      return <Navigate to="/learnwise" />;
+      return <Navigate to="/" state={{ from: location }}  />;
     }
     if (allowedRoles.includes(user.role)) {
       return element;
@@ -116,16 +121,15 @@ function App() {
       return <Navigate to={roles[user.role]} replace />;
     }
 
-    return <Navigate to="/learnwise" replace />;
+    return <IndexPage/>;
   };
 
   return (
     <Router>
-      {/* {user ? (
-        user.role !== "admin" && user.role !== "instructor" && <Header />
-      ) : (
-        <Header />
-      )} */}
+      {(!user ||
+        (user.role !== "admin" &&
+          user.role !== "instructor" &&
+          user.role !== "student")) && <Header />}
       <Routes>
         <Route
           path="/"
@@ -140,7 +144,6 @@ function App() {
           }
         />
         {/* general pages */}
-        <Route path="/learnwise" element={<IndexPage />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:courseId" element={<DetailedCourse />} />
         <Route path="course/paymentsuccess" element={<UserPaymentSuccess />} />
@@ -149,6 +152,7 @@ function App() {
         <Route path="teach" element={<ApplyasInstructor />} />
         <Route path="apply-to-teach" element={<ApplyToTeach />} />
         <Route path="instructors" element={<Instructors />} />
+        <Route path="instructors/:instructorId" element={<InstructorDetails/>}/>
         <Route path="about" element={<About />} />
 
         {/* Auth Pages */}
@@ -192,11 +196,10 @@ function App() {
 
         <Route path="*" element={<Error404 />} />
       </Routes>
-      {/* {user ? (
-        user.role !== "admin" && user.role !== "instructor" && <Footer />
-      ) : (
-        <Footer />
-      )} */}
+      {(!user ||
+        (user.role !== "admin" &&
+          user.role !== "instructor" &&
+          user.role !== "student")) && <Footer />}
     </Router>
   );
 }
@@ -234,12 +237,12 @@ const InstructorRoutes: FC = () => {
           <Route path="addcourse" element={<InstructorAddCourse />} />
           <Route path="uploadtrailer" element={<InstructorAddTrailer />} />
           <Route path="addlesson" element={<InstructorAddLesson />} />
-          <Route path="edit/:courseId" element={<Editcourse/>} />
-          <Route path="editcourse/:courseId" element={<EditCourseTrailer/>} />
-          <Route path="editcontent/:courseId" element={<EditCourseContent/>} /> 
+          <Route path="edit/:courseId" element={<Editcourse />} />
+          <Route path="editcourse/:courseId" element={<EditCourseTrailer />} />
+          <Route path="editcontent/:courseId" element={<EditCourseContent />} />
         </Route>
         <Route path="assessments" element={<InstructorAssessments />} />
-        <Route path="assessments/:courseId" element={<CreateExam />}/>
+        <Route path="assessments/:courseId" element={<CreateExam />} />
         <Route path="messages" element={<InstructorChat />} />
         <Route path="mystudents" element={<InstructorMyStuddents />} />
         <Route path="/settings" element={<InstructorSettings />} />
@@ -252,7 +255,15 @@ const StudentRoutes: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<StudentLayout />}>
-        {/* <Route index element={<DashboardNav />} /> */}
+        <Route index element={<DashboardNav />} />
+        <Route path="courses">
+          <Route index element={<Courses />} />
+          <Route path=":courseId" element={<DetailedCourse />} />
+        </Route>
+        <Route path="instructors" element={<Instructors />} />
+        <Route path="instructors/:instructorId" element={<InstructorDetails />} />
+        <Route path="/instructors/subscription/success" element={<PaymentSuccess />} />
+        <Route path="/instructors/subscription/failed" element={<PaymentFailed />} />
         <Route path="overview" element={<DashboardNav />} />
         <Route path="enrollments" element={<Enrollments />} />
         <Route path="exams" element={<Exams />} />

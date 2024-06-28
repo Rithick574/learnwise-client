@@ -10,9 +10,10 @@ interface DateRangepickerProps {
   dateRange: Range[];
   setDateRange: (range: Range[]) => void;
   onApply: () => void;
+  maxDate: Date;
 }
 
-const DateRangepicker: FC<DateRangepickerProps> = ({ isVisible, onClose, dateRange, setDateRange, onApply }) => {
+const DateRangepicker: FC<DateRangepickerProps> = ({ isVisible, onClose, dateRange, setDateRange, onApply,maxDate }) => {
   if (!isVisible) return null;
   const {theme} =useTheme()
   const handleApply = () => {
@@ -34,6 +35,7 @@ const DateRangepicker: FC<DateRangepickerProps> = ({ isVisible, onClose, dateRan
         className="custom-date-range-picker"
           ranges={dateRange}
           onChange={handleSelect}
+          maxDate={maxDate}
         />
         <div className="flex justify-end mt-4">
           <button

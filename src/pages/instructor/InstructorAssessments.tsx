@@ -24,7 +24,6 @@ const InstructorAssessments: FC = () => {
       try {
         const { data } = await axios.get(`${URL}/course/mycourse/${user._id}`);
         setCourses(data.data);
-        console.log("🚀 ~ file: InstructorAssessments.tsx:25 ~ fetchCourses ~ data:", data)
       } catch (error) {
         console.error("Error fetching course data:", error);
         toast.error("Error fetching course data");

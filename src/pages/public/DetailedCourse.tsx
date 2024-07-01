@@ -175,6 +175,8 @@ export const DetailedCourse = () => {
                         onSubLessonClick={(videoUrl: string) =>
                           setVideo(videoUrl)
                         }
+                        courseId={course._id}
+                         userId={user._id}
                       />
                     ) : (
                       <p>No lessons available</p>

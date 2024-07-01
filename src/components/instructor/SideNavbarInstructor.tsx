@@ -58,6 +58,10 @@ export const SideNavbarInstructor:FC = () => {
                             <CgProfile className="w-5 opacity-80" />
                             <span className="font-medium text-md">Profile</span>
                         </NavLink>
+                        <NavLink className={`pl-6 py-3 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/notification">
+                            <CgProfile className="w-5 opacity-80" />
+                            <span className="font-medium text-md">Notification</span>
+                        </NavLink>
                         <NavLink className={`pl-6 py-3 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/instructor/settings">
                             <FiSettings className="w-5 opacity-80" />
                             <span className="font-medium text-md">Settings</span>

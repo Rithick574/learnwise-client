@@ -66,7 +66,6 @@ import InstructorMyStuddents from "./pages/instructor/InstructorMyStudents";
 import InstructorAssessments from "./pages/instructor/InstructorAssessments";
 import AdminPayments from "./pages/admin/AdminPayments";
 import { Enrollments } from "./pages/user/Enrollments";
-import { Exams } from "./pages/user/Exams";
 import { StudentChat } from "./pages/user/chat/StudentChat";
 import Editcourse from "./pages/instructor/course/Editcourse";
 import EditCourseTrailer from "./pages/instructor/course/EditCourseTrailer";
@@ -74,6 +73,9 @@ import EditCourseContent from "./pages/instructor/course/EditCourseContent";
 import CreateExam from "./pages/instructor/exam/createExam";
 import { PaymentSuccess } from "./pages/user/subscription/PaymentSuccess";
 import PaymentFailed from "./pages/user/subscription/PaymentFailed";
+import VideoCallPage from './components/instructor/chat/VideoCall';
+import { Exams } from "./pages/user/Exams";
+import { Notifications } from "./components/admin/notification/Notifications";
 
 type ProtectedRouteProps = {
   element: React.ReactElement;
@@ -148,12 +150,16 @@ function App() {
         <Route path="/courses/:courseId" element={<DetailedCourse />} />
         <Route path="course/paymentsuccess" element={<UserPaymentSuccess />} />
         <Route path="course/paymentfailed" element={<UserPaymentFailed />} />
+        <Route path="instructors/subscription/success" element={<PaymentSuccess />} />
+        <Route path="instructors/subscription/failed" element={<PaymentFailed />} />
         <Route path="/policy" element={<PrivacyPolicy />} />
         <Route path="teach" element={<ApplyasInstructor />} />
         <Route path="apply-to-teach" element={<ApplyToTeach />} />
         <Route path="instructors" element={<Instructors />} />
         <Route path="instructors/:instructorId" element={<InstructorDetails/>}/>
         <Route path="about" element={<About />} />
+
+        <Route path='/call' element={<VideoCallPage />} />
 
         {/* Auth Pages */}
         <Route path="login" element={<Login />} />
@@ -244,6 +250,7 @@ const InstructorRoutes: FC = () => {
         <Route path="assessments" element={<InstructorAssessments />} />
         <Route path="assessments/:courseId" element={<CreateExam />} />
         <Route path="messages" element={<InstructorChat />} />
+        <Route path="notification" element={<Notifications />} />
         <Route path="mystudents" element={<InstructorMyStuddents />} />
         <Route path="/settings" element={<InstructorSettings />} />
       </Route>
@@ -262,11 +269,9 @@ const StudentRoutes: FC = () => {
         </Route>
         <Route path="instructors" element={<Instructors />} />
         <Route path="instructors/:instructorId" element={<InstructorDetails />} />
-        <Route path="/instructors/subscription/success" element={<PaymentSuccess />} />
-        <Route path="/instructors/subscription/failed" element={<PaymentFailed />} />
         <Route path="overview" element={<DashboardNav />} />
+        <Route path="/exam/:courseId" element={<Exams />} />
         <Route path="enrollments" element={<Enrollments />} />
-        <Route path="exams" element={<Exams />} />
         <Route path="messages" element={<StudentChat />} />
         <Route path="settings" element={<ProfilePage />} />
       </Route>

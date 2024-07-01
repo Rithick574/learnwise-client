@@ -1,20 +1,31 @@
 import { commonRequest } from "@/Common/api";
 import { config } from "@/Common/configurations";
-import { FC, useEffect, useRef } from "react";
+import { useSocket } from "@/contexts/SocketContext";
+import { RootState } from "@/redux/store";
+import { FC, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Confetti from "react-confetti";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 const UserPaymentSuccess: FC = () => {
+  const { user } = useSelector((state: RootState) => state.user);
+  const socket = useSocket();
   const navigate = useNavigate();
   const item = localStorage.getItem("paymentData");
-  const isRequestSent = useRef(false);  
+  const isRequestSent = useRef(false);
+  const [confettiDimensions, setConfettiDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   useEffect(() => {
     if (!item) {
-      navigate("/courses");
+      navigate("/student/courses");
       return;
     }
 
-    if (isRequestSent.current) return; 
+    if (isRequestSent.current) return;
     isRequestSent.current = true;
 
     const data = JSON.parse(item);
@@ -24,8 +35,11 @@ const UserPaymentSuccess: FC = () => {
         const method = "card";
         const status = "completed";
         const wholeData = { method, status, ...rest };
-         await commonRequest("post", '/payment/savePayment', wholeData, config);
-        localStorage.removeItem('paymentData');
+        console.log(
+          "🚀 ~ file: UserPaymentSuccess.tsx:30 ~ fetchData ~ wholeData:",
+          wholeData
+        );
+        await commonRequest("post", "/payment/savePayment", wholeData, config);
       } catch (error) {
         console.error("Error saving payment:", error);
       }
@@ -33,9 +47,51 @@ const UserPaymentSuccess: FC = () => {
     fetchData();
   }, [item, navigate]);
 
+  useEffect(()=>{
+    setTimeout(() => {
+      if (item) {
+        console.log("🚀 ~ file: UserPaymentSuccess.tsx:55 ~ setTimeout ~ socket:", socket)
+        const { courseId,instructorRef } = JSON.parse(item);
+        if (socket) {
+          console.log("__________------------________");
+          socket.emit("newNotification", {
+            recipientId: `${instructorRef}`,
+            content: `Course ${courseId} is Purchased by ${user.firstName} `,
+            type: "coursePurchase",
+          });
+        }
+        localStorage.removeItem("paymentData");
+      }
+    }, 3000);
+  },[socket,user])
+  
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      setConfettiDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    window.addEventListener("resize", updateDimensions);
+    return () => {
+      window.removeEventListener("resize", updateDimensions);
+    };
+  }, []);
+
   return (
     <div className="h-screen">
+      <Confetti
+        width={confettiDimensions.width}
+        height={confettiDimensions.height}
+      />
       <div className="p-6 md:mx-auto">
+        <Player
+          autoplay
+          loop
+          src="https://lottie.host/64e5ead9-ca1d-4e85-bc64-fd2f609d4d91/GiwKcXIA3R.json"
+          style={{ height: "400px", width: "400px" }}
+        />
         <svg
           viewBox="0 0 24 24"
           className="text-green-600 w-16 h-16 mx-auto my-6"
@@ -53,12 +109,12 @@ const UserPaymentSuccess: FC = () => {
           </p>
           <p>Have a great day!</p>
           <div className="py-10 text-center">
-            <a
-              href="/courses"
-              className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"
+            <span
+              onClick={() => navigate("/student/courses")}
+              className="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 cursor-pointer"
             >
               GO BACK
-            </a>
+            </span>
           </div>
         </div>
       </div>

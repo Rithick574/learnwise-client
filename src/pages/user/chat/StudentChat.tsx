@@ -1,44 +1,104 @@
-import ChatMessage from '@/components/instructor/chat/ChatMessage'
-import MessageInput from '@/components/instructor/chat/MessageInput'
+import { URL } from "@/Common/api";
+import ChatHeader from "@/components/instructor/chat/ChatHeader";
+import ChatMessage from "@/components/instructor/chat/ChatMessage";
+import MessageInput from "@/components/instructor/chat/MessageInput";
+import Sidebar from "@/components/instructor/chat/Sidebar";
+import axios from "axios";
 
-import {FC} from 'react'
+import { FC, useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { Player } from "@lottiefiles/react-lottie-player";
 
-export const StudentChat:FC = () => {
+interface Chat {
+  chatId: string;
+  receiverId: string;
+  profileImageUrl: string;
+  name: string;
+}
+
+interface Message {
+  id: string;
+  sender: string;
+  senderId: string;
+  content: string;
+  contentType: string;
+  time: string;
+  seen: number;
+}
+
+export const StudentChat: FC = () => {
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [_receiverId, setReceiverId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (selectedChat) {
+      fetchMessages(selectedChat.chatId);
+    }
+  }, [selectedChat]);
+
+  const handleUserSelect = async (chat: Chat) => {
+    setSelectedChat(chat);
+    setReceiverId(chat.receiverId);
+  };
+
+  const handleNewMessage = (newMessage: Message) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
+  const fetchMessages = async (chatId: string) => {
+    try {
+      const res = await axios.get(`${URL}/chat/${chatId}`);
+      const fetchedMessages = res.data.data.messages.map((message: any) => ({
+        id: message._id,
+        sender: message.sender.userName,
+        senderId: message.sender._id,
+        content: message.content,
+        contentType: message.contentType || "text",
+        time: new Date(message.createdAt).toLocaleTimeString(),
+        seen: message.receiverSeen ? 1 : 0,
+      }));
+      setMessages(fetchedMessages);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      toast.error("Can't fetch messages. Please try again later.");
+    }
+  };
+
   return (
-    <div className="w-full">
-     
-
-      <div className="w-full flex h-screen">
-        {/* <Sidebar /> */}
+    <div className="w-full mt-6">
+      <div className="w-full flex">
+        <Sidebar onUserSelect={handleUserSelect} />
         <div className="p-5 w-full overflow-auto text-sm">
-          <div className="overflow-auto h-96">
-            <div>
-              <ChatMessage
-                isUser={false}
-                avatar="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                name="Kenobi"
-                time="12:45"
-                message="You were the Chosen One!"
-                status="Delivered"
-              />
-            </div>
-            <div>
-              <ChatMessage
-                isUser={true}
-                avatar="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                name="Anakin"
-                time="12:46"
-                message="I hate you!"
-                status="Seen at 12:46"
-              />
-            </div>
-          </div>
-          <div className="mt-45">
-            <MessageInput />
+          <div className="overflow-auto">
+            {selectedChat ? (
+              <>
+                <ChatHeader user={selectedChat} />
+                <ChatMessage
+                  selectedChat={selectedChat}
+                  setMessages={setMessages}
+                  messages={messages}
+                />
+                <MessageInput
+                  chatId={selectedChat.chatId}
+                  recieversId={selectedChat.receiverId}
+                  onMessageSent={handleNewMessage}
+                />
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full mt-16">
+                <Player
+                  autoplay
+                  loop
+                  src="https://lottie.host/5d9ca0bb-9089-427b-898f-5349adf3dbca/OucHgX3LHs.json"
+                  style={{ height: '300px', width: '300px' }}
+                />
+                <h1 className="text-xl">Select a chat to start Messaging</h1>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
-  )
-}
-
+  );
+};

@@ -75,3 +75,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Admin side bar animation left - right scroll */
+
+.side-navbar-admin {
+  transition: transform 0.3s ease-in-out; /* Animation transition property */
+  transform: translateX(-100%); /* Initially move the sidebar off-screen */
+}
+
+.side-navbar-admin.show {
+  transform: translateX(
+    0
+  ); /* Move the sidebar back on-screen when the 'show' class is applied */
+}

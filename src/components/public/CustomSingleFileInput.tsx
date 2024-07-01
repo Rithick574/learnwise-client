@@ -3,6 +3,9 @@ import { ImageUploadIcon } from "./ImageUploadIcon";
 import ImageUpload from "@lib/utility/ImageUpload";
 import toast from "react-hot-toast";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import {deleteFromCloud} from "@/lib/utility/deleteFromCloud" 
 
 interface CustomSingleFileInputProps {
   onChange: (file: File | null | string) => void;
@@ -13,6 +16,7 @@ export const CustomSingleFileInput: FC<CustomSingleFileInputProps> = ({
   onChange,
   theme,
 }) => {
+  const { user } = useSelector((state: RootState) => state.user);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,6 +61,9 @@ export const CustomSingleFileInput: FC<CustomSingleFileInputProps> = ({
       }
       setLoading(false);
       onChange(imgUrl);
+      if (user?.profile.avatar && user?.profileImagePublicId) {
+        await deleteFromCloud(user.profileImagePublicId);
+    }
     } else {
       setLoading(false);
     }

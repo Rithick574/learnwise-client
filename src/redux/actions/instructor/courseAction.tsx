@@ -70,6 +70,7 @@ export const publishCourse = createAsyncThunk(
   async({ id, action }: PublishCourseArgs,{rejectWithValue})=>{
     try {
       const {data}=await axios.patch(`${URL}/course/course`,{id,action},appJson)
+      console.log("🚀 ~ file: courseAction.tsx:74 ~ async ~ data:", data)
       return data
     } catch (error:any) {
       return handleError(error, rejectWithValue);

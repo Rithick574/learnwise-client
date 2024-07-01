@@ -15,25 +15,26 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
   };
 
   return (
-    <div className="card bg-base-100 w-[19rem] shadow-xl">
+    <div className="card bg-base-300 shadow-xl">
       <figure>
         <img
           src={course.thumbnail}
           alt={course.title}
-          className="w-full h-32 sm:h-48 object-fill"
+          className="w-full h-32 sm:h-40 object-cover"
         />
       </figure>
-      <div className="card-body">
-        <h2 className="card-title">{course.title}</h2>
-        <p className="text-gray-500">{course.description}</p>
+      <div className="p-4">
+        <h2 className="card-title text-lg sm:text-xl">{course.title}</h2>
+        <p className="text-gray-500 text-sm sm:text-base">{course.description}</p>
       </div>
-      <div className="p-2 card-actions justify-end">
-          <span className="text-sm float-right bg-gray-700 rounded-md p-2 flex">
-          <FaRupeeSign className="mt-[3px]" />. {course?.pricing?.amount || "free"}
-          </span>
+      <div className="p-2 card-actions flex flex-col sm:flex-row justify-between items-center">
+        <span className="text-sm bg-gray-700 rounded-md p-2 flex items-center">
+          <FaRupeeSign className="mt-[3px] mr-1" />
+          {course?.pricing?.amount || "free"}
+        </span>
         <button
           onClick={handleReadMore}
-          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700"
+          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg focus:outline-none bg-blue-600 hover:bg-blue-700 mt-2 sm:mt-0"
         >
           View Details
           <svg

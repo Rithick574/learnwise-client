@@ -6,6 +6,7 @@ import Sidebar from "@/components/instructor/chat/Sidebar";
 import axios from "axios";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
+import { Player } from "@lottiefiles/react-lottie-player";  
 
 interface Chat {
   chatId: string;
@@ -61,7 +62,7 @@ const InstructorChat: FC = () => {
       <div className="w-full flex">
         <Sidebar onUserSelect={handleUserSelect} />
         <div className="p-5 w-full overflow-auto text-sm">
-          <div className="overflow-auto h-96">
+          <div className="overflow-auto">
             {selectedChat ? (
               <>
                 <ChatHeader user={selectedChat.chat} />
@@ -77,7 +78,15 @@ const InstructorChat: FC = () => {
                 />
               </>
             ) : (
-              <h1>Select a chat to start messaging</h1>
+              <div className="flex flex-col items-center justify-center h-full mt-16">
+                <Player
+                  autoplay
+                  loop
+                  src="https://lottie.host/5d9ca0bb-9089-427b-898f-5349adf3dbca/OucHgX3LHs.json"
+                  style={{ height: '300px', width: '300px' }}
+                />
+                <h1 className="text-xl">Select a chat to start Messaging</h1>
+              </div>
             )}
           </div>
         </div>

@@ -7,7 +7,6 @@ import { logout } from '@/redux/actions/user/userActions';
 import { RiDashboardLine } from 'react-icons/ri';
 import { FiBox, FiLogOut, FiSettings } from 'react-icons/fi';
 import { PiNotificationBold } from 'react-icons/pi';
-import { ImStack } from 'react-icons/im';
 
 export const SideNavbarStudent:FC = () => {
   const { theme } = useTheme();
@@ -41,10 +40,6 @@ export const SideNavbarStudent:FC = () => {
                 <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/enrollments">
                     <FiBox className="w-5 opacity-80" />
                     <span className="font-medium text-md">Enrollments</span>
-                </NavLink>
-                <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/exams">
-                    <ImStack className="w-5 opacity-80" />
-                    <span className="font-medium text-md">Exams</span>
                 </NavLink>
                 <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/messages">
                     <PiNotificationBold className="w-5 opacity-80" />

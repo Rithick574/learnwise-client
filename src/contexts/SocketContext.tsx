@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import io, { Socket } from 'socket.io-client';
+import toast from 'react-hot-toast';
 
 interface SocketContextProps {
   socket: Socket | null;
@@ -36,7 +37,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         query: { userId: user._id },
         withCredentials: true,
       });
-      setSocket(newSocket);
 
       newSocket.on('connect', () => {
         console.log('Connected to server🌐🌐🌐');
@@ -45,11 +45,42 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
       newSocket.on('disconnect', () => {
         console.log('Disconnected from server');
+        setSocket(null);
       });
 
       newSocket.on('getOnlineUsers', (users: any[]) => {
         setOnlineUsers(users);
       });
+
+      newSocket.on('incomingCall', (data) => {
+        console.log('Incoming call:', data);
+        toast((t) => (
+          <div className="bg-green-100 p-4 rounded-md">
+            <p className="font-medium">Incoming call</p>
+            <div className="mt-2">
+              <button
+                className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
+                onClick={() => {
+                  window.location.href = data.data.link;
+                  toast.dismiss(t.id);
+                }}
+              >
+                Join
+              </button>
+              <button
+                className="bg-red-500 text-white px-3 py-1 rounded"
+                onClick={() => toast.dismiss(t.id)}
+              >
+                Decline
+              </button>
+            </div>
+          </div>
+        ), {
+          duration: 20000,
+          position: 'top-right',
+        });
+      });
+      setSocket(newSocket);
 
       return () => {
         newSocket.disconnect();

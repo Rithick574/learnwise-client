@@ -16,14 +16,14 @@ const IndexHeader = () => {
         </div>
         <div className="flex flex-col ml-9 mt-[150px]">
           <h2 className="text-[50px] font-Josefin px-3w-full font-[700]">
-            Improve Your Online
+            Enhance Your Online
             <br />
             Learning Experience
             <br />
-            Better
+            Further
             <span className="type-animation-wrapper mx-2">
               <TypeAnimation
-                sequence={["Instantly", 2000, "तुरन्त", 2000]}
+                sequence={["Instantly", 2000, "Swiftly", 2000]}
                 style={{ fontSize: "50px", margin: "2px" }}
                 repeat={Infinity}
               />

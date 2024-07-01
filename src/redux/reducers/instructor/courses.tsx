@@ -73,10 +73,12 @@ const courseSlice = createSlice({
                 state.loading = true;
             })
             .addCase(publishCourse.fulfilled, (state, action: PayloadAction<any>) => {
+                console.log("🚀 ~ file: courses.tsx:76 ~ .addCase ~ state:", state)
+                console.log("🚀 ~ file: courses.tsx:76 ~ .addCase ~ action:", action)
                 state.loading = false;
                 state.error = null;
                 state.courses = state.courses.map(course => 
-                    course.id === action.payload.id ? action.payload : course
+                    course._id === action.payload.data._id ? action.payload : course
                 );
             })
             .addCase(publishCourse.rejected, (state, action) => {

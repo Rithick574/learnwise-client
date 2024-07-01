@@ -1,12 +1,14 @@
 export interface SubLesson {
+  _id: string;
   title: string;
   video: string;
   description?: string;
 }
 
 export interface Lesson {
+  _id: string;
   title: string;
-  subLessons: SubLesson[];
+  subLessons?: SubLesson[];
 }
 
 export interface Trial {

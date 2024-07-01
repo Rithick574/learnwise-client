@@ -12,6 +12,7 @@ import { RootState } from '@/redux/store';
 import videoUpload from '@lib/utility/videoUploadCloudinay';
 import ImageUpdload from '@lib/utility/ImageUpload';
 import { URL } from '@/Common/api';
+import { AudioUpload } from '@lib/utility/AudioUpload';
 
 interface MessageInputProps {
   chatId: string;
@@ -32,12 +33,18 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
   const [recording, setRecording] = useState(false);
 
   useEffect(() => {
+    if (socket && chatId) {
+      socket.emit('joinRoom', chatId);
+    }
+  }, [socket, chatId]);
+
+  useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (typing && socket) {
         socket.emit('stopTyping', { roomId: chatId, sender: user._id });
         setTyping(false);
       }
-    }, 1000);
+    }, 3000);
 
     return () => clearTimeout(timeoutId);
   }, [message, typing, chatId, socket, user._id]);
@@ -121,6 +128,9 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
       toast.error('Message cannot be empty');
       return;
     }
+    console.log("🚀 ~ file: MessageInput.tsx:128 ~ handleSendMessage ~ fileUrl:", fileUrl)
+    console.log("🚀 ~ file: MessageInput.tsx:128 ~ handleSendMessage ~ message:", message)
+    console.log("🚀 ~ file: MessageInput.tsx:145 ~ handleSendMessage ~ data.fileType:",fileType)
 
     try {
       const data = {
@@ -133,7 +143,6 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
         time: new Date().toLocaleTimeString(),
         seen: 0,
       };
-      console.log("🚀 ~ file: MessageInput.tsx:135 ~ handleSendMessage ~ data:", data)
 
       if (socket) {
         socket.emit('newMessage', { obj: data });
@@ -152,10 +161,11 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
         messageData,
         chatData: chatId,
       });
+      console.log("🚀 ~ file: MessageInput.tsx:162 ~ handleSendMessage ~ res:", res)
 
       const newMessage = {
         id: res.data.data._id,
-        sender: user.userName,
+        sender: user.firstName,
         senderId: user._id,
         content: res.data.data.content,
         time: new Date(res.data.data.createdAt).toLocaleTimeString(),
@@ -165,8 +175,10 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
       onMessageSent(newMessage);
       setMessage('');
       setFileUrl(null);
-      setFileType(null);
-      socket?.emit('stopTyping', { roomId: chatId, sender: user._id });
+      setFileType('text');
+      if(socket){
+        socket.emit('stopTyping', { roomId: chatId, sender: user._id });
+      }
       setTyping(false);
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
@@ -176,7 +188,7 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
 
   const handleRemoveFile = () => {
     setFileUrl(null);
-    setFileType(null);
+    setFileType('text');
     setMessage('');
   };
 
@@ -202,9 +214,8 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
     setFileUploading(true);
     try {
       const file = new File([recordedBlob.blob], 'audio.webm', { type: 'audio/webm' });
-      const audioUrl = await videoUpload(file, (progress) => {
-        console.log(`Upload Progress: ${progress}%`);
-      });
+      const audioUrl = await AudioUpload(file);
+      console.log("🚀 ~ file: MessageInput.tsx:217 ~ audioUrl ~ audioUrl:", audioUrl)
       setFileUrl(audioUrl);
       setFileType('audio');
       setMessage(audioUrl);
@@ -218,7 +229,7 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
   };
 
   return (
-    <div className="p-2 shadow-inner">
+    <div className="p-2 shadow-inner absolute bottom-0 w-[58%]">
       {fileUrl && (
         <div className="mb-2 relative">
           {fileType === 'image' ? (
@@ -238,15 +249,15 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
           />
         </div>
       )}
+        {fileUploading && <span className="">Uploading...</span>}
       <div className="flex items-center relative">
         <PaperClipIcon className="w-8 ms-2 cursor-pointer absolute text-gray-400" onClick={handleFileUpload} />
         <BiHappyHeartEyes className="text-3xl cursor-pointer absolute ms-10 text-gray-400" onClick={toggleEmojiPicker} />
-        {fileUploading && <span className="">Uploading...</span>}
         <input
           type="text"
           placeholder="Your message"
           className="input input-bordered flex-1 pl-20 pr-24"
-          value={message}
+          value={fileType === 'text' ? message : ''}
           onChange={handleInputChange}
         />
         <button

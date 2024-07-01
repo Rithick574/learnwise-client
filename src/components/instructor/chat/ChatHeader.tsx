@@ -1,5 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { useSocket } from '@/contexts/SocketContext';
+import { useNavigate } from 'react-router-dom';
+import { BsFillCameraVideoFill } from 'react-icons/bs';
 
 interface Chat {
   receiverId: string;
@@ -17,10 +19,6 @@ interface TypingEvent {
   roomId: string;
 }
 
-// interface OnlineUsersEvent {
-//   onlineUsers: string[];
-// }
-
 interface LastSeenEvent {
   userId: string;
   lastSeenTime: string;
@@ -28,9 +26,11 @@ interface LastSeenEvent {
 
 const ChatHeader: FC<ChatHeaderProps> = ({ user }) => {
   const socket = useSocket();
+  const navigate=useNavigate()
   const [typingStatus, setTypingStatus] = useState<boolean | null>(null);
   const [onlineStatus, setOnlineStatus] = useState<boolean>(false);
   const [lastSeen, setLastSeen] = useState<string | null>(null);
+  const [isCalling, _setIsCalling] = useState<boolean>(false); 
 
   useEffect(() => {
     if (socket && user) {
@@ -47,6 +47,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({ user }) => {
       };
 
       const handleUserOnline = (onlineUsers: string[]) => {
+        console.log("🚀 ~ file: ChatHeader.tsx:50 ~ handleUserOnline ~ onlineUsers:", onlineUsers)
         setOnlineStatus(onlineUsers.includes(user.receiverId));
       };
 
@@ -69,6 +70,10 @@ const ChatHeader: FC<ChatHeaderProps> = ({ user }) => {
       };
     }
   }, [socket, user]);
+
+  const startCall = () => {
+    navigate(`/call?id=${user.receiverId}&senderId=${user.receiverId}`)
+  };
 
   const renderStatus = () => {
     if (typingStatus) {
@@ -96,9 +101,13 @@ const ChatHeader: FC<ChatHeaderProps> = ({ user }) => {
         </div>
       </div>
       <div className="flex space-x-2">
-        {/* Optional buttons for additional actions */}
-        {/* <button className="btn btn-circle btn-outline"><i className="fa fa-search"></i></button>
-        <button className="btn btn-circle btn-outline"><i className="fa fa-ellipsis-h"></i></button> */}
+      {!isCalling ? (
+          <button className="btn btn-circle btn-outline" onClick={startCall}>
+            <BsFillCameraVideoFill />
+          </button>
+        ) : (
+          <span className="text-gray-600">Calling...</span>
+        )}
       </div>
     </div>
   );

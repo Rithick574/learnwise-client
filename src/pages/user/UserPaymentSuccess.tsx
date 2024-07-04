@@ -50,7 +50,6 @@ const UserPaymentSuccess: FC = () => {
   useEffect(()=>{
     setTimeout(() => {
       if (item) {
-        console.log("🚀 ~ file: UserPaymentSuccess.tsx:55 ~ setTimeout ~ socket:", socket)
         const { courseId,instructorRef } = JSON.parse(item);
         if (socket) {
           console.log("__________------------________");

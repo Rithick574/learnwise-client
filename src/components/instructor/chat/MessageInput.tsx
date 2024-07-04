@@ -128,9 +128,6 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
       toast.error('Message cannot be empty');
       return;
     }
-    console.log("🚀 ~ file: MessageInput.tsx:128 ~ handleSendMessage ~ fileUrl:", fileUrl)
-    console.log("🚀 ~ file: MessageInput.tsx:128 ~ handleSendMessage ~ message:", message)
-    console.log("🚀 ~ file: MessageInput.tsx:145 ~ handleSendMessage ~ data.fileType:",fileType)
 
     try {
       const data = {
@@ -215,7 +212,6 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
     try {
       const file = new File([recordedBlob.blob], 'audio.webm', { type: 'audio/webm' });
       const audioUrl = await AudioUpload(file);
-      console.log("🚀 ~ file: MessageInput.tsx:217 ~ audioUrl ~ audioUrl:", audioUrl)
       setFileUrl(audioUrl);
       setFileType('audio');
       setMessage(audioUrl);
@@ -229,7 +225,7 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
   };
 
   return (
-    <div className="p-2 shadow-inner absolute bottom-0 w-[58%]">
+    <div className="md:p-2 shadow-inner absolute bottom-0 w-[58%]">
       {fileUrl && (
         <div className="mb-2 relative">
           {fileType === 'image' ? (
@@ -239,9 +235,9 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
               Your browser does not support the video tag.
             </video>
           ) : (
-            <audio src={fileUrl} controls className="w-full">
+            <video src={fileUrl} controls className="w-full">
               Your browser does not support the audio element.
-            </audio>
+            </video>
           )}
           <XCircleIcon
             className="w-6 h-6 absolute top-1 right-1 cursor-pointer text-red-500"
@@ -250,7 +246,7 @@ const MessageInput: FC<MessageInputProps> = ({ chatId, recieversId, onMessageSen
         </div>
       )}
         {fileUploading && <span className="">Uploading...</span>}
-      <div className="flex items-center relative">
+      <div className="flex items-center relative w-[522px] md:w-full">
         <PaperClipIcon className="w-8 ms-2 cursor-pointer absolute text-gray-400" onClick={handleFileUpload} />
         <BiHappyHeartEyes className="text-3xl cursor-pointer absolute ms-10 text-gray-400" onClick={toggleEmojiPicker} />
         <input

@@ -57,6 +57,8 @@ const ChatMessage: FC<ChatMessageProps> = ({
 
   useEffect(() => {
     if (isSocketReady && socket) {
+      console.log("🚀 ~ file: ChatMessage.tsx:60 ~ useEffect ~ socket:", socket)
+      console.log("🚀 ~ file: ChatMessage.tsx:60 ~ useEffect ~ isSocketReady:", isSocketReady)
       const handleNewMessage = (message: any) => {
         console.log("🚀 ~ file: ChatMessage.tsx:61 ~ handleNewMessage ~ message:", message)
         if (message.obj.chatId === selectedChat.chatId) {
@@ -64,7 +66,6 @@ const ChatMessage: FC<ChatMessageProps> = ({
           scrollToBottom();
         }
       };
-
       socket.on('newMessage', handleNewMessage);
       return () => {
         socket.off('newMessage', handleNewMessage);
@@ -162,9 +163,9 @@ const ChatMessage: FC<ChatMessageProps> = ({
         );
       case "audio":
         return (
-          <audio src={message.content} controls className="">
+          <video src={message.content} controls className="h-12 w-72">
             Your browser does not support the audio element.
-          </audio>
+          </video>
         );
       default:
         return <div>{message.content}</div>;

@@ -144,7 +144,7 @@ const Sidebar: FC<SidebarProps> = ({ onUserSelect }) => {
               <div className="text-sm text-gray-600">{chat.lastMessage}</div>
               {/* <div className="text-xs text-gray-500">{chat.time}</div> */}
             </div>
-            <div>
+            <div className="hidden md:block">
               {onlineUsers.includes(chat.receiverId) ? (
                 <span className="text-green-500">Online</span>
               ) : (

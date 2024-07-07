@@ -21,4 +21,4 @@ spec:
             - containerPort: 5173
           envFrom:
             - configMapRef:
-                name: learnwisefronend-config
+                name: learnwisefrontend-config

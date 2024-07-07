@@ -1,5 +1,15 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: learnwisefronend-config
+  name: learnwisefrontend-config
+  labels:
+    app: client
 data:
+  VITE_REACT_APP_GOOGLE_ID: "763509306096-o56pcujee7m125or6q0iabofq139v5a0.apps.googleusercontent.com"
+  VITE_REACT_APP_BASE_URL: "http://localhost:4000/api"
+  VITE_REACT_APP_PRESET_KEY : "uuldmw45"
+  VITE_REACT_APP_CLD_USER_NAME : "dhjdzmaaz"
+  VITE_REACT_APP_API_KEY : "888328625471981"
+  VITE_REACT_APP_API_SECRET : "8zZJy48jyKWKzOio8cFMLo3YY14"
+  VITE_REACT_APP_APPID : "119091714"
+  VITE_REACT_APP_SERVERSECRET : "5f2810a2885f221e019d126675bc5701"

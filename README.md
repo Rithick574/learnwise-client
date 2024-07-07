@@ -1,30 +1,38 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+# Learnwise
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![System design](./docs/systemDesign.png)
 
-## Expanding the ESLint configuration
+> Learnwise is an innovative educational networking platform designed to connect learners and instructors for seamless knowledge sharing. Our platform empowers instructors to create courses, exams, live sessions, and announcements, enriching the learning experience.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Repositories and Documentation
 
-- Configure the top-level `parserOptions` property like this:
+- **[Backend Repository](https://github.com/Rithick574/learnwise-server)**
+- **[Cross Service Package](https://github.com/Rithick574/learnwise-common)**
+- **[API Documentation](https://documenter.getpostman.com/view/29232780/2sA35MyyuE#c2608f91-cc90-4761-9c44-1dffbb42fd1c)**
+- **[Design and Prototype](https://www.figma.com/proto/YNzyixMYNNkbCi3NcF4ZJe/LearnWise?node-id=1-4&starting-point-node-id=1%3A4)**
+- **[Database Design](https://app.codeplanner.co/projects/660f84a75e644605f0256a7c/databases/660f84be5e644605f0256a86)**
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Key Features
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **Diverse Course Offerings**: Access a wide range of free and paid courses. Videos are converted to HLS format (m3u8) to ensure optimal streaming quality based on internet speed.
+  
+- **Real-time Interaction**: Engage with real-time features such as text chatting, audio, video, and file sharing using WebSockets, fostering an engaging learning environment.
+  
+- **Live Streaming**: Instructors can conduct live streaming sessions, providing direct interaction and real-time feedback to enhance the learning experience.
+  
+- **Announcement System**: Stay informed with notifications about upcoming courses, live sessions, and achievements. Integrated options for likes, dislikes, and comments allow users to interact with announcements.
+
+## Technical Architecture
+
+- **Microservices Architecture**: Designed for scalability using microservices and clean architecture principles.
+  
+- **Efficient Communication**: Utilizes Apache Kafka for interservice communication.
+  
+- **Containerization and Deployment**: Leveraged Docker for containerization and deployed on Azure Kubernetes Service for streamlined deployment and optimal performance.
+
+---
+
+This format provides a clear and detailed overview of Learnwise, ensuring that all essential information is easily accessible.

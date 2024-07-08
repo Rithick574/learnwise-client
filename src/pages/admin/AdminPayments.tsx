@@ -1,6 +1,5 @@
 import { FilterArray } from "@/components/admin/FilterArray";
 import { SearchBar } from "@/components/admin/SearchBar";
-import { StatusComponent } from "@/components/admin/StatusComponent";
 import CustomPagination from "@/components/public/Pagination";
 import { useTheme } from "@/components/ui/theme-provider";
 import { getPayments } from "@/redux/actions/admin/paymentAction";
@@ -11,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 const AdminPayments: FC = () => {
-  const { payments, loading, totalAvailablePayments } = useSelector((state: RootState) => state.payments);
+  const { payments, totalAvailablePayments } = useSelector((state: RootState) => state.payments);
   const { theme } = useTheme();
   const dispatch = useDispatch<AppDispatch>();
 

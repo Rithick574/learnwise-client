@@ -15,7 +15,7 @@ export const CustomPdfUpdateFileInput: FC<CustomPdfFileInputProps> = ({
   value,
   theme,
 }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [_selectedFile, setSelectedFile] = useState<File | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

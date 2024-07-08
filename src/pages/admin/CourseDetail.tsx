@@ -79,7 +79,7 @@ export const CourseDetail: FC = () => {
                 </label>
                 <div className="pl-4 pb-4 hidden peer-checked:block">
                   <ul className="list-disc">
-                    {lesson.subLessons.map((subLesson, subLessonIndex) => (
+                  {lesson.subLessons && lesson.subLessons.map((subLesson, subLessonIndex) => (
                       <li key={subLessonIndex} className="mt-2">
                         <span className="font-semibold">{subLesson.title}:</span>{" "}
                         {subLesson.description}

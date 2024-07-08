@@ -15,7 +15,7 @@ export const CustomSingleUpdateFileInput: FC<CustomSingleFileInputProps> = ({
   value,
   theme,
 }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [_selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

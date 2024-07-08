@@ -72,3 +72,11 @@ export interface IUser {
   otp?: string;
   profit: number;
 }
+
+
+export interface PaginationProps {
+  handleClick: (type: string, value: any) => void;
+  page: number;
+  number: number;
+  totalNumber: number;
+}

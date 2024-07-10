@@ -1,6 +1,10 @@
 import { FC } from 'react';
 import jsPDF from 'jspdf';
 import logoImage from '@/assets/learnwiseLogo.png'; 
+import { PdfUpload } from './PdfUpload';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
+import { sendCertificateData } from './certificateApi';
 
 interface CertificateProps {
   userName: string;
@@ -8,7 +12,8 @@ interface CertificateProps {
 }
 
 const CertificateGenerator: FC<CertificateProps> = ({ userName, courseName }) => {
-  const generateCertificate = () => {
+  const { user } = useSelector((state: RootState) => state.user);
+  const generateCertificate = async() => {
     const doc = new jsPDF({
       orientation: 'landscape',
       unit: 'mm',
@@ -76,6 +81,22 @@ const CertificateGenerator: FC<CertificateProps> = ({ userName, courseName }) =>
 
     // Save the PDF
     doc.save(`${userName}_${courseName}_Certificate.pdf`);
+
+    // Get PDF blob
+    const pdfBlob = doc.output('blob');
+    const pdfFile = new File([pdfBlob], `${userName}_${courseName}_Certificate.pdf`, { type: 'application/pdf' });
+    try {
+      const uploadUrl = await PdfUpload(pdfFile);
+      if (uploadUrl) {
+        console.log("🚀 ~ file: CertificateGenerator.tsx:87 ~ generateCertificate ~ uploadUrl:", uploadUrl)
+        await sendCertificateData(user._id, courseName, uploadUrl);
+        console.log('Certificate data sent to backend successfully');
+      } else {
+        console.error('PDF upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading PDF:', error);
+    }
   };
 
   return (

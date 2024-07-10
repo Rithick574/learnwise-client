@@ -1,5 +1,5 @@
 import { RootState } from "@/redux/store";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
 import {
   AiOutlineCalendar,
@@ -17,16 +17,40 @@ import { TiTick } from "react-icons/ti";
 import { Modal } from "@/components/admin/Modal";
 import { EditProfile } from "@/components/student/EditProfile";
 import ResetPasswordEditProfile from "@/components/auth/ResetPasswordEditProfile";
+import axios from "axios";
+import { URL } from "@/Common/api";
+import { appJson } from "@/Common/configurations";
+
+interface Certificate {
+  _id: string;
+  courseName: string;
+  url: string;
+  date: string;
+}
 
 export const ProfilePage: FC = () => {
   const { user } = useSelector((state: RootState) => state.user);
-  console.log("🚀 ~ file: ProfilePage.tsx:22 ~ user:", user);
-
   const { theme } = useTheme();
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
   const textStyle = "text-white-600";
   const notAvailableStyle = "text-red-500";
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
+    useState(false);
+    useEffect(() => {
+      const fetchCertificates = async () => {
+        try {
+          const {data} = await axios.get(`${URL}/course/certificate/${user._id}`, appJson);
+          setCertificates(data.data); 
+          console.log("🚀 ~ file: ProfilePage.tsx:45 ~ fetchCertificates ~ response:", data)
+        } catch (error) {
+          console.error("Error fetching certificates:", error);
+        }
+      };
+      if (user?._id) {
+        fetchCertificates();
+      }
+    }, [user]);
   const displayContent = (content: string | undefined) => {
     return content ? (
       <span className={textStyle}>{content}</span>
@@ -35,7 +59,8 @@ export const ProfilePage: FC = () => {
     );
   };
   const toggleModal = () => setIsModalOpen(!isModalOpen);
-  const toggleResetPasswordModal = () => setIsResetPasswordModalOpen(!isResetPasswordModalOpen);
+  const toggleResetPasswordModal = () =>
+    setIsResetPasswordModalOpen(!isResetPasswordModalOpen);
 
   return (
     <div className="p-5 mt-3 w-full overflow-y-auto text-sm">
@@ -167,17 +192,58 @@ export const ProfilePage: FC = () => {
           >
             Update Profile
           </button>
-          <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-          onClick={toggleResetPasswordModal}
+          <button
+            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+            onClick={toggleResetPasswordModal}
           >
             Reset Password
           </button>
         </div>
       </div>
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-4">Certificates</h2>
+        {certificates.length === 0 ? (
+          <p>No certificates found.</p>
+        ) : (
+          <div className="grid gap-4">
+            {certificates.map((certificate) => (
+              <div key={certificate._id} className="card card-compact bg-base-100 w-96 shadow-xl">
+                <figure>
+                <iframe
+                  title={certificate.courseName}
+                  className="w-full"
+                  src={certificate.url}
+                  allowFullScreen
+                />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{certificate.courseName}</h2>
+                  <p>Date: {new Date(certificate.date).toLocaleDateString()}</p>
+                  <div className="card-actions justify-end">
+                    <a
+                      href={certificate.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-primary"
+                    >
+                      View Certificate
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        </div>
       {isModalOpen && <Modal tab={<EditProfile closeToggle={toggleModal} />} />}
-      {isResetPasswordModalOpen && <Modal tab={<ResetPasswordEditProfile closeToggle={toggleResetPasswordModal} />} />}
+      {isResetPasswordModalOpen && (
+        <Modal
+          tab={
+            <ResetPasswordEditProfile closeToggle={toggleResetPasswordModal} />
+          }
+        />
+      )}
     </div>
   );
 };
-
-

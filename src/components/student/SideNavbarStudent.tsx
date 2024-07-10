@@ -49,6 +49,10 @@ export const SideNavbarStudent:FC = () => {
                     <FiBox className="w-5 opacity-80" />
                     <span className="font-medium text-sm">Explore</span>
                 </NavLink>
+                <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/subscriptions">
+                    <FiBox className="w-5 opacity-80" />
+                    <span className="font-medium text-sm">Subscription</span>
+                </NavLink>
                 <NavLink className={`pl-6 py-4 flex items-center justify-start gap-4 ${theme === "light" ? "bg-white" : "bg-gray-800"} rounded-lg`} to="/student/settings">
                     <FiSettings className="w-5 opacity-80" />
                     <span className="font-medium text-md">Settings</span>

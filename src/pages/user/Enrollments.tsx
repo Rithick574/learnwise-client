@@ -92,8 +92,7 @@ export const Enrollments: FC = () => {
         const { data } = await axios.get<{ success: boolean; data: Course[]; message: string }>(
           `${URL}/course/enrollment/${user._id}`
         );
-        console.log("🚀 ~ file: Enrollments.tsx:17 ~ fetchCourses ~ response:", data);
-        setCourses(data.data); // Set the courses from the API response
+        setCourses(data.data); 
         setLoading(false);
       } catch (error) {
         console.error("Error fetching courses:", error);

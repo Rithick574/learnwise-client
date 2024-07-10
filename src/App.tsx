@@ -76,6 +76,7 @@ import PaymentFailed from "./pages/user/subscription/PaymentFailed";
 import VideoCallPage from './components/instructor/chat/VideoCall';
 import { Exams } from "./pages/user/Exams";
 import { Notifications } from "./components/admin/notification/Notifications";
+import StudentSubscriptions from "./pages/user/subscription/StudentSubscriptions";
 
 type ProtectedRouteProps = {
   element: React.ReactElement;
@@ -272,6 +273,7 @@ const StudentRoutes: FC = () => {
         <Route path="overview" element={<DashboardNav />} />
         <Route path="/exam/:courseId" element={<Exams />} />
         <Route path="enrollments" element={<Enrollments />} />
+        <Route path="subscriptions" element={<StudentSubscriptions />} />
         <Route path="messages" element={<StudentChat />} />
         <Route path="settings" element={<ProfilePage />} />
       </Route>

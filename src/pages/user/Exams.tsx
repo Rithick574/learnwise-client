@@ -27,6 +27,15 @@ export const Exams: FC = () => {
   const [scorePercentage, setScorePercentage] = useState(0);
   const [loading, setLoading] = useState(true);
 
+   // Fisher-Yates shuffle algorithm
+  const shuffleArray = (array: Question[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
   useEffect(() => {
     const fetchExam = async () => {
       if (courseId) {
@@ -43,6 +52,8 @@ export const Exams: FC = () => {
                 _id:exam._id
               })
             );
+            const shuffledQuestions = shuffleArray(formattedQuestions);
+            setQuestions(shuffledQuestions);
             setQuestions(formattedQuestions);
           } else {
             console.log("Error fetching exams");
@@ -152,7 +163,7 @@ export const Exams: FC = () => {
       <div className=" flex flex-col justify-center w-full">
         <div className="border border-gray-300 shadow-lg rounded-lg">
           <div className="border p-6 rounded-t-lg">
-            <h1 className="text-lg font-semibold text-center">Tests</h1>
+            <h1 className="text-lg font-semibold text-center">Assesments</h1>
             <div className="flex justify-between items-center mt-4">
               <div className="w-full bg-gray-300 h-2 rounded">
                 <div

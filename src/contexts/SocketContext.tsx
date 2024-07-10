@@ -33,7 +33,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (user && user._id) {
-      const newSocket = io('https://phonebazaar.shop/socket.io', {
+      const newSocket = io('https://phonebazaar.shop/api/chat', {
         query: { userId: user._id },
         withCredentials: true,
       });

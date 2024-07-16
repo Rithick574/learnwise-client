@@ -22,8 +22,8 @@ const Login = () => {
   const navigate = useNavigate()
   const { theme } = useTheme();
   const initialValues = {
-    email: "rithick.panoor574@gmail.com",
-    password: "Rithick@123",
+    email: "",
+    password: "",
   };
 
   const validationSchema = Yup.object().shape({

@@ -42,7 +42,6 @@ const MemberShip: FC<MemberShipProps> = ({ instructorId }) => {
         instructorId: instructorId.email,
       };
       const response = await axios.post(`${URL}/payment/subscription/create-subscription-checkout-session`, postData);
-      // localStorage.setItem('MemberShipData', JSON.stringify({ customerId: email, instructorId: instructorId.email }));
 
       const stripe = await stripePromise;
       const { id: sessionId } = response.data;

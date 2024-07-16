@@ -35,10 +35,6 @@ const UserPaymentSuccess: FC = () => {
         const method = "card";
         const status = "completed";
         const wholeData = { method, status, ...rest };
-        console.log(
-          "🚀 ~ file: UserPaymentSuccess.tsx:30 ~ fetchData ~ wholeData:",
-          wholeData
-        );
         await commonRequest("post", "/payment/savePayment", wholeData, config);
       } catch (error) {
         console.error("Error saving payment:", error);
@@ -52,7 +48,6 @@ const UserPaymentSuccess: FC = () => {
       if (item) {
         const { courseId,instructorRef } = JSON.parse(item);
         if (socket) {
-          console.log("__________------------________");
           socket.emit("newNotification", {
             recipientId: `${instructorRef}`,
             content: `Course ${courseId} is Purchased by ${user.firstName} `,

@@ -1,5 +1,4 @@
 import LoginBG from "../../assets/business-img.png";
-// import Logo from "../../assets/auth-img.png"
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -46,7 +45,11 @@ const Login = () => {
   }, [error]);
 
   const  handleLoginSubmit = async (value:any) => {
-   dispatch(loginUser(value));
+    const trimmedValues = {
+      ...value,
+      email: value.email.trim(),
+    };
+    dispatch(loginUser(trimmedValues));
   };
 
   const loginWithGoogle = async (data:any) => {
